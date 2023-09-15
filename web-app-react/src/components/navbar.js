@@ -7,20 +7,20 @@ function Navbar() {
       
       <div className='navbar-container'>
         <a class="navbar-img" href="/">
-          <img src="../images/sdei_logo.jpg" class="rounded" width ="250" height ="70"/>
+          <img src="../images/sdei_logo.jpg" alt='logo' class="rounded" width ="275" height ="80"/>
         </a>
-        <a class="nav-link" href="/">Home</a>
-        <div class="dropdown">
-          <button class="dropbtn">Dropdown
+        <a class="nav-link" href="/">Account</a>
+        <div class="appliances">
+          <button class="appliancesbtn">Appliances
             <i class="fa fa-caret-down"></i>            
           </button>
-          <div class="dropdown-content">
-            <a href="#">Link 1</a>
-            <a href="#">Link 2</a>
-            <a href="#">Link 3</a>
+          <div class="appliances-content">
+            <a href="/">Link 1</a>
+            <a href="/">Link 2</a>
+            <a href="/">Link 3</a>
           </div>
         </div>
-          <a class="nav-link" href="/">Account</a>
+          <a class="nav-link" href="/">Home</a>
       </div>
     </nav>
   )
