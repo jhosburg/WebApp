@@ -11,6 +11,11 @@ function Home() {
                      <h1 class="heading">Overall Power Usage</h1>
                   </div>
                </div>
+               <div class='graph-cards'>
+                  <div class='graph1'>
+                     <h2>GRAPH TO BE DISPLAYED</h2>
+                  </div>
+               </div>
             </div>
       </div>
   )

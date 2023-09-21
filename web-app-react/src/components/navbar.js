@@ -7,7 +7,7 @@ function Navbar() {
       
       <div className='navbar-container'>
         <a class="navbar-img" href="/">
-          <img src="../images/sdei_logo.jpg" alt='logo' class="rounded" width ="275" height ="80"/>
+          <img src="sdei_logo.jpg" alt='logo' class="rounded" width ="275" height ="80"/>
         </a>
         <a class="nav-link" href="/">Account</a>
         <div class="appliances">
