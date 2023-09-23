@@ -66,7 +66,7 @@ Packages neccessary to run:
 **Step 1** - Add the file with code changes
 
     Example -> "git add "PS C:\Users\sandy\OneDrive\Desktop\school1\SDSU\Spring 2023\SD_A_B\react\WebApp\web-app-react>"
-
+    OR "git add --all"
 
 **Step 2** - Write a meaningful message for the added code change
     
