@@ -80,7 +80,23 @@ Packages neccessary to run:
 
 ### Backend:
 
-Coming Soon! Stay Tuned!
+
+**Step 1** - in your terminal: 
+
+      "python -m pip install django"
+    OR
+      "python3 -m pip install django"
+      
+
+**Step 2** - Use this code to create new Django project only
+    
+    "django-admin startproject project name"
+
+
+**Step 3** Run Django server 
+
+    "python manager.py runserver"
 
 
 
+**New Comments Coming Soon! Stay Tuned!**
