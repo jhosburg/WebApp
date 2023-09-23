@@ -63,17 +63,21 @@ Packages neccessary to run:
 
 ### Web-app-react: FrontEnd After Code Changes
     
-**Step 1** - Add the file with code changes
+**Step 1** - Push changes to GitHub
+
+    git pull
+
+**Step 2** - Add the file with code changes
 
     Example -> "git add "PS C:\Users\sandy\OneDrive\Desktop\school1\SDSU\Spring 2023\SD_A_B\react\WebApp\web-app-react>"
     OR "git add --all"
 
-**Step 2** - Write a meaningful message for the added code change
+**Step 3** - Write a meaningful message for the added code change
     
     git commit -m "COMMIT MESSAGE "
 
 
-**Step 3** - Push changes to GitHub
+**Step 4** - Push changes to GitHub
 
     git push
 
@@ -86,7 +90,7 @@ Packages neccessary to run:
       "python -m pip install django"
     OR
       "python3 -m pip install django"
-      
+
 
 **Step 2** - Use this code to create new Django project only
     
