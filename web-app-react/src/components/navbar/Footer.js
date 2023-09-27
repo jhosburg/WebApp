@@ -1,14 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import './Footer.css';
 
- const Footer =  () => {
+const Footer = () => {
+  const [showFooter, setShowFooter] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const scrollTop = document.documentElement.scrollTop;
+      const clientHeight = document.documentElement.clientHeight;
+
+      if (scrollHeight - scrollTop === clientHeight) {
+        setShowFooter(true);
+      } else {
+        setShowFooter(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    
-      <div className= 'text-center text-lg-left'>
-        &copy; {new Date().getFullYear()} Copyright:{' '}
-        <a className='text-dark' href='https://www.seadragon.energy/'>
-          by Sea Dragon Energy, Inc. All rights reserved. Website by Team 5IVE SDSU 2023
+    <div id="footer" className={`fixed-bottom ${showFooter ? 'd-block' : 'd-none'}`}>
+      <div className="footerContent">
+        <div>
+          &copy; {new Date().getFullYear()} Copyright:{' '}
+          <a className='copyWrite' href='https://www.seadragon.energy/'>
+            by Sea Dragon Energy, Inc. All rights reserved. Website by Team 5IVE SDSU 2023
+          </a>
+        </div>
+        <a className="returnBtn" onClick={scrollToTop}>
+          <div class="arrow"></div>
         </a>
       </div>
+    </div>
   );
-} 
+};
+
 export default Footer;
+

@@ -1,0 +1,38 @@
+#footer {
+    background-color: #2f5d80;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    border: none;
+    padding: 25px;
+  }
+
+.footerContent {
+    color: white;
+    margin-left: 350px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.copyWrite {
+    color: white;
+    text-decoration: none;
+}
+
+.returnBtn {
+    cursor: pointer;
+    margin-left: 75px;
+    padding-bottom: 25px;
+}
+
+.arrow {
+    border-color: transparent transparent #ffffff;
+    border-style: solid;
+    border-width: 10px;
+    height: 0px;
+    width: 0px;
+}
+
+
+  

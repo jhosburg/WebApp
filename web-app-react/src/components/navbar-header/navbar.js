@@ -1,32 +1,34 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react';
 import './navbar.css';
-import logo from './sdei.png'
+import logo from './sdei.png';
 
 function Navbar() {
   useEffect(() => {
     const pathname = window.location.pathname;
-    const navLinks = document.querySelectorAll('.nav-link');  // get buttons
+    const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach((link) => {
-      if (link.getAttribute('href') === pathname) {   // loop through nav-links and add/remove active effect
+      if (link.getAttribute('href') === pathname) {
         link.classList.add('active');
       } else {
         link.classList.remove('active');
       }
     });
   }, []);
+
   return (
     <nav className='navbar'>
-      
       <div className='navbar-container'>
-        <a class="navbar-img" >
-          <img src={logo} alt='logo' class="rounded" width ="275" height ="80"/>
-        </a>
-        <a class="nav-link" href="/Account">Account</a>
-        <a class="nav-link" href="/Appliances">Dashboard</a>
-        <a class="nav-link" href="/">Home</a>
+        <div className="flex-container">
+          <a className="navbar-img">
+            <img src={logo} alt='logo' className="rounded" width="285" height="80" />
+          </a>
+          <a className="nav-link" href="/">Home</a>
+          <a className="nav-link" href="/Appliances">Dashboard</a>
+          <a className="nav-link" href="/Account">Account</a>
+        </div>
       </div>
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
