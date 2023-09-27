@@ -6,12 +6,12 @@ function Navbar() {
     <nav className='navbar'>
       
       <div className='navbar-container'>
-        <a class="navbar-img" href="/">
+        <a class="navbar-img" >
           <img src="sdei_logo.jpg" alt='logo' class="rounded" width ="275" height ="80"/>
         </a>
         <a class="nav-link" href="/">Account</a>
-        <div class="appliances">
-          <button class="appliancesbtn">Appliances
+        <div class="dashboard">
+          <button class="dashboardbtn">Dashboard
             <i class="fa fa-caret-down"></i>            
           </button>
           <div class="appliances-content">
