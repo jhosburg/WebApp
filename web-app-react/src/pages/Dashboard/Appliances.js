@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '../../components/navbar-header/navbar'
 import './Appliances.css';
 
-function Home() {
+function Appliances() {
   return (
         <div class="tile__container">
             <div class="section-heading">
