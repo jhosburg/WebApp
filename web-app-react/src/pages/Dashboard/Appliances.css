@@ -1,0 +1,138 @@
+.project-1 {
+    background-color:whitesmoke;
+    border-color: black;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  .project-2 {
+    background-color:whitesmoke;
+    border-color: black;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  .project-3 {
+    background-color:whitesmoke;
+    border-color: black;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  .project-4 {
+    background-color:whitesmoke;
+    border-color: black;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  .project-5 {
+    background-color:whitesmoke;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  .project-6 {
+    background-color:whitesmoke;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  .project-7 {
+    background-color:whitesmoke;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  .project-8 {
+    background-color:whitesmoke;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  .project-9 {
+    background-color:whitesmoke;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  .project-10 {
+    background-color:whitesmoke;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  .project-11 {
+    background-color:whitesmoke;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  .project-12 {
+    background-color:whitesmoke;
+    filter: drop-shadow(10px 10px 10px gray);
+  }
+  
+  /* Hover classes for individual appliance boxes */
+  .project-1:hover {
+    background-color:rgb(114, 167, 247);
+    transition: all 0.3s ease;
+  }
+  .project-2:hover {
+    background-color:rgb(114, 167, 247);
+    transition: all 0.3s ease;
+  }
+  .project-3:hover {
+    background-color:rgb(114, 167, 247);
+    transition: all 0.3s ease;
+  }
+  .project-4:hover {
+    background-color:rgb(114, 167, 247);
+    transition: all 0.3s ease;
+  }
+  .project-5:hover {
+    background-color:rgb(114, 167, 247);
+    transition: all 0.3s ease;
+  }
+  .project-6:hover {
+    background-color:rgb(114, 167, 247);
+    transition: all 0.3s ease;
+  }
+  .project-7:hover {
+    background-color:rgb(8, 8, 8);
+    transition: all 0.3s ease;
+  }
+  .project-8:hover {
+    background-color:rgb(114, 167, 247);
+    transition: all 0.3s ease;
+  }
+  .project-9:hover {
+    background-color:rgb(114, 167, 247);
+    transition: all 0.3s ease;
+  }
+  .project-10:hover {
+    background-color:rgb(114, 167, 247);
+    transition: all 0.3s ease;
+  }
+  .project-11:hover {
+    background-color:rgb(114, 167, 247);
+    transition: all 0.3s ease;
+  }
+  .project-12:hover {
+    background-color:rgb(114, 167, 247);
+    transition: all 0.3s ease;
+  }
+  .project__links {
+    text-align: center;
+    padding: 2rem;
+    width: 100%;
+    display: table;
+  }
+  
+  .tile__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 40px;
+    height: 100%;
+    width: 100%;
+    color: #389ac7;
+    background: #ffffff;
+  }
+  
+  .tile__button:hover {
+    background:#8eb9f1;
+    transition: all 0.3s ease;
+  }
+  
+  .tile__container {
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    z-index: 1;
+    width: 100%;
+    max-width: 3000px;
+    margin-top: 100px;
+    margin: 0 auto;
+    padding: 0 0;
+  }
