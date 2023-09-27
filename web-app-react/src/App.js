@@ -3,10 +3,12 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home/Home';
 import Navbar from './components/navbar-header/navbar';
+import Footer from "./components/navbar/Footer";
 
 function App() {
   return (
-    <>
+    <div className="page-row">
+      <div className="row wrap">
     <div>
     <Navbar />
     </div>
@@ -15,7 +17,10 @@ function App() {
           <Route path="/" element={<Home />} />
         </Routes>
       </Router>
-    </>
+      </div>
+      < Footer/>
+      </div>
+    
   );
 }
 
