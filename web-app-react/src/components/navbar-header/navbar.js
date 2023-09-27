@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import './navbar.css';
+import logo from './sdei.png'
 
 function Navbar() {
   return (
@@ -7,7 +8,7 @@ function Navbar() {
       
       <div className='navbar-container'>
         <a class="navbar-img" >
-          <img src="sdei_logo.jpg" alt='logo' class="rounded" width ="275" height ="80"/>
+          <img src={logo} alt='logo' class="rounded" width ="275" height ="80"/>
         </a>
         <a class="nav-link" href="/">Account</a>
         <div class="dashboard">
