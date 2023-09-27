@@ -103,18 +103,3 @@ Packages neccessary to run:
 
 
 **New Comments Coming Soon! Stay Tuned!**
-
-
-***notes***
-
-1. Draw the website details using draw.io
-2. divide the tasks among your team members. 
-3. as far as deploying the project, you can use Oracle up to 100 users Free or AWS if you wanna pay.
-4. google django doc and see the first demo to follow along
-5. google changelog python 3.10 to 3.10 to see the change in field. 
-6. having multiple functions is mainly for testing. 
-7. make sure to have a project folder stracture.
-8. ask about the type of testing of your website. 
-9. always use functions for react. 
-10. always ask for DOB instead of age becasue age changes but DOB doesnot.
-11. 
