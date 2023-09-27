@@ -1,5 +1,4 @@
 import React from 'react'
-import Navbar from '../../components/navbar-header/navbar'
 import './Appliances.css';
 
 function Appliances() {
