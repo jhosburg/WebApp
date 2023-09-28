@@ -6,10 +6,25 @@ function Appliances() {
   const [masterSwitch, setMasterSwitch] = useState(false);
   const [appliances, setAppliances] = useState([
     { name: 'Microwave', power: false },
-    { name: 'Fridge', power: false },
+    { name: 'Refrigerator', power: false },
+    { name: 'Oven', power: false },
+    { name: 'Dishwasher', power: false },
+    { name: 'Stove', power: false },
+    { name: 'Garbage Disposal', power: false },
+    { name: 'Kitchen Outlets', power: false },
     { name: 'AC', power: false },
     { name: 'Heater', power: false },
     { name: 'AC2', power: false },
+    { name: 'Garage', power: false },
+    { name: 'Laundry Room', power: false },
+    { name: 'Master Bedroom', power: false },
+    { name: 'Bedroom 1', power: false },
+    { name: 'Bedroom 2', power: false },
+    { name: 'Living Room', power: false },
+    { name: 'Dining Room', power: false },
+    { name: 'Upstairs Bathroom Outlets', power: false },
+    { name: 'Downstairs Bathroom Outlets', power: false },
+    { name: 'Office', power: false },
   ]);
 
   const toggleAppliance = (index) => {
