@@ -10,21 +10,21 @@
 
 .aboutInfo {
     color: rgb(7, 91, 127);
+    text-align: center;
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 28px;
     font-style: normal;
 }
   
 .teamSDSU {
+    align-items: flex-start;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
   
 .content {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal-width columns */
-    gap: 10px; /* Gap between columns */
+    display: flex;
 }
   
 .team-member {
@@ -40,6 +40,13 @@
     margin: 20px 0;
 }
 
+.spacer {
+    width: 100%;
+    height: 2px;
+    opacity: 0%;
+    margin: 5px 0;
+}
+
 .info {
     text-align: left;
 }
@@ -49,12 +56,20 @@
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 600;
     font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    margin-right: 20px;
 }
 
 .title {
     color: rgb(107, 106, 106);
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    margin-right: 20px;
 }
   
 .bio {
@@ -63,4 +78,19 @@
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 20px;
     overflow-wrap: break-word;
+    flex: 1;
+}
+
+.advisor .sponsor {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    /* Other styles for .advisor */
+  }
+
+.left {
+    display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  margin-right: 20px;
+  margin-left: 20px;
 }
