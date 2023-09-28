@@ -3,7 +3,7 @@ import './Appliances.css';
 
 function Appliances() {
   const [openAppliance, setOpenAppliance] = useState(null);
-  const [masterSwitch, setMasterSwitch] = useState(false);
+  const [masterSwitch, setMasterSwitch] = useState(true);
   const [appliances, setAppliances] = useState([
     { name: 'Microwave', power: false },
     { name: 'Refrigerator', power: false },
