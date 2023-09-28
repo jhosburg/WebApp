@@ -10,14 +10,14 @@ const Footer = () => {
       const scrollTop = document.documentElement.scrollTop;
       const clientHeight = document.documentElement.clientHeight;
 
-      if (scrollHeight - scrollTop === clientHeight) {
-        setShowFooter(true);
+      if (scrollHeight - scrollTop === clientHeight) {  // calculate height to determine when to show footer
+        setShowFooter(true);  // if position is at bottom, show footer
       } else {
-        setShowFooter(false);
+        setShowFooter(false); // else don't show
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);  
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
