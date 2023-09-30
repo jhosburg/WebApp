@@ -9,17 +9,8 @@ import HomeChart from '../charts/GraphOne'
 function Home() {
    
 
-   const[message, setMessage] = useState('');
 
-   useEffect(() => {
-      axios.get('http://127.0.0.1:8000/sdei/hello/').then((response) => {
-         setMessage(response.data.message);
-      })
-      .catch((error) => {
-         console.error('Error', error);
-      });
-   }, []);
-   
+
 
 
    const [file, setFile] = useState(null);
@@ -55,6 +46,7 @@ function Home() {
          setFileError('Please select a JSON file.');
          return; // Do not proceed with upload
      }
+
         const formData = new FormData();
         formData.append('file', file);
 
