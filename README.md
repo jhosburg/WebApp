@@ -49,15 +49,25 @@ Packages neccessary to run:
 
 **Step 2** - Check all the code changes are been reflected on your remote desktop/local machine
 
-**Step 3** - Create a child branch from main based on your first_name
 
-    git checkout -b "first_name"
+
+### Create a branch steps:
+
+**Step 1** - Create a child branch from main 
+
+    git checkout -b "first_name OR the issue you are branching to solve"
+
+**Step 2** - command to go back to main branch
+
+    git checkout main
     
-**Step 4** - To verify your current branch
+**Step 3** - To verify your current branch and check how many branches created
 
     git branch
 
-**Step 5** - Add/Write the code with respect to the mentioned issue/task
+**Step 4** - Delete a branch
+
+    git checkout -d "name of the branch"
 
 
 
@@ -69,7 +79,7 @@ Packages neccessary to run:
 
 **Step 2** - Add the file with code changes
 
-     "git add --all"
+     "git add --all" or " git add . "
 
 **Step 3** - Write a meaningful message for the added code change
     
@@ -79,6 +89,8 @@ Packages neccessary to run:
 **Step 4** - Push changes to GitHub
 
     git push
+
+
 
 
 ### Backend:
