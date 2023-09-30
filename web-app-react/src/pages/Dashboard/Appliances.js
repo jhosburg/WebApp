@@ -43,6 +43,22 @@ function Appliances() {
     setAppliances(updatedAppliances);
   };
 
+  const[toggle, setToggle] = useState(appliances.map(() => false));
+
+  const handleToggleChange = (index) => {
+    const updatedToggles = [...toggle];
+    updatedToggles[index] = !updatedToggles[index];
+    setToggle(updatedToggles);
+  
+    const toggleButton = document.querySelector(`#toggle-${index}`);
+    if (toggleButton) {
+      toggleButton.classList.toggle("ON", appliances[index].power);
+      toggleButton.classList.remove("transition");
+    }
+  
+    togglePower(index);
+  };
+
   const toggleMasterSwitch = () => {
     const newState = !masterSwitch;
     setMasterSwitch(newState);
@@ -66,15 +82,16 @@ function Appliances() {
           <div className={`appliance ${openAppliance === index ? 'open' : ''}`} key={index} onClick={() => toggleAppliance(index)}>
             <div className="appliance-header">
               {appliance.name}
-              <button
-                onClick={(e) => {
+                <div className='toggle-container' onClick={(e) => {
                   e.stopPropagation();
-                  togglePower(index);
+                  handleToggleChange(index);
                 }}
                 disabled={!masterSwitch}
-              >
-                {appliance.power ? 'OFF' : 'ON'}
-              </button>
+                >
+                  <div className={`toggle-btn ${!toggle[index] ? "disable" : ""} transition `}>
+                      {appliances[index].power ? "ON" : "OFF"}
+                  </div>
+                </div>
             </div>
             {openAppliance === index && (
               <div className="appliance-details">
@@ -86,6 +103,23 @@ function Appliances() {
       </div>
     </div>
   );
-}
+};
 
 export default Appliances;
+/*            <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  togglePower(index);
+                }}
+                disabled={!masterSwitch}
+              >
+                {appliance.power ? 'OFF' : 'ON'}
+              </button>
+
+
+
+              <div className='toggle'>
+                <toggle = {toggle} handleToggleChange = {handleToggleChange} />
+              </div>
+      */
+              
