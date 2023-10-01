@@ -44,8 +44,14 @@ function About() {
                         <a className='title' href='https://www.linkedin.com/in/moises-hernandez-castillo-8b18b5218/'> 
                             <img src={linkedin} alt='linkedin' width="25" height="25" /> 
                         </a>
-                        <p className='bio'> Moises is an electrical engineer. (fill this in with a biography or 
-                        something but it needs to atleast be long enough to push the image)</p>
+                        <p className='bio'> Moises is a future Electrical Engineer. Moises started developing his interest
+                        in electrical engineering in 2006 working for a state-owned power company serving most of central Mexico,
+                        including Mexico City, most of the State of Mexico, and some communities in the states of Morelos, Hidalgo,
+                        and Puebla. In 2009, the current President of Mexico decreed dissolving Luz y Fuerza del Centro
+                        (LFC, also rendered on the logo as "LyF"). The dissolution of the company encouraged Moises to pursue a career 
+                        in the same field. He is currently working to achieve his goal of getting his degree in December 2023
+                         at San Diego State University.
+                        </p>
                     </div>
                     <div className='left'>
                         <img src={moises} alt='moises' width="175" height="175" />
