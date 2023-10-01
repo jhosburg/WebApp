@@ -1,5 +1,6 @@
 import React from 'react'
 import './Home.css';
+import mPower_img from './mPower.png';
 
 function Home() {
   return (
@@ -16,7 +17,7 @@ function Home() {
                   </div>
                </div>
             </div>
-      </div>
+   </div>
   )
 }
 
