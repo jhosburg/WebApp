@@ -7,9 +7,9 @@
 
 .login {
   margin: 0 auto;
-  background-color: white;
+  background-color: rgb(241, 253, 247);
   width: 30em;
-  height: 30em;
+  height: 35em;
   position: relative;
   border-radius: 1em;
   box-shadow: 0 0.188em 1.550em rgb(156, 156, 156);
@@ -24,7 +24,7 @@
 input{
   background-color: #d2d2d2;
   margin: 0 auto;
-  padding: 15px;
+  padding: 16px;
   border-radius: 13px; 
   text-align: center;
   font-size: 17px;
@@ -39,9 +39,6 @@ input{
 
 }
 
-/* .username {
-    margin left: 35;
-} */
 
 .logo img{
   width: 25%;
@@ -51,44 +48,27 @@ input{
   left: 25rem;
 }
 
-/* .logo {
-    margin: auto;
-    width: 35%;
-    height: 35%;
-    background-size: cover;
-    display: flex;
-    align-items: center;  
-    box-shadow: 0 0 0 #3aa148;
-    position: static;
-    user-select: none;
-      /*need attention  */
-/* 
 .login_btn {
-    border: 0;
-    line-height: 2.5;
-    padding: 0 20px;
-    font-size: 1rem;
-    text-align: center;
-    color: #161616;
-    text-shadow: 1px 1px 1px #000;
-    border-radius: 10px;
-    background-color: rgba(9, 160, 17, 0.034);
-    background-image: linear-gradient(to top left, rgba(87, 247, 172, 0.2), rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0));
-    box-shadow:
-      inset 2px 2px 3px rgba(46, 179, 97, 0.6),
-      inset -2px -2px 3px rgba(0, 0, 0, 0.6);
-  }
-  
-  .login_btn:hover {
-    background-color: rgb(66, 179, 141);
-  }
-  
-  .login_btn:active {
-    box-shadow:
-      inset -2px -2px 3px rgba(141, 79, 79, 0.6),
-      inset 2px 2px 3px rgba(74, 165, 86, 0.6);
-  }
-  
-   */
+  border-radius: 100px; 
+  cursor: pointer;
+  background-color: #bdb7b7;
+  box-shadow: var(--box-shadow);
+  color: #000000;
+  border: 0;
+  display: block;
+  font-size: 16px;
+  margin: 10px 0 30px;
+  padding: 10px;
+  width: 100%;
+}
 
-   
+.login_btn:hover {
+  background-color: #2dbd39;
+}
+
+
+
+
+
+
+

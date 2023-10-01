@@ -16,7 +16,7 @@ function Account() {
       </div>
       
       <div className="login">
-        <h1>login</h1>
+        <h1>SIGN IN</h1>
     
     <div className='username'>
   
@@ -28,16 +28,40 @@ function Account() {
 
       <div className='password'> 
           <div className='input'>
-           <input type = "password" placeholder="password"/>
+            <input type = "password" placeholder="password"/>
              {/* <img src={user}/> */}
           </div>
       </div>
 
-        <button className='login_btn'> Login </button>
-        <button className='signup_btn'> Sign up </button>
+     
+        <div className='button'> 
+          <div className='input'>
+             <button className='login_btn'> SIGN IN </button>    
+          </div>
+          
+        <div className='button'> 
+           <div className='input'>
+             <button className='login_btn'> SIGN UP </button>    
+           </div>
+          
+       </div>
 
+        </div>
       </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
   )
 }
 

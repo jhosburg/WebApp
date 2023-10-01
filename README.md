@@ -65,9 +65,23 @@ Packages neccessary to run:
 
     git branch
 
-**Step 4** - Delete a branch
+**Step 4** - Delete a branch. NOTE: do not delete the main branch 
 
-    git checkout -d "name of the branch"
+    git checkout -d "name of the branch" 
+
+**step 5** - Merge from your file in gitHub page
+
+
+
+### Rules to pull changes
+
+**step 1** - Always pull from the main branch:
+
+    git checkout main
+
+**step 2** - pull the new changes:
+
+    git pull
 
 
 
