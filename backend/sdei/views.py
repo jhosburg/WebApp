@@ -7,24 +7,25 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import JSONUploadForm
 import json
 from django.middleware.csrf import get_token
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import JsonModel
+from .serializers import JsonModelSerializer
 
 def api_hello(request):
     data = {'message': 'This is where a graph will be!\n Also this message verifies API is working!\n We are also able to upload files.'}
     return JsonResponse(data)
 
-@csrf_exempt
-def Json_Upload(request):
-    if request.method == 'POST':
-        form = JSONUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return JsonResponse({'status': 'success', 'message': 'File uploaded successfully'})  
+class UploadJsonView(APIView):
+    def post(self, request, format=None):
+        serializer = JsonModelSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return JsonResponse({'status': 'success', 'message': 'Invalid File'})
-    else:
-        form = JSONUploadForm()
-    return JsonResponse({'status': 'error', 'message': 'not allowed'})
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def grab_json(request):
     file_path = 'media/json_data/output.json'
