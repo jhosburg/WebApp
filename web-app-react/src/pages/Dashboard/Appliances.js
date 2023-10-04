@@ -4,6 +4,128 @@ import './Appliances.css';
 function Appliances() {
   const [openAppliance, setOpenAppliance] = useState(null);
   const [masterSwitch, setMasterSwitch] = useState(true);
+  const [appliances, setAppliances] = useState([]);
+  const [editingApplianceIndex, setEditingApplianceIndex] = useState(null);
+  const [editedApplianceName, setEditedApplianceName] = useState("");
+
+  useEffect(() => {
+    const savedAppliances = JSON.parse(localStorage.getItem('appliances'));
+    if (savedAppliances) {
+      setAppliances(savedAppliances);
+    }
+  }, []);
+
+  // Update localStorage whenever appliances state changes
+  useEffect(() => {
+    localStorage.setItem('appliances', JSON.stringify(appliances));
+  }, [appliances]);
+
+  const toggleAppliance = (index) => {
+    if (!masterSwitch) return;
+    if (openAppliance === index) {
+      setOpenAppliance(null);
+    } else {
+      setOpenAppliance(index);
+    }
+  };
+
+  const togglePower = (index) => {
+    if (!masterSwitch) return;
+    setAppliances((prevAppliances) => {
+      const updatedAppliances = [...prevAppliances];
+      updatedAppliances[index].power = !updatedAppliances[index].power;
+      return updatedAppliances;
+    });
+  };
+
+  const toggleMasterSwitch = () => {
+    const newState = !masterSwitch;
+    setMasterSwitch(newState);
+    const updatedAppliances = appliances.map((appliance) => ({
+      ...appliance,
+      power: newState,
+    }));
+    setAppliances(updatedAppliances);
+  };
+
+  const startEditing = (index) => {
+    setEditingApplianceIndex(index);
+    setEditedApplianceName(appliances[index].name);
+  };
+
+  const saveEditedName = (index) => {
+    const updatedAppliances = [...appliances];
+    updatedAppliances[index].name = editedApplianceName;
+    setAppliances(updatedAppliances);
+    setEditingApplianceIndex(null);
+  };
+
+  const deleteAppliance = (index) => {
+    const updatedAppliances = [...appliances];
+    updatedAppliances.splice(index, 1); // Remove the appliance at the given index
+    setAppliances(updatedAppliances);
+  };
+
+  return (
+    <div className='center'>
+      <div className="master-switch">
+        <label>
+          Master Switch:
+          <input type="checkbox" checked={masterSwitch} onChange={toggleMasterSwitch} />
+        </label>
+      </div>
+      <div className="appliances-container">
+        {appliances && appliances.map((appliance, index) => (
+          <div className={`appliance ${openAppliance === index ? 'open' : ''}`} key={index} onClick={() => toggleAppliance(index)}>
+            <div className="appliance-header">
+              {editingApplianceIndex === index ? (
+                <input
+                  type="text"
+                  value={editedApplianceName}
+                  onChange={(e) => setEditedApplianceName(e.target.value)}
+                />
+              ) : (
+                appliance.name
+              )}
+              {editingApplianceIndex === index ? (
+                <button onClick={() => saveEditedName(index)}>Save</button>
+              ) : (
+                <button onClick={() => startEditing(index)}>Edit</button>
+              )}
+              <button onClick={() => deleteAppliance(index)}>Delete</button> {/* Add Delete button */}
+              <div className='toggle-container' disabled={!masterSwitch}>
+                <div className={`toggle-btn ${appliances[index].power ? 'ON' : ''}`} onClick={(e) => {
+                  e.stopPropagation();
+                  togglePower(index);
+                }}>
+                  {appliances[index].power ? "ON" : "OFF"}
+                </div>
+              </div>
+            </div>
+            {openAppliance === index && (
+              <div className="appliance-details">
+                <img src={`${appliance.name.toLowerCase()}.jpg`} alt={appliance.name} />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Appliances;
+
+
+ 
+//START OF OLD CODE
+
+/* import React, { useState, useEffect } from 'react';
+import './Appliances.css';
+
+function Appliances() {
+  const [openAppliance, setOpenAppliance] = useState(null);
+  const [masterSwitch, setMasterSwitch] = useState(true);
   const [appliances, setAppliances] = useState([
     { name: 'Microwave', power: false },
     { name: 'Refrigerator', power: false },
@@ -50,25 +172,10 @@ function Appliances() {
 
   const togglePower = (index) => {
     if (!masterSwitch) return;
-    const updatedAppliances = [...appliances];
-    updatedAppliances[index].power = !updatedAppliances[index].power;
-    setAppliances(updatedAppliances);
-  };
-
-  const[toggle, setToggle] = useState(appliances.map(() => false));
-
-  const handleToggleChange = (index) => {
-    const updatedToggles = [...toggle];
-    updatedToggles[index] = !updatedToggles[index];
-    setToggle(updatedToggles);
-  
-    const toggleButton = document.querySelector(`#toggle-${index}`);
-    if (toggleButton) {
-      toggleButton.classList.toggle("ON", appliances[index].power);
-      toggleButton.classList.remove("transition");
-    }
-  
-    togglePower(index);
+    setAppliances((prevAppliances) => {
+      const updatedAppliances = [...prevAppliances];
+      updatedAppliances[index].power = !updatedAppliances[index].power;
+    });
   };
 
   const toggleMasterSwitch = () => {
@@ -94,13 +201,11 @@ function Appliances() {
           <div className={`appliance ${openAppliance === index ? 'open' : ''}`} key={index} onClick={() => toggleAppliance(index)}>
             <div className="appliance-header">
               {appliance.name}
-                <div className='toggle-container' onClick={(e) => {
+                <div className='toggle-container' disabled={!masterSwitch}>
+                  <div className={`toggle-btn ${appliances[index].power ? 'ON' : ''}`} onClick={(e) => {
                   e.stopPropagation();
-                  handleToggleChange(index);
-                }}
-                disabled={!masterSwitch}
-                >
-                  <div className={`toggle-btn ${!toggle[index] ? "disable" : ""} transition `}>
+                  togglePower(index);
+                }}>
                       {appliances[index].power ? "ON" : "OFF"}
                   </div>
                 </div>
@@ -118,7 +223,7 @@ function Appliances() {
 };
 
 export default Appliances;
-/*            <button
+            <button
                 onClick={(e) => {
                   e.stopPropagation();
                   togglePower(index);
@@ -128,10 +233,28 @@ export default Appliances;
                 {appliance.power ? 'OFF' : 'ON'}
               </button>
 
-
+onClick={(e) => {
+                  e.stopPropagation();
+                  handleToggleChange(index);
+                }}
 
               <div className='toggle'>
                 <toggle = {toggle} handleToggleChange = {handleToggleChange} />
               </div>
       */
-              
+
+              /*const[toggle, setToggle] = useState(appliances.map(() => false));
+
+  const handleToggleChange = (index) => {
+    const updatedToggles = [...toggle];
+    updatedToggles[index] = !updatedToggles[index];
+    setToggle(updatedToggles);
+  
+    const toggleButton = document.querySelector(`#toggle-${index}`);
+    if (toggleButton) {
+      toggleButton.style.left = updatedToggles[index] ? '28px' : '2px';
+      toggleButton.style.backgroundColor = updatedToggles[index] ? 'rgb(150, 22, 22)' : 'rgb(70, 168, 131)';
+    }
+  
+    togglePower(index);
+  }; */

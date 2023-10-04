@@ -84,7 +84,7 @@
   line-height: 16px;
   cursor: pointer;
   color: #fff;
-  background-color:rgb(70, 168, 131);
+  background-color: rgb(150, 22, 22);
   box-shadow: 0 2px 4px rgb(0, 0, 0, 0.25);
   padding: 8px 12px;
   border-radius: 3px;
@@ -94,7 +94,7 @@
 }
 
 .toggle-btn.ON {
-  left: 28px;
-  background-color: rgb(150, 22, 22);
+  left: 32px;
+  background-color:rgb(70, 168, 131);
   transition: left 0.2s ease-in-out, background-color 0.2s ease;
 }
