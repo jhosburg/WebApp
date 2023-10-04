@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Appliances.css';
 
 function Appliances() {
@@ -26,6 +26,18 @@ function Appliances() {
     { name: 'Downstairs Bathroom Outlets', power: false },
     { name: 'Office', power: false },
   ]);
+
+  useEffect(() => {
+    const savedAppliances = JSON.parse(localStorage.getItem('appliances'));
+    if (savedAppliances) {
+      setAppliances(savedAppliances);
+    }
+  }, []);
+
+  // Update localStorage whenever appliances state changes
+  useEffect(() => {
+    localStorage.setItem('appliances', JSON.stringify(appliances));
+  }, [appliances]);
 
   const toggleAppliance = (index) => {
     if (!masterSwitch) return;
