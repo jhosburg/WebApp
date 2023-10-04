@@ -1,3 +1,4 @@
+/* Appliance Layout*/
 .center {
   display: flex;
   flex-direction: column;
@@ -62,6 +63,7 @@
   max-height: 200px;
 }
 
+/* Toggling Style */
 .toggle-container {
   position: relative;
   width: 70px;
@@ -97,4 +99,45 @@
   left: 32px;
   background-color:rgb(70, 168, 131);
   transition: left 0.2s ease-in-out, background-color 0.2s ease;
+}
+
+/* Confirmation Code */
+.confirmation-dialog {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.confirmation-dialog p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.confirmation-dialog button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.confirmation-dialog button:last-child {
+  background-color: #ccc;
+}
+
+/* Add New Appliance Button Style */
+.add-new-appliance-btn {
+  padding: 10px 20px;
+  border-color: black;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.add-new-appliance-btn:hover {
+  background-color: #0056b3;
 }
