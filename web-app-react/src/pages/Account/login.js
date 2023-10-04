@@ -45,7 +45,7 @@ function Account() {
 
           <div>
             <button className='btn-link-container'>
-              <a className="btn-link" href="/Home">SIGN IN</a>  
+              <a className="btn-link" href="/">SIGN IN</a>  
             </button>
            </div>
           
