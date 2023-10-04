@@ -7,7 +7,8 @@ function HomeChart() {
     const [jsonData, setJsonData] = useState([]);
     
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/sdei/grabJson/')
+        const filename = 'output.json';
+        axios.get('http://127.0.0.1:8000/sdei/grabJson/?filename=${filename}')
             .then((response) => {  
                 setJsonData(response.data);
             })
