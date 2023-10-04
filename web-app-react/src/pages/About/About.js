@@ -31,7 +31,11 @@ function About() {
                         <a className='title' href='https://www.linkedin.com/in/michael-eng1/'> 
                             <img src={linkedin} alt='linkedin' width="25" height="25" /> 
                         </a>
-                        <p className='bio'> Michael is an electrical engineer.</p>
+                        <p className='bio'> Michael is an Electrical Engineer. He has gained years of internship experience in the aerospace
+                         and defense industry working for Northrop Grumman. After graduation, he will transition full-time for Northrop Grumman 
+                         and plans on continuing his education with the pursuit of a Master's 
+                         Degree in Electrical Engineering.
+                         </p>
                     </div>
                 </div>
             </div>
