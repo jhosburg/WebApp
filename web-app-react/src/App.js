@@ -3,15 +3,19 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home/Home';
 import Appliances from './pages/Dashboard/Appliances';
-import Account from './pages/Account/Account';
+import Account from './pages/Account/login';
 import About from './pages/About/About';
 import Navbar from './components/navbar-header/navbar';
 import Footer from "./components/navbar/Footer";
 
+import ContactInfo from "./pages/Contacts/Contacts";
+
+import Signup from './pages/Account/Signup';
+
 function App() {
   return (
     <div className="page-row">
-      <div className="row wrap">
+      
         <div>
           <Navbar />
         </div>
@@ -21,9 +25,11 @@ function App() {
             <Route path="/Appliances" element={<Appliances />} />
             <Route path='/Account' element={<Account />} />
             <Route path='/About' element={<About />} />
+            <Route path='/Contacts' element={<ContactInfo />} />
+            <Route path='/Signup' element={<Signup />} />
           </Routes>
         </Router>
-      </div>
+      
       < Footer/>
     </div>
     

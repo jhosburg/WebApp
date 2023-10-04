@@ -32,10 +32,25 @@ input{
   
 }
 
-.username img {
-  aspect-ratio: 16 / 9;
-  width: 100%;
-  object-fit: cover;
+
+
+/* .user_img {
+  background-color: #2dbd39;
+  margin: 100;
+  left: ;
+
+} */
+
+.user_img img {
+  
+  background-color: #b7f5cc;
+  border-radius: 9em;
+  /* box-shadow: 0 0.188em 1.550em rgb(175, 243, 175); */
+  width: 25%;
+  margin: auto;
+  position: absolute;
+  
+  right: 21rem;
 
 }
 
@@ -48,7 +63,31 @@ input{
   left: 25rem;
 }
 
-.login_btn {
+.btn-link {
+  border-radius: 100px; 
+  cursor: pointer;
+  background-color: #bdb7b7;
+  box-shadow: var(--box-shadow);
+  color: #000000;
+  border: 0;
+  display: block;
+  font-size: 16px;
+  margin: 10px 0 30px;
+  padding: 10px;
+  width: 100%;
+  text-decoration: none;
+}
+
+.btn-link-container{
+  background: none;
+  border: 0;
+}
+
+.btn-link-container :hover {
+  background-color: #2dbd39;
+}
+
+.login_btn{
   border-radius: 100px; 
   cursor: pointer;
   background-color: #bdb7b7;
@@ -69,6 +108,15 @@ input{
 
 
 
-
+.forgot_password{
+  padding-left: 60px;
+  margin-top: 30px;
+  font-size: 18px;
+  color: #bdb7b7;
+}
+.forgot_password span {
+  color: #2dbd39;
+  cursor: pointer;
+}
 
 

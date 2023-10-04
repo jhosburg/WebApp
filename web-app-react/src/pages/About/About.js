@@ -112,8 +112,12 @@ function About() {
                         <a className='title' href='https://www.linkedin.com/in/sandrosolaqa/'> 
                             <img src={linkedin} alt='linkedin' width="25" height="25" /> 
                         </a>
-                        <p className='bio'> Sandy is a computer engineer. (fill this in with a biography or 
-                        something but it needs to atleast be long enough to push the image)</p>
+                        <p className='bio'> Sandy is a Computer Engineer. He has a strong grasp of programming languages
+                         like C, C++, Matlab, HTML, CSS, JavaScript, Python. His expertise extends to utilizing tools like 
+                         Git, Github, Jira, Docker, React, MongoDB, Django, Raspberry Pi, and
+                         FPGA, enabling him to create innovative solutions and explore the
+                         world of software and hardware. Eager to learn and grow, he is constantly seeking new challenges
+                         to expand my knowledge and skills in the ever-evolving field of technology. </p>
                     </div>
                 </div>
             </div>
