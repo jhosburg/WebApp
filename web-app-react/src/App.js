@@ -4,6 +4,7 @@ import './App.css';
 import Home from './pages/Home/Home';
 import Appliances from './pages/Dashboard/Appliances';
 import Account from './pages/Account/login';
+import mPower from './pages/mPower/mPower';
 import About from './pages/About/About';
 import Navbar from './components/navbar-header/navbar';
 import Footer from "./components/navbar/Footer";
@@ -25,6 +26,7 @@ function App() {
             <Route path="/Appliances" element={<Appliances />} />
             <Route path='/Account' element={<Account />} />
             <Route path='/About' element={<About />} />
+            <Route path='/mPower' element={<mPower />} />
             <Route path='/Contacts' element={<ContactInfo />} />
             <Route path='/Signup' element={<Signup />} />
           </Routes>
