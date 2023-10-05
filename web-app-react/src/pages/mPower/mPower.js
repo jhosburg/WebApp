@@ -1,5 +1,4 @@
 import React from 'react';
-
 const mPower = () => {
   return (
     <div style={{ textAlign: 'center' }}>
@@ -9,7 +8,7 @@ const mPower = () => {
         style={{ maxWidth: '100%', height: 'auto' }}
       />
       <h1>mPower turns any ordinary circuit breaker panel into a smart panel
-</h1>
+      </h1>
       <p>Storing energy remains costly, making the ability to squeeze value out
          of every kilowatt hour critically important. Here, is where mPower comes in,
          instead of limiting the use of stored energy to a small number of hard-wired
