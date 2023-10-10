@@ -1,3 +1,4 @@
+/* Appliance Layout*/
 .center {
   display: flex;
   flex-direction: column;
@@ -9,6 +10,7 @@
 .master-switch {
   text-align: center;
   margin-bottom: 20px;
+  font-size: 26px;
 }
 
 .master-switch label {
@@ -25,6 +27,9 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 20px;
+  font-weight: 300;
 }
 
 .appliance {
@@ -62,6 +67,7 @@
   max-height: 200px;
 }
 
+/* Toggling Style */
 .toggle-container {
   position: relative;
   width: 70px;
@@ -84,7 +90,7 @@
   line-height: 16px;
   cursor: pointer;
   color: #fff;
-  background-color:rgb(70, 168, 131);
+  background-color: rgb(150, 22, 22);
   box-shadow: 0 2px 4px rgb(0, 0, 0, 0.25);
   padding: 8px 12px;
   border-radius: 3px;
@@ -94,7 +100,76 @@
 }
 
 .toggle-btn.ON {
-  left: 28px;
-  background-color: rgb(150, 22, 22);
+  left: 32px;
+  background-color:rgb(70, 168, 131);
   transition: left 0.2s ease-in-out, background-color 0.2s ease;
+}
+
+/* Confirmation Code */
+.confirmation-dialog {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.confirmation-dialog p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.confirmation-dialog button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.confirmation-dialog button:last-child {
+  background-color: #ccc;
+}
+
+/* Add New Appliance Button Style */
+.add-new-appliance-btn {
+  padding: 10px 20px;
+  border-color: black;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.add-new-appliance-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Style for dropdown items */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.dropdown-content button:hover {
+  background-color: #ddd;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
 }
