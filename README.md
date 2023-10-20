@@ -119,7 +119,7 @@ Packages neccessary to run:
 
 **Step 2** - Use this code to create new Django project only
     
-    "django-admin startproject project name"
+    "django-admin startproject backend"
 
 
 **Step 3** Run Django server 

@@ -31,7 +31,11 @@ function About() {
                         <a className='title' href='https://www.linkedin.com/in/michael-eng1/'> 
                             <img src={linkedin} alt='linkedin' width="25" height="25" /> 
                         </a>
-                        <p className='bio'> Michael is an electrical engineer.</p>
+                        <p className='bio'> Michael is an Electrical Engineer. He has gained years of internship experience in the aerospace
+                         and defense industry working for Northrop Grumman. After graduation, he will transition full-time for Northrop Grumman 
+                         and plans on continuing his education with the pursuit of a Master's 
+                         Degree in Electrical Engineering.
+                         </p>
                     </div>
                 </div>
             </div>
@@ -112,8 +116,12 @@ function About() {
                         <a className='title' href='https://www.linkedin.com/in/sandrosolaqa/'> 
                             <img src={linkedin} alt='linkedin' width="25" height="25" /> 
                         </a>
-                        <p className='bio'> Sandy is a computer engineer. (fill this in with a biography or 
-                        something but it needs to atleast be long enough to push the image)</p>
+                        <p className='bio'> Sandy is a Computer Engineer. He has a strong grasp of programming languages
+                         like C, C++, Matlab, HTML, CSS, JavaScript, Python. His expertise extends to utilizing tools like 
+                         Git, Github, Jira, Docker, React, MongoDB, Django, Raspberry Pi, and
+                         FPGA, enabling him to create innovative solutions and explore the
+                         world of software and hardware. Eager to learn and grow, he is constantly seeking new challenges
+                         to expand his knowledge and skills in the ever-evolving field of technology. </p>
                     </div>
                 </div>
             </div>

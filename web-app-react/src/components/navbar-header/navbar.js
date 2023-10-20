@@ -26,6 +26,7 @@ function Navbar() {
           <a className="nav-link" href="/Appliances">Dashboard</a>
           <a className="nav-link" href="/Account">Account</a>
           <a className="nav-link" href="/About">About</a>
+          <a className="nav-link" href="/Contacts">Contacts</a>
         </div>
       </div>
     </nav>

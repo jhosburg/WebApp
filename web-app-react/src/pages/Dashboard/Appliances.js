@@ -1,31 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Appliances.css';
 
 function Appliances() {
   const [openAppliance, setOpenAppliance] = useState(null);
   const [masterSwitch, setMasterSwitch] = useState(true);
-  const [appliances, setAppliances] = useState([
-    { name: 'Microwave', power: false },
-    { name: 'Refrigerator', power: false },
-    { name: 'Oven', power: false },
-    { name: 'Dishwasher', power: false },
-    { name: 'Stove', power: false },
-    { name: 'Garbage Disposal', power: false },
-    { name: 'Kitchen Outlets', power: false },
-    { name: 'AC', power: false },
-    { name: 'Heater', power: false },
-    { name: 'AC2', power: false },
-    { name: 'Garage', power: false },
-    { name: 'Laundry Room', power: false },
-    { name: 'Master Bedroom', power: false },
-    { name: 'Bedroom 1', power: false },
-    { name: 'Bedroom 2', power: false },
-    { name: 'Living Room', power: false },
-    { name: 'Dining Room', power: false },
-    { name: 'Upstairs Bathroom Outlets', power: false },
-    { name: 'Downstairs Bathroom Outlets', power: false },
-    { name: 'Office', power: false },
-  ]);
+  const [appliances, setAppliances] = useState([]);
+  const [editingApplianceIndex, setEditingApplianceIndex] = useState(null);
+  const [editedApplianceName, setEditedApplianceName] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [applianceToDelete, setApplianceToDelete] = useState(null);
+  const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    const savedAppliances = JSON.parse(localStorage.getItem('appliances'));
+    if (savedAppliances) {
+      setAppliances(savedAppliances);
+    }
+  }, []);
+
+  // Update localStorage whenever appliances state changes
+  useEffect(() => {
+    localStorage.setItem('appliances', JSON.stringify(appliances));
+  }, [appliances]);
 
   const toggleAppliance = (index) => {
     if (!masterSwitch) return;
@@ -38,25 +35,11 @@ function Appliances() {
 
   const togglePower = (index) => {
     if (!masterSwitch) return;
-    const updatedAppliances = [...appliances];
-    updatedAppliances[index].power = !updatedAppliances[index].power;
-    setAppliances(updatedAppliances);
-  };
-
-  const[toggle, setToggle] = useState(appliances.map(() => false));
-
-  const handleToggleChange = (index) => {
-    const updatedToggles = [...toggle];
-    updatedToggles[index] = !updatedToggles[index];
-    setToggle(updatedToggles);
-  
-    const toggleButton = document.querySelector(`#toggle-${index}`);
-    if (toggleButton) {
-      toggleButton.classList.toggle("ON", appliances[index].power);
-      toggleButton.classList.remove("transition");
-    }
-  
-    togglePower(index);
+    setAppliances((prevAppliances) => {
+      const updatedAppliances = [...prevAppliances];
+      updatedAppliances[index].power = !updatedAppliances[index].power;
+      return updatedAppliances;
+    });
   };
 
   const toggleMasterSwitch = () => {
@@ -69,6 +52,80 @@ function Appliances() {
     setAppliances(updatedAppliances);
   };
 
+  const addNewAppliance = () => {
+    // Define a new appliance
+    const newAppliance = {
+      name: 'New Appliance',
+      power: false,
+    };
+
+    // Update the state by appending the new appliance to the existing array
+    setAppliances((prevAppliances) => [...prevAppliances, newAppliance]);
+  };
+
+  const startEditing = (index) => {
+    setEditingApplianceIndex(index);
+    setEditedApplianceName(appliances[index].name);
+  };
+
+  const saveEditedName = (index) => {
+    const updatedAppliances = [...appliances];
+    updatedAppliances[index].name = editedApplianceName;
+    setAppliances(updatedAppliances);
+    setEditingApplianceIndex(null);
+  };
+
+  
+  const deleteAppliance = (index) => {
+    setApplianceToDelete(index);
+    setShowConfirmation(true);
+  };
+
+  const confirmDelete = () => {
+    if (applianceToDelete !== null) {
+      const updatedAppliances = [...appliances];
+      updatedAppliances.splice(applianceToDelete, 1); // Remove the appliance at the given index
+      setAppliances(updatedAppliances);
+      setApplianceToDelete(null);
+      setShowConfirmation(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setApplianceToDelete(null);
+    setShowConfirmation(false);
+  };
+
+  const openDropdown = (index) => {
+    setOpenDropdownIndex(index);
+    setShowDropdown(true);
+  };
+
+  const closeDropdown = () => {
+    setOpenDropdownIndex(null);
+    setShowDropdown(false);
+  };
+
+  const toggleDropdown = (index) => {
+    if (showDropdown === index) {
+      setShowDropdown(null);
+    }
+    else {
+      setShowDropdown(index);
+    }
+  };
+
+
+  function ConfirmationDialog({ message, onConfirm, onCancel, index }) {
+      return (
+        <div className={`confirmation-dialog ${showConfirmation && index === applianceToDelete ? 'show' : ''}`}>
+          <p>{message}</p>
+          <button onClick={onConfirm}>Yes</button>
+          <button onClick={onCancel}>No</button>
+        </div>
+      ); 
+  }
+
   return (
     <div className='center'>
       <div className="master-switch">
@@ -78,20 +135,46 @@ function Appliances() {
         </label>
       </div>
       <div className="appliances-container">
-        {appliances.map((appliance, index) => (
+        {appliances && appliances.map((appliance, index) => (
           <div className={`appliance ${openAppliance === index ? 'open' : ''}`} key={index} onClick={() => toggleAppliance(index)}>
             <div className="appliance-header">
-              {appliance.name}
-                <div className='toggle-container' onClick={(e) => {
-                  e.stopPropagation();
-                  handleToggleChange(index);
-                }}
-                disabled={!masterSwitch}
-                >
-                  <div className={`toggle-btn ${!toggle[index] ? "disable" : ""} transition `}>
-                      {appliances[index].power ? "ON" : "OFF"}
+            <div className="dropdown">
+                <button onClick={() => toggleDropdown(index)}>
+                  <i class='bx bxs-chevron-down' ></i>
+                </button>
+                {showDropdown === index && (
+                  <div className="dropdown-content">
+                    {appliances.map((item, i) => (
+                      <button key={i} className="dropdown-item">
+                        {item.name}
+                      </button>
+                    ))}
                   </div>
+                )}
+              </div>
+              {editingApplianceIndex === index ? (
+                <input
+                  type="text"
+                  value={editedApplianceName}
+                  onChange={(e) => setEditedApplianceName(e.target.value)}
+                />
+              ) : (
+                appliance.name
+              )}
+              {editingApplianceIndex === index ? (
+                <button onClick={() => saveEditedName(index)}>Save</button>
+              ) : (
+                <button onClick={() => startEditing(index)}>Edit</button>
+              )}
+              <button onClick={() => deleteAppliance(index)}>Delete{/* Add Delete button */}</button>
+              <div className='toggle-container' disabled={!masterSwitch}>
+                <div className={`toggle-btn ${appliances[index].power ? 'ON' : ''}`} onClick={(e) => {
+                  e.stopPropagation();
+                  togglePower(index);
+                }}>
+                  {appliances[index].power ? "ON" : "OFF"}
                 </div>
+              </div>
             </div>
             {openAppliance === index && (
               <div className="appliance-details">
@@ -101,25 +184,16 @@ function Appliances() {
           </div>
         ))}
       </div>
+      {showConfirmation && (
+                <ConfirmationDialog
+                  message="Are you sure you want to delete this appliance?"
+                  onConfirm={confirmDelete}
+                  onCancel={cancelDelete}
+                />
+              )}
+      <button className="add-new-appliance-btn" onClick={addNewAppliance}>Add New Appliance</button>
     </div>
   );
-};
+}
 
 export default Appliances;
-/*            <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  togglePower(index);
-                }}
-                disabled={!masterSwitch}
-              >
-                {appliance.power ? 'OFF' : 'ON'}
-              </button>
-
-
-
-              <div className='toggle'>
-                <toggle = {toggle} handleToggleChange = {handleToggleChange} />
-              </div>
-      */
-              
