@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Circuit Breaker Panel</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background-color: #f0f0f0;
+
+        }
+
+ 
+
+        .panel {
+
+            background-color: #fff;
+
+            border: 2px solid #333;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            width: 800px;
+
+            margin: 0 auto;
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+        }
+
+ 
+
+        .column {
+
+            flex: 1;
+
+        }
+
+ 
+
+        .room {
+
+            border: 1px solid #666;
+
+            border-radius: 5px;
+
+            padding: 10px;
+
+            margin: 10px;
+
+        }
+
+ 
+
+        .breaker {
+
+            display: flex;
+
+            align-items: center;
+
+            margin: 5px 0;
+
+        }
+
+ 
+
+        .breaker-label {
+
+            flex: 1;
+
+            font-weight: bold;
+
+            color: #333;
+
+        }
+
+ 
+
+        .breaker-toggle {
+
+            flex: 1;
+
+            text-align: right;
+
+        }
+
+ 
+
+        .switch {
+
+            position: relative;
+
+            display: inline-block;
+
+            width: 40px;
+
+            height: 20px;
+
+        }
+
+ 
+
+        .switch input {
+
+            opacity: 0;
+
+            width: 0;
+
+            height: 0;
+
+        }
+
+ 
+
+        .slider {
+
+            position: absolute;
+
+            cursor: pointer;
+
+            top: 0;
+
+            left: 0;
+
+            right: 0;
+
+            bottom: 0;
+
+            background-color: #ccc;
+
+            border-radius: 34px;
+
+            transition: .4s;
+
+        }
+
+ 
+
+        .slider:before {
+
+            position: absolute;
+
+            content: "";
+
+            height: 16px;
+
+            width: 16px;
+
+            left: 2px;
+
+            bottom: 2px;
+
+            background-color: #f0f0f0;
+
+            border-radius: 50%;
+
+            transition: .4s;
+
+        }
+
+ 
+
+        input:checked + .slider {
+
+            background-color: #69F0AE;
+
+        }
+
+ 
+
+        input:focus + .slider {
+
+            box-shadow: 0 0 1px #69F0AE;
+
+        }
+
+ 
+
+        input:checked + .slider:before {
+
+            transform: translateX(20px);
+
+            background-color: #fff;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="panel">
+
+        <div class="column">
+
+            <div class="room">
+
+                <h2>Living Room</h2>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Lights</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">TV</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Outlets</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Appliance 1</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Appliance 2</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            
+            
+            <div class="room">
+
+                <h2>Kitchen</h2>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Lights</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Oven</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Fridge</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Microwave</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Dishwasher</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="column">
+
+            <div class="room">
+
+                <h2>Bedroom</h2>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Lights</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Fan</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Outlets</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Heater</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Computer</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="room">
+
+                <h2>Bathroom</h2>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Lights</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker-label">Exhaust Fan</span>
+
+                    <label class="switch">
+
+                        <input type="checkbox">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+                <div class="breaker">
+
+                    <span class="breaker">
