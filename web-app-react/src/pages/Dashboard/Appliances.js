@@ -9,6 +9,8 @@ function Appliances() {
   const [editedApplianceName, setEditedApplianceName] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [applianceToDelete, setApplianceToDelete] = useState(null);
+  const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const savedAppliances = JSON.parse(localStorage.getItem('appliances'));
@@ -94,6 +96,26 @@ function Appliances() {
     setShowConfirmation(false);
   };
 
+  const openDropdown = (index) => {
+    setOpenDropdownIndex(index);
+    setShowDropdown(true);
+  };
+
+  const closeDropdown = () => {
+    setOpenDropdownIndex(null);
+    setShowDropdown(false);
+  };
+
+  const toggleDropdown = (index) => {
+    if (showDropdown === index) {
+      setShowDropdown(null);
+    }
+    else {
+      setShowDropdown(index);
+    }
+  };
+
+
   function ConfirmationDialog({ message, onConfirm, onCancel, index }) {
       return (
         <div className={`confirmation-dialog ${showConfirmation && index === applianceToDelete ? 'show' : ''}`}>
@@ -116,6 +138,20 @@ function Appliances() {
         {appliances && appliances.map((appliance, index) => (
           <div className={`appliance ${openAppliance === index ? 'open' : ''}`} key={index} onClick={() => toggleAppliance(index)}>
             <div className="appliance-header">
+            <div className="dropdown">
+                <button onClick={() => toggleDropdown(index)}>
+                  <i class='bx bxs-chevron-down' ></i>
+                </button>
+                {showDropdown === index && (
+                  <div className="dropdown-content">
+                    {appliances.map((item, i) => (
+                      <button key={i} className="dropdown-item">
+                        {item.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               {editingApplianceIndex === index ? (
                 <input
                   type="text"

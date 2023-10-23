@@ -10,6 +10,7 @@
 .master-switch {
   text-align: center;
   margin-bottom: 20px;
+  font-size: 26px;
 }
 
 .master-switch label {
@@ -26,6 +27,9 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 20px;
+  font-weight: 300;
 }
 
 .appliance {
@@ -140,4 +144,32 @@
 
 .add-new-appliance-btn:hover {
   background-color: #0056b3;
+}
+
+/* Style for dropdown items */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.dropdown-content button:hover {
+  background-color: #ddd;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
 }

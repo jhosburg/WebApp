@@ -121,7 +121,7 @@ function About() {
                          Git, Github, Jira, Docker, React, MongoDB, Django, Raspberry Pi, and
                          FPGA, enabling him to create innovative solutions and explore the
                          world of software and hardware. Eager to learn and grow, he is constantly seeking new challenges
-                         to expand my knowledge and skills in the ever-evolving field of technology. </p>
+                         to expand his knowledge and skills in the ever-evolving field of technology. </p>
                     </div>
                 </div>
             </div>
