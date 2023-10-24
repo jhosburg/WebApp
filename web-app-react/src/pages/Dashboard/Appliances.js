@@ -162,7 +162,7 @@ function Appliances() {
                 )}
               </div>
               {editingApplianceIndex === index ? (
-                <input
+                <input id='inputApplicationName'
                   type="text"
                   value={editedApplianceName}
                   onChange={(e) => {

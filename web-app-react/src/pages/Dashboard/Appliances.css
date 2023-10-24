@@ -70,7 +70,7 @@
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 10px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Arial, sans-serif;
   font-size: 20px;
   font-weight: 300;
 }
@@ -246,9 +246,13 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Arial, sans-serif;
   font-size: 16px;
   transition: background-color 0.3s ease;
+}
+
+#help {
+  display: flex;
 }
 
 #applianceButton:hover {
@@ -257,19 +261,42 @@
 
 @media (max-width: 768px) {
   .master-switch{
-    padding-top: 10px;
-    font-size: 14px;
+    padding-top: 30px;
+    margin-right: 20px;
+    font-size: 10px;
   }
 
   .switch {
-    margin: 10px 0;
-    width: 30px;
+    margin: 0px 0px 15px 10px;
+    width: 10px;
     height: 18px;
   }
 
-  .appliances-container{
-    max-width: fit-content;
-    width: 50%;
+  .appliance {
+    width: 365px;
+  }
+
+  .appliances-container {
+    font-size: 10px;
+  }
+
+  .toggle-btn {
+    font-size: 8px;
+    width: 25px;
+  }
+
+  .toggle-container {
+    width: 55px;
+  }
+
+  #applianceButton {
+    font-size: 10px;
+    padding: 10px 10px 10px 10px;
+  }
+
+  #inputApplicationName {
+    width: 50px;
+    height: 15px;
   }
 
   .confirmation-dialog{
