@@ -9,6 +9,7 @@ function Appliances() {
   const [editedApplianceName, setEditedApplianceName] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [applianceToDelete, setApplianceToDelete] = useState(null);
+  const [dropdownItems, setDropdownItems] = useState([]);
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -54,7 +55,7 @@ function Appliances() {
 
   const addNewAppliance = () => {
     // Define a new appliance
-    const defaultName = 'New Appliance';
+    const defaultName = 'New Room';
     const newAppliance = {
       name: defaultName.substring(0, 20),
       power: false,
@@ -101,6 +102,7 @@ function Appliances() {
   const openDropdown = (index) => {
     setOpenDropdownIndex(index);
     setShowDropdown(true);
+    setDropdownItems([]);
   };
 
   const closeDropdown = () => {
@@ -117,6 +119,10 @@ function Appliances() {
     }
   };
 
+  const addApplianceToDropdown = (itemName) => {
+    const newDropdownItems = [...dropdownItems, itemName];
+    setDropdownItems(newDropdownItems);
+  }
 
   function ConfirmationDialog({ message, onConfirm, onCancel, index }) {
       return (
@@ -146,9 +152,9 @@ function Appliances() {
                 </button>
                 {showDropdown === index && (
                   <div className="dropdown-content">
-                    {appliances.map((item, i) => (
+                    {dropdownItems.map((item, i) => (
                       <button key={i} className="dropdown-item">
-                        {item.name}
+                        {item}
                       </button>
                     ))}
                   </div>
@@ -198,7 +204,7 @@ function Appliances() {
                   onCancel={cancelDelete}
                 />
               )}
-      <button className="add-new-appliance-btn" onClick={addNewAppliance}>Add New Appliance</button>
+      <button className="add-new-appliance-btn" onClick={addNewAppliance}>Add New Room</button>
     </div>
   );
 }

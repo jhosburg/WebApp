@@ -67,6 +67,24 @@
   max-height: 200px;
 }
 
+/* CSS for the dropdown items */
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff; /* Background color for the dropdown items */
+  border: 1px solid #ccc; /* Border for the dropdown items */
+  border-radius: 5px;
+  margin: 5px;
+}
+
+/* Style for the text inside the dropdown items */
+.dropdown-item {
+  font-size: 16px;
+  /* Add other styles as needed */
+}
+
 /* Toggling Style */
 .toggle-container {
   position: relative;
