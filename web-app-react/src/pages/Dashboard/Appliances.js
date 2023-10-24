@@ -137,9 +137,10 @@ function Appliances() {
   return (
     <div className='center'>
       <div className="master-switch">
-        <label>
-          Master Switch:
+        <h1>Master Switch</h1>
+        <label className="switch">
           <input type="checkbox" checked={masterSwitch} onChange={toggleMasterSwitch} />
+          <span className="slider round"></span>
         </label>
       </div>
       <div className="appliances-container">

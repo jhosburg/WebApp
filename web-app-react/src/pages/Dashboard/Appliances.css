@@ -8,19 +8,62 @@
 }
 
 .master-switch {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 26px;
-}
-
-.master-switch label {
+  color: black;
   display: flex;
   align-items: center;
-  justify-content: center;
+  font-family: Arial, sans-serif;
+  font-size: 20px;
 }
 
-.master-switch input {
-  margin-left: 10px;
+.switch {
+  margin: 0 0 0 10px;
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch span {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 60px;
+  height: 34px;
+  line-height: 34px;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 34px;
+  background-color: #961616;
+  -webkit-transition: 0.4s;
+  transition: 0.2s;
+  border-radius: 34px;
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.switch input:checked + .slider {
+  background-color: #2b8b56;
+}
+
+.switch input:checked + .slider.round {
+  transform: translateX(25px);
 }
 
 .appliances-container {
@@ -45,6 +88,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .appliance:hover {
@@ -108,8 +152,8 @@
   line-height: 16px;
   cursor: pointer;
   color: #fff;
-  background-color: rgb(150, 22, 22);
-  box-shadow: 0 2px 4px rgb(0, 0, 0, 0.25);
+  background-color: #961616;
+  box-shadow: 0 2px 4px #00000040;
   padding: 8px 12px;
   border-radius: 3px;
   position: absolute;
