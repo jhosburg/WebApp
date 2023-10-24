@@ -205,7 +205,7 @@ function Appliances() {
                   onCancel={cancelDelete}
                 />
               )}
-      <button className="add-new-appliance-btn" onClick={addNewAppliance}>Add New Room</button>
+      <button className="add-new-appliance-btn" onClick={addNewAppliance}>Add New Room/Circuit</button>
     </div>
   );
 }

@@ -254,3 +254,41 @@
 #applianceButton:hover {
   background-color: #2b8b56;
 }
+
+@media (max-width: 768px) {
+  .master-switch{
+    padding-top: 10px;
+    font-size: 14px;
+  }
+
+  .switch {
+    margin: 10px 0;
+    width: 30px;
+    height: 18px;
+  }
+
+  .appliances-container{
+    max-width: fit-content;
+    width: 50%;
+  }
+
+  .confirmation-dialog{
+    padding: 10px
+  }
+
+  .confirmation-dialog p {
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+
+  .confirmation-dialog button {
+    padding: 8px 16px;
+    font-size: 14px;
+    margin-right: 8px;
+  }
+
+  .add-new-appliance-btn {
+    padding: 8px 16px;
+    margin-top: 10px;
+  }
+}
