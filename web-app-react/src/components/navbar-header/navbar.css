@@ -13,7 +13,7 @@
   width: 20%;
   width: 275px;
   height: auto;
-  margin: 0 0 0 2%;
+  margin: 0 0 0 4%;
 }
 
 .nav-link {
@@ -40,12 +40,14 @@
 
 @media screen and (max-width: 768px) {
   .navbar-img {
-    width: 30%;
-    margin-left: 1%;
+    width: 0%;
+    height: 10px;
+    margin: 25px 0 0 0;
   }
 
   .nav-link {
-    padding: 15px 1%;
+    margin: 0 0px 0 0;
+    padding: 0px 1%;
     font-size: small;
   }
 }
