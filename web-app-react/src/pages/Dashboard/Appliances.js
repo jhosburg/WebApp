@@ -54,8 +54,9 @@ function Appliances() {
 
   const addNewAppliance = () => {
     // Define a new appliance
+    const defaultName = 'New Appliance';
     const newAppliance = {
-      name: 'New Appliance',
+      name: defaultName.substring(0, 20),
       power: false,
     };
 
@@ -70,7 +71,8 @@ function Appliances() {
 
   const saveEditedName = (index) => {
     const updatedAppliances = [...appliances];
-    updatedAppliances[index].name = editedApplianceName;
+    const truncatedName = editedApplianceName.substring(0, 20);
+    updatedAppliances[index].name = truncatedName;
     setAppliances(updatedAppliances);
     setEditingApplianceIndex(null);
   };
@@ -156,17 +158,22 @@ function Appliances() {
                 <input
                   type="text"
                   value={editedApplianceName}
-                  onChange={(e) => setEditedApplianceName(e.target.value)}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 20) {
+                      setEditedApplianceName(e.target.value);
+                    }
+                  }}
+                  maxLength={20}
                 />
               ) : (
                 appliance.name
               )}
               {editingApplianceIndex === index ? (
-                <button onClick={() => saveEditedName(index)}>Save</button>
+                <button id='applianceButton' onClick={() => saveEditedName(index)}>Save</button>
               ) : (
-                <button onClick={() => startEditing(index)}>Edit</button>
+                <button id='applianceButton' onClick={() => startEditing(index)}>Edit</button>
               )}
-              <button onClick={() => deleteAppliance(index)}>Delete{/* Add Delete button */}</button>
+              <button id='applianceButton' onClick={() => deleteAppliance(index)}>Delete{/* Add Delete button */}</button>
               <div className='toggle-container' disabled={!masterSwitch}>
                 <div className={`toggle-btn ${appliances[index].power ? 'ON' : ''}`} onClick={(e) => {
                   e.stopPropagation();

@@ -25,7 +25,7 @@
 
 .appliances-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   gap: 10px;
   font-family: Georgia, 'Times New Roman', Times, serif;
   font-size: 20px;
@@ -33,9 +33,9 @@
 }
 
 .appliance {
-  width: 500px;
+  width: 1000px;
   cursor: pointer;
-  background-color: #f0f0f0;
+  background-color: #2b8b56;
   padding: 10px;
   border-radius: 5px;
   transition: background-color 0.5s ease-in-out;
@@ -172,4 +172,23 @@
 /* Show dropdown on hover */
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+#applianceButton {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #8e8c8c;
+  color: #fff;
+  text-align: right;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+#applianceButton:hover {
+  background-color: #2b8b56;
 }
