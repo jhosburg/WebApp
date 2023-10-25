@@ -5,8 +5,8 @@
     text-align: center;
     align-items: center;
     border: none;
+    margin: none;
     padding: 25px;
-    margin: 3rem auto;
   }
 
 .footerContent {
