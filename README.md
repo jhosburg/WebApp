@@ -126,6 +126,13 @@ Packages neccessary to run:
 
     "python manager.py runserver"
 
+**Technical Debugging steps**
+
+Use these commands if you clone the repo and the backend(Django) does not run:
+
+"pip install corsheaders"
+"pip install django-cors-headers"
+"pip install djangorestframework" 
 
 
 **New Comments Coming Soon! Stay Tuned!**
