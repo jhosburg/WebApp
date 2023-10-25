@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Chart }            from 'react-chartjs-2'
 import HomeChart from '../charts/GraphOne'
+import LivingRoom from '../charts/LivingRoom'
 
 
 function Home() {
