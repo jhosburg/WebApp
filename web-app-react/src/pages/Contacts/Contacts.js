@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+import {Container, Row, Col } from 'react-bootstrap';
+import {contactConfig } from '../content_option'
 import './Contacts.css'
 
 const Contacts = () => {
@@ -21,7 +23,7 @@ const Contacts = () => {
                 <br/>
               </address>
               <p>{contactConfig.description}</p>
-              </Col>
+            </Col>
               <Col lg='7' className="d-flex align-items-center">
                 <form className="contact_form w-100">
                   <Row>
@@ -33,7 +35,7 @@ const Contacts = () => {
                     placeholder="Name"
                     type="text"
                     />
-                   </Col>
+                    </Col>
                     <Col lg='6' className="form-control">
                     <input
                     className="form-control rounded-0"
@@ -62,7 +64,6 @@ const Contacts = () => {
 
   );
 }
-
 
 export default Contacts
 
