@@ -1,7 +1,6 @@
 import React from 'react';
 import {Container, Row, Col } from 'react-bootstrap';
-import {contactConfig } from '../content_option'
-import './Contacts.css'
+import './Contacts.css';
 
 const Contacts = () => {
   return (
@@ -22,7 +21,7 @@ const Contacts = () => {
                 <br/>
                 <br/>
               </address>
-              <p>{contactConfig.description}</p>
+              <p>address</p>
             </Col>
               <Col lg='7' className="d-flex align-items-center">
                 <form className="contact_form w-100">

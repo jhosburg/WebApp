@@ -136,3 +136,10 @@ Use these commands if you clone the repo and the backend(Django) does not run:
 
 
 **New Comments Coming Soon! Stay Tuned!**
+
+
+for design 
+NextUI
+shadcn
+user colors paletts website for coloring styles 
+material UI
