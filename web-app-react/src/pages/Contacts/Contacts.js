@@ -1,69 +1,62 @@
 import React from 'react';
-import {Container, Row, Col } from 'react-bootstrap';
-import {contactConfig } from '../content_option'
-import './Contacts.css'
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import './Contacts.css';
 
 const Contacts = () => {
   return (
     <Container>
-      <Row className= "mb-5 mt-3">
-        <Col lg='8'>
-          <h1 className="display-4 mb-4">
-          Contact Us
-          </h1>
-          </Col>
-          </Row>
+      <Row className="mt-3 mb-5">
+        <Col lg={8}>
+          <h1 className="display-4 mb-4">Contact Us</h1>
+        </Col>
+      </Row>
 
-          <Row className= "sec_sp">
-            <Col lg='5' className="mb-5">
-              <h3 className="color_sec py-4">Get in touch</h3>
-              <address>
-                <strong>Email : www.seadragon.energy</strong>
-                <br/>
-                <br/>
-              </address>
-              <p>{contactConfig.description}</p>
-            </Col>
-              <Col lg='7' className="d-flex align-items-center">
-                <form className="contact_form w-100">
-                  <Row>
-                    <Col lg='6' className="form-group">
-                    <input
-                    className="form-control"
-                    id="name"
-                    name="name"
-                    placeholder="Name"
-                    type="text"
-                    />
-                    </Col>
-                    <Col lg='6' className="form-control">
-                    <input
-                    className="form-control rounded-0"
-                    id="email"
-                    name="email"
-                    placeholder="Email"
-                    type="email"
-                    />
+      <Row className="sec_sp">
+        <Col lg={5} className="mb-5">
+          <address>
+            <p className="Description">
+              Sea Dragon Energy Inc. understands the needs of our communities.
+            </p>
+            <strong>Email:</strong> <a href="mailto:contact@seadragon.energy">contact@seadragon.energy</a>
+          </address>
+        </Col>
+
+        <Col lg={7} className="d-flex align-items-center">
+          <Form className="contact__form w-100">
+            <Row>
+              <Col lg={6} className="form-group">
+                <Form.Control
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Name"
+                />
               </Col>
-              </Row>
-              <textarea className="form-control rounded-0" id="message"
-                        name="message"
-                        placeholder="Message"
-                        rows='5'
-              ></textarea>
-              <br />
-              <Row>
-                <Col lg='12' className="form-group">
-                  <button classname="btn ac_btn" type="submit">Send</button>
-                </Col>
-              </Row>
-              </form>
-            </Col>
-          </Row>
-        </Container>
-
+              <Col lg={6} className="form-group">
+                <Form.Control
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                />
+              </Col>
+            </Row>
+            <Form.Control
+              id="message"
+              name="message"
+              as="textarea"
+              rows={5}
+              placeholder="Message"
+            />
+            <br />
+            <Button className="btn ac_btn" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
-}
+};
 
-export default Contacts
-
+export default Contacts;
