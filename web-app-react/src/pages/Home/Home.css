@@ -131,7 +131,7 @@
   /* Style for the active tab button */
   .active-tab {
     background-color: green;
-    color: black;
+    color: white;
     border: 1px solid rgba(44,187,99,.35);
     padding: 10px 20px;
     margin: 5px;
