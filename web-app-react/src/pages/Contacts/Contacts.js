@@ -4,7 +4,7 @@ import './Contacts.css';
 
 const Contacts = () => {
   return (
-    <Container>
+    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
       <Row className="mt-3 mb-5">
         <Col lg={8}>
           <h1 className="display-4 mb-4">Contact Us</h1>
@@ -15,13 +15,13 @@ const Contacts = () => {
         <Col lg={5} className="mb-5">
           <address>
             <p className="Description">
-              Sea Dragon Energy Inc. understands the needs of our communities.
+              Sea Dragon Energy Inc. understands the needs of California.
             </p>
-            <strong>Email:</strong> <a href="mailto:contact@seadragon.energy">contact@seadragon.energy</a>
+            <strong>Email:</strong> <a href="mailto:www.seadragon.energy">www.seadragon.energy</a>
           </address>
         </Col>
 
-        <Col lg={7} className="d-flex align-items-center">
+        <Col lg={7}>
           <Form className="contact__form w-100">
             <Row>
               <Col lg={6} className="form-group">

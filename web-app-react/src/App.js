@@ -18,7 +18,7 @@ function App() {
         <div>
           <Navbar />
         </div>
-        <div className='content'>
+        <div id='root'>
           <Router>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -30,7 +30,7 @@ function App() {
               <Route path='/Signup' element={<Signup />} />
             </Routes>
           </Router>
-        </div>
+          </div>
       < Footer/>
     </div>
     
