@@ -114,3 +114,30 @@
     color: red;
     margin-top: 5px;
   }
+
+  .tab {
+    background-color: #c2fbd7;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+  }
+  
+  .tab:hover {
+    background-color: #ddd;
+  }
+  
+  /* Style for the active tab button */
+  .active-tab {
+    background-color: green;
+    color: black;
+    border: 1px solid rgba(44,187,99,.35);
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+  }
+  
+  .active-tab:hover {
+    background-color: #77ce86;
+  }

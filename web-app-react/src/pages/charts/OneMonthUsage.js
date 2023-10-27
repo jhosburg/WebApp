@@ -19,6 +19,8 @@ function OneMonth() {
 
     const labels = Object.keys(jsonData);
     const data = labels.map((day) => jsonData[day].TotalUsage);
+    const Cost = (Object.values(jsonData).reduce((total, day) => total + day.TotalUsage, 0) * 0.19).toFixed(2);
+
 
     const chartData = {
         labels: labels,
@@ -59,6 +61,7 @@ function OneMonth() {
     return (
         <div>
             <h2>Total House Usage One Month</h2>
+            <h3>Expected Cost: ${Cost}</h3>
             <Line data={chartData} options={chartOptions}/>
         </div>
     );

@@ -20,6 +20,9 @@ function HomeChart() {
     const labels = jsonData?.map((item) => item.local_15min);
     const data = jsonData?.map((item) => item.Row_Sums);
 
+    const Cost = (jsonData.reduce((total, item) => total + item.Row_Sums, 0) * 0.19).toFixed(2);
+
+
     const chartData = {
         labels: labels,
         datasets: [
@@ -59,6 +62,7 @@ function HomeChart() {
     return (
         <div>
             <h2>Total House Usage 24 Hours</h2>
+            <h3>Expected Cost: ${Cost}</h3>
             <Line data={chartData} options={chartOptions}/>
         </div>
     );
