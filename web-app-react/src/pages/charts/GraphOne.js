@@ -26,7 +26,7 @@ function HomeChart() {
             {
                 label: 'Total Usage of all Appliances',
                 data: data,
-                fill: false,
+                fill: true,
                 borderColor: 'green',
                 backgroundColor: 'rgba(19, 146, 97, 0.2)', // Set the background color for bars
                 borderWidth: 1, // Set the border width for bars

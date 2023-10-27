@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Bar } from 'react-chartjs-2';
 import { Line } from 'react-chartjs-2';
 import { Chart }            from 'react-chartjs-2'
 
-function HomeChart() {
+function OneMonth() {
     const [jsonData, setJsonData] = useState([]);
     
     useEffect(() => {
-        const filename = '24hourData.json';
+        const filename = '30_days_total_usage.json';
         axios.get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
             .then((response) => {  
                 setJsonData(response.data);
@@ -18,8 +17,8 @@ function HomeChart() {
             });
     }, []);
 
-    const labels = jsonData?.map((item) => item.local_15min);
-    const data = jsonData?.map((item) => item.livingroom1);
+    const labels = Object.keys(jsonData);
+    const data = labels.map((day) => jsonData[day].TotalUsage);
 
     const chartData = {
         labels: labels,
@@ -59,10 +58,10 @@ function HomeChart() {
 
     return (
         <div>
-            <h2>Total Living Room Usage 24 Hours</h2>
+            <h2>Total House Usage One Month</h2>
             <Line data={chartData} options={chartOptions}/>
         </div>
     );
 }
 
-export default HomeChart;
+export default OneMonth;

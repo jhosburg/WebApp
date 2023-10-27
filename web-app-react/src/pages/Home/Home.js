@@ -4,7 +4,9 @@ import axios from 'axios';
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Chart }            from 'react-chartjs-2'
 import HomeChart from '../charts/GraphOne'
-import LivingRoom from '../charts/LivingRoom'
+import OneMonth from '../charts/OneMonthUsage';
+import OneYear from '../charts/FullYear';
+
 
 
 function Home() {
@@ -65,39 +67,83 @@ function Home() {
     };
 
 
-  return (
-    <div className="main">
-            <div className="report-container">
-               <div className="report-header">
-                  <div className="text">
-                     <h1 class="heading">Overall Power Usage</h1>
-                  </div>
-                  <div>
-                     <label className="custom-button" htmlFor="fileInput">
-                        Choose File
-                     </label>
-                     <input
-                        type="file"
-                        accept=".json"
-                        id="fileInput"
-                        className="custom-file-input"
-                        onChange={handleFileChange}
-                     />
-                     <button className="upload-button" onClick={handleUpload}>Upload File</button>
-                     {fileAccepted && <p className="success-message">JSON file accepted.</p>}
-                     {fileError && <p className="error-message">{fileError}</p>}
-                  </div>
+      const [activeTab, setActiveTab] = useState('mainGraph'); // Default to the main graph tab
+    
+      const handleTabClick = (tabName) => {
+        setActiveTab(tabName);
+      };
+
+      return (
+         <div className="main">
+           <div className="report-container">
+             <div className="report-header">
+               <div className="text">
+                 <h1 className="heading">Overall Power Usage</h1>
                </div>
-               
-                 
-                     <h2>Main Graph</h2>
-                     <HomeChart />
-                     
-                  
-               
-            </div>
-      </div>
-  )
-}
+               <div>
+                 <label className="custom-button" htmlFor="fileInput">
+                   Choose File
+                 </label>
+                 <input
+                   type="file"
+                   accept=".json"
+                   id="fileInput"
+                   className="custom-file-input"
+                   onChange={handleFileChange}
+                 />
+                 <button className="upload-button" onClick={handleUpload}>
+                   Upload File
+                 </button>
+                 {fileAccepted && <p className="success-message">JSON file accepted.</p>}
+                 {fileError && <p className="error-message">{fileError}</p>}
+               </div>
+             </div>
+     
+             <div className="tabs">
+               <button
+                 className={activeTab === 'mainGraph' ? 'active-tab' : 'tab'}
+                 onClick={() => handleTabClick('mainGraph')}
+               >
+                 24 Hours
+               </button>
+               <button
+                 className={activeTab === 'tab2' ? 'active-tab' : 'tab'}
+                 onClick={() => handleTabClick('tab2')}
+               >
+                 1 Month
+               </button>
+               <button
+                 className={activeTab === 'tab3' ? 'active-tab' : 'tab'}
+                 onClick={() => handleTabClick('tab3')}
+               >
+                 1 Year
+               </button>
+             </div>
+     
+             {activeTab === 'mainGraph' && (
+               <div>
+                 <h2>24 Hours</h2>
+                 <HomeChart />
+               </div>
+             )}
+     
+             {activeTab === 'tab2' && (
+               <div>
+                 <h2>30 Day Power Usage</h2>
+                 <OneMonth />
+               </div>
+             )}
+     
+             {activeTab === 'tab3' && (
+               <div>
+                 <h2>12 month power Usage</h2>
+                 <OneYear />
+               </div>
+             )}
+           </div>
+         </div>
+       );
+     }
+
 
 export default Home;
