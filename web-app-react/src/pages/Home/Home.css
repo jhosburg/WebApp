@@ -141,3 +141,140 @@
   .active-tab:hover {
     background-color: #77ce86;
   }
+
+  .introduction {
+    margin: 30px 0 200px 0;
+    overflow: hidden;
+  }
+
+  #solarImage {
+    opacity: 50%;
+    width: 100%;
+  }
+
+  .content  {
+    position: absolute;
+    top: 165%;
+    left: 15%;
+    bottom: 50%;
+    opacity: 100%;
+    z-index: 1;
+  }
+
+  #title {
+    color: #0C8086;
+    font-family: roboto-bold,roboto,sans-serif;
+    font-size: 50px;
+    line-height: 0.9em;
+    transform: translateX(-100%);
+    animation: slideTitle 3s ease-in-out forwards;
+  }
+
+  @keyframes slideTitle {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  #subTitle {
+    margin: 90px 0 0 7px;
+    line-height: 1.4em;
+    font-size: 28px;
+    color: rgb(107, 106, 106);
+    transform: translateX(-100%);
+    animation: slideSubTitle 3s ease-in-out forwards;
+  }
+
+  @keyframes slideSubTitle {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(-18%);
+    }
+  }
+
+  #titleDescription{
+    color: #0C8086;
+    font-family: roboto-bold,roboto,sans-serif;
+    font-size: 40px;
+    line-height: 0.9em;
+    position: absolute;
+    transform: translate(22%, 390%);
+    z-index: 3;
+  }
+
+  .blueLine {
+    position: absolute;
+    width: 57%;
+    height: 2px;
+    background-color: rgb(7, 91, 127);
+    z-index: 3;
+}
+
+  #blueLine1 {
+    transform: translate(20%, 390px);
+  }
+
+  #blueLine2 {
+    transform: translate(20%, 562px);
+  }
+
+  .rectangle {
+    opacity: 65%;
+    position: absolute;
+    left: 40%;
+    width: 800px;
+    height: 800px;
+    background-color: #ffffff;
+    transform: translate(-50%, 25%);
+    z-index: 2;
+  }
+
+  #descriptionSubTitle {
+    position: absolute;
+    font-size: 28px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: rgb(7, 91, 127);
+    transform: translate(20%, 220%);
+    z-index: 3;
+  }
+
+  .smallHeader {
+    position: absolute;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #386492;
+    line-height: 1.5em;
+    z-index: 3;
+  }
+
+  #smallHeader1 {
+    transform: translate(29%, 1450%);
+  }
+
+  #smallHeader2 {
+    transform: translate(73%, 520px);
+  }
+
+  .description {
+    position: absolute;
+    font-size: 16px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: rgb(107, 106, 106);
+    letter-spacing: 0em;
+    z-index: 3;
+  }
+
+  #description1 {
+    transform: translate(20%, 375%);
+  }
+
+  #description2 {
+    line-height: 1.5em;
+    transform: translate(28%, 570px);
+  }
