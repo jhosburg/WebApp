@@ -1,12 +1,6 @@
 import React from 'react';
-<<<<<<< HEAD
-import {Container, Row, Col } from 'react-bootstrap'
-import {contactConfig}  from './content_option'
-import './Contacts.css'
-=======
 import {Container, Row, Col } from 'react-bootstrap';
 import './Contacts.css';
->>>>>>> 037ba52cd52ea8067d9e571c4284e2327d7031b5
 
 const Contacts = () => {
   return (
