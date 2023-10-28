@@ -1,12 +1,13 @@
 import React from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './Contacts.css';
+import mpower from './mpower.png'; // Import your image here
 
 const Contacts = () => {
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+    <Container className="d-flex justify-content-center align-items-center flex-column" style={{ minHeight: '100vh' }}>
       <Row className="mt-3 mb-5">
-        <Col lg={8}>
+        <Col lg={8} className="text-center">
           <h1 className="display-4 mb-4">Contact Us</h1>
         </Col>
       </Row>
@@ -21,7 +22,7 @@ const Contacts = () => {
           </address>
         </Col>
 
-        <Col lg={7}>
+        <Col lg={7} className="text-center">
           <Form className="contact__form w-100">
             <Row>
               <Col lg={6} className="form-group">
@@ -53,6 +54,20 @@ const Contacts = () => {
               Submit
             </Button>
           </Form>
+        </Col>
+      </Row>
+
+      <Row className="sec_sp">
+        <Col lg={12} className="text-center mb-5">
+          <img
+            src={mpower} // Use the imported image variable
+            alt="Image Description"
+            style={{ maxWidth: '50%', height: 'auto' }}
+          />
+          <p className="image-description">
+            The mPower allows users to manage their energy
+           consumption at less cost.
+          </p>
         </Col>
       </Row>
     </Container>
