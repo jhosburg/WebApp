@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './Contacts.css';
-import mpower from './mpower.png';
+import mpower from './mPower.png';
 
 const Contacts = () => {
   return (
