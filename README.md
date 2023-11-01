@@ -126,6 +126,17 @@ Packages neccessary to run:
 
     "python manager.py runserver"
 
+
+**install required commands to run django**
+
+
+"python -m pip install django"
+OR
+"python3 -m pip install django"
+
+"pip install axios"
+
+
 **Technical Debugging steps**
 
 Use these commands if you clone the repo and the backend(Django) does not run:
