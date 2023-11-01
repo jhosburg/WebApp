@@ -7,20 +7,41 @@ function HomeChart() {
     const [jsonData, setJsonData] = useState([]);
     
     useEffect(() => {
-        const filename = 'output.json';
-        axios.get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
-            .then((response) => {  
-                setJsonData(response.data);
-            })
-            .catch((error) => {
-                console.error('Error grabbing JSON Data:', error);
+        const filename = '15_MIN_AUSTIN.json';
+        axios
+          .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
+          .then((response) => {
+            // Filter the data to include only the 24-hour period ending at 23:45:00 on January 1st
+            const endDate = new Date('2018-01-01 23:45:00');
+            const startDate = new Date(endDate);
+            startDate.setDate(startDate.getDate() - 1); // Go back 24 hours
+      
+            const filteredData = response.data.filter((entry) => {
+              const entryTimestamp = new Date(entry.local_15min);
+              return entryTimestamp >= startDate && entryTimestamp <= endDate;
             });
-    }, []);
+      
+            setJsonData(filteredData);
+          })
+          .catch((error) => {
+            console.error('Error grabbing JSON Data:', error);
+          });
+      }, []);
 
-    const labels = jsonData?.map((item) => item.local_15min);
-    const data = jsonData?.map((item) => item.Row_Sums);
+   
+      const labels = jsonData?.map((item) => item.local_15min);
 
-    const Cost = (jsonData.reduce((total, item) => total + item.Row_Sums, 0) * 0.19).toFixed(2);
+        const calculateTotalPowerUsage = (entry) => {
+            let sum = 0;
+            for (const key in entry) {
+            if (key !== 'local_15min') {
+                sum += entry[key];
+            }
+            }
+            return sum;
+        };
+
+        const totalUsageData = jsonData?.map((item) => calculateTotalPowerUsage(item));
 
 
     const chartData = {
@@ -28,7 +49,7 @@ function HomeChart() {
         datasets: [
             {
                 label: 'Total Usage of all Appliances',
-                data: data,
+                data: totalUsageData,
                 fill: true,
                 borderColor: 'green',
                 backgroundColor: 'rgba(19, 146, 97, 0.2)', // Set the background color for bars
@@ -62,7 +83,7 @@ function HomeChart() {
     return (
         <div>
             <h2>Total House Usage 24 Hours</h2>
-            <h3>Expected Cost: ${Cost}</h3>
+
             <Line data={chartData} options={chartOptions}/>
         </div>
     );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Appliances.css';
+import LivingRoom from '../charts/LivingRoom'
 
 function Appliances() {
   const [openAppliance, setOpenAppliance] = useState(null);
@@ -192,7 +193,7 @@ function Appliances() {
             </div>
             {openAppliance === index && (
               <div className="appliance-details">
-                <img src={`${appliance.name.toLowerCase()}.jpg`} alt={appliance.name} />
+                <LivingRoom/>
               </div>
             )}
           </div>
