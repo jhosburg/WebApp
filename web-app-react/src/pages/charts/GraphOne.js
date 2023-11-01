@@ -31,17 +31,10 @@ function HomeChart() {
    
       const labels = jsonData?.map((item) => item.local_15min);
 
-        const calculateTotalPowerUsage = (entry) => {
-            let sum = 0;
-            for (const key in entry) {
-            if (key !== 'local_15min') {
-                sum += entry[key];
-            }
-            }
-            return sum;
-        };
+      const totalUsage = jsonData?.map((item) => item.grid * 0.25);
 
-        const totalUsageData = jsonData?.map((item) => calculateTotalPowerUsage(item));
+      const totalUsageSum = totalUsage.reduce((acc, value) => acc + value, 0);
+
 
 
     const chartData = {
@@ -49,7 +42,7 @@ function HomeChart() {
         datasets: [
             {
                 label: 'Total Usage of all Appliances',
-                data: totalUsageData,
+                data: totalUsage,
                 fill: true,
                 borderColor: 'green',
                 backgroundColor: 'rgba(19, 146, 97, 0.2)', // Set the background color for bars
@@ -73,7 +66,7 @@ function HomeChart() {
             y: {
                 title: {
                     display: true,
-                    text: 'kW',
+                    text: 'kWh',
                 },
                 beginAtZero: true, // Customize Y-axis as needed
             },
@@ -83,7 +76,7 @@ function HomeChart() {
     return (
         <div>
             <h2>Total House Usage 24 Hours</h2>
-
+            <h3>Total Usage : {totalUsageSum} kWh</h3>
             <Line data={chartData} options={chartOptions}/>
         </div>
     );

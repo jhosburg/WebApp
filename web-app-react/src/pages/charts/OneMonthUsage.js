@@ -29,30 +29,21 @@ function OneMonth() {
           });
       }, []);
     
-      const labels = []; // Array to store X-axis labels (dates)
-      const dailyTotalUsage = []; // Array to store the total usage for each day
+      const labels = [];
+      const dailyTotalUsage = [];
 
-      const calculateTotalPowerUsage = (entry) => {
-        let sum = 0;
-        for (const key in entry) {
-          if (key !== 'local_15min') {
-            sum += entry[key];
-          }
-        }
-        return sum;
-      };
-    
-      // Create a function to calculate the total usage for a day
+      // Calculate the total kWh consumed for each day
       const calculateTotalUsageForDay = (date) => {
-        return jsonData
-          .filter((entry) => {
-            const entryDate = new Date(entry.local_15min);
-            return entryDate.toDateString() === date.toDateString();
-          })
-          .reduce((total, entry) => {
-            return total + calculateTotalPowerUsage(entry);
-          }, 0);
+          return jsonData
+              .filter((entry) => {
+                  const entryDate = new Date(entry.local_15min);
+                  return entryDate.toDateString() === date.toDateString();
+              })
+              .reduce((total, entry) => {
+                  return total + (entry.grid * 0.25); // Convert grid (kW) to kWh for each 15-minute interval
+              }, 0);
       };
+
     
       if (jsonData.length > 0) {
         const currentDate = new Date(jsonData[0].local_15min);
@@ -63,6 +54,9 @@ function OneMonth() {
           currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
         }
       }
+
+      const totalKWhConsumed = dailyTotalUsage.reduce((acc, value) => acc + value, 0);
+
 
 
     const chartData = {
@@ -93,7 +87,7 @@ function OneMonth() {
       y: {
         title: {
           display: true,
-          text: 'kW',
+          text: 'kWh',
         },
         beginAtZero: true,
       },
@@ -104,7 +98,7 @@ function OneMonth() {
     return (
         <div>
             <h2>Total House Usage One Month</h2>
-
+            <h3>Total Usage: {totalKWhConsumed} kWh</h3>
             <Line data={chartData} options={chartOptions}/>
         </div>
     );

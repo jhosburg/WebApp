@@ -18,57 +18,52 @@ function OneYear() {
           });
       }, []);
     
-      const labels = []; // Array to store X-axis labels (month-year)
-      const monthlyTotalUsage = []; // Array to store the total usage for each month
-    
-      // Create a function to calculate the total power usage for an entry
-      const calculateTotalPowerUsage = (entry) => {
-        let sum = 0;
-        for (const key in entry) {
-          if (key !== 'local_15min') {
-            sum += entry[key];
-          }
-        }
-        return sum;
-      };
+      const labels = [];
+    const monthlyTotalKWh = [];
 
+    // Calculate the total kWh consumed for each month
+    const calculateTotalKWhForMonth = (monthData) => {
+        return monthData.reduce((total, entry) => {
+            return total + (entry.grid * 0.25); // Convert grid (kW) to kWh for each 15-minute interval
+        }, 0);
+    };
 
-      if (jsonData.length > 0) {
+    if (jsonData.length > 0) {
         let currentMonth = -1;
         let currentYear = -1;
-        let totalForMonth = 0;
-    
+        let currentMonthData = [];
+
         jsonData.forEach((entry) => {
-          const entryDate = new Date(entry.local_15min);
-          const entryMonth = entryDate.getMonth();
-          const entryYear = entryDate.getFullYear();
-    
-          if (currentMonth === -1 && currentYear === -1) {
-            currentMonth = entryMonth;
-            currentYear = entryYear;
-          }
-    
-          if (currentMonth === entryMonth && currentYear === entryYear) {
-            totalForMonth += calculateTotalPowerUsage(entry);
-          } else {
-            labels.push(`${currentMonth + 1}/${currentYear}`);
-            monthlyTotalUsage.push(totalForMonth);
-            currentMonth = entryMonth;
-            currentYear = entryYear;
-            totalForMonth = calculateTotalPowerUsage(entry);
-          }
+            const entryDate = new Date(entry.local_15min);
+            const entryMonth = entryDate.getMonth();
+            const entryYear = entryDate.getFullYear();
+
+            if (currentMonth === -1 && currentYear === -1) {
+                currentMonth = entryMonth;
+                currentYear = entryYear;
+            }
+
+            if (currentMonth === entryMonth && currentYear === entryYear) {
+                currentMonthData.push(entry);
+            } else {
+                labels.push(`${currentMonth + 1}/${currentYear}`);
+                monthlyTotalKWh.push(calculateTotalKWhForMonth(currentMonthData));
+                currentMonth = entryMonth;
+                currentYear = entryYear;
+                currentMonthData = [entry];
+            }
         });
-    
+
         labels.push(`${currentMonth + 1}/${currentYear}`);
-        monthlyTotalUsage.push(totalForMonth);
-      }
+        monthlyTotalKWh.push(calculateTotalKWhForMonth(currentMonthData));
+    }
 
     const chartData = {
         labels: labels,
         datasets: [
             {
                 label: 'Total Usage of all Appliances',
-                data: monthlyTotalUsage,
+                data: monthlyTotalKWh,
                 fill: true,
                 borderColor: 'green',
                 backgroundColor: 'rgba(19, 146, 97, 0.2)', // Set the background color for bars
@@ -92,7 +87,7 @@ function OneYear() {
             y: {
                 title: {
                     display: true,
-                    text: 'kW',
+                    text: 'kWh',
                 },
                 beginAtZero: true, // Customize Y-axis as needed
             },
