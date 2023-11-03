@@ -7,26 +7,63 @@ function OneYear() {
     const [jsonData, setJsonData] = useState([]);
     
     useEffect(() => {
-        const filename = 'full_year.json';
-        axios.get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
-            .then((response) => {  
-                setJsonData(response.data);
-            })
-            .catch((error) => {
-                console.error('Error grabbing JSON Data:', error);
-            });
-    }, []);
+        const filename = '15_MIN_AUSTIN.json';
+        axios
+          .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
+          .then((response) => {
+            setJsonData(response.data);
+          })
+          .catch((error) => {
+            console.error('Error grabbing JSON Data:', error);
+          });
+      }, []);
+    
+      const labels = [];
+    const monthlyTotalKWh = [];
 
-    const labels = Object.keys(jsonData);
-    const data = labels.map((month) => jsonData[month].TotalUsage);
-    const Cost = (Object.values(jsonData).reduce((total, month) => total + month.TotalUsage, 0) * 0.19).toFixed(2);
+    // Calculate the total kWh consumed for each month
+    const calculateTotalKWhForMonth = (monthData) => {
+        return monthData.reduce((total, entry) => {
+            return total + (entry.grid * 0.25); // Convert grid (kW) to kWh for each 15-minute interval
+        }, 0);
+    };
+
+    if (jsonData.length > 0) {
+        let currentMonth = -1;
+        let currentYear = -1;
+        let currentMonthData = [];
+
+        jsonData.forEach((entry) => {
+            const entryDate = new Date(entry.local_15min);
+            const entryMonth = entryDate.getMonth();
+            const entryYear = entryDate.getFullYear();
+
+            if (currentMonth === -1 && currentYear === -1) {
+                currentMonth = entryMonth;
+                currentYear = entryYear;
+            }
+
+            if (currentMonth === entryMonth && currentYear === entryYear) {
+                currentMonthData.push(entry);
+            } else {
+                labels.push(`${currentMonth + 1}/${currentYear}`);
+                monthlyTotalKWh.push(calculateTotalKWhForMonth(currentMonthData));
+                currentMonth = entryMonth;
+                currentYear = entryYear;
+                currentMonthData = [entry];
+            }
+        });
+
+        labels.push(`${currentMonth + 1}/${currentYear}`);
+        monthlyTotalKWh.push(calculateTotalKWhForMonth(currentMonthData));
+    }
 
     const chartData = {
         labels: labels,
         datasets: [
             {
                 label: 'Total Usage of all Appliances',
-                data: data,
+                data: monthlyTotalKWh,
                 fill: true,
                 borderColor: 'green',
                 backgroundColor: 'rgba(19, 146, 97, 0.2)', // Set the background color for bars
@@ -50,7 +87,7 @@ function OneYear() {
             y: {
                 title: {
                     display: true,
-                    text: 'kW',
+                    text: 'kWh',
                 },
                 beginAtZero: true, // Customize Y-axis as needed
             },
@@ -60,7 +97,7 @@ function OneYear() {
     return (
         <div>
             <h2>Total House Usage One Year</h2>
-            <h3>Expected Cost: ${Cost}</h3>
+
             <Line data={chartData} options={chartOptions}/>
         </div>
     );

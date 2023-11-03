@@ -5,22 +5,64 @@ import { Chart }            from 'react-chartjs-2'
 
 function HomeChart() {
     const [jsonData, setJsonData] = useState([]);
+    const [dateColumn, setDateColumn] = useState(null); // Initialize dateColumn state
     
     useEffect(() => {
-        const filename = 'output.json';
-        axios.get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
-            .then((response) => {  
-                setJsonData(response.data);
-            })
-            .catch((error) => {
-                console.error('Error grabbing JSON Data:', error);
+        const filename = '15_MIN_AUSTIN.json';
+        axios
+          .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
+          .then((response) => {
+            const data = response.data;
+        
+            // Find the date column dynamically by checking if values can be parsed as Dates
+            if (!dateColumn) {
+              for (const key in data[0]) {
+                if (data[0].hasOwnProperty(key)) {
+                  const sampleValue = data[0][key];
+                  if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
+                    setDateColumn(key);
+                    break;
+                  }
+                }
+              }
+            }
+      
+            if (!dateColumn) {
+              console.error('No date column found in the data.');
+              return;
+            }
+      
+            // Find the latest date in the data
+            const latestDate = new Date(data[data.length - 1][dateColumn]);
+      
+            // Calculate the start date as 24 hours before the latest date
+            const startDate = new Date(latestDate);
+            startDate.setHours(startDate.getHours() - 24);
+      
+            // Filter the data to include only the 24-hour period starting from the calculated start date
+            const filteredData = data.filter((entry) => {
+              const entryDate = new Date(entry[dateColumn]);
+              return entryDate >= startDate && entryDate <= latestDate;
             });
-    }, []);
+      
+            setJsonData(filteredData);
+          })
+          .catch((error) => {
+            console.error('Error grabbing JSON Data:', error);
+          });
+      }, [dateColumn]);
+      
+      
+      
+      
 
-    const labels = jsonData?.map((item) => item.local_15min);
-    const data = jsonData?.map((item) => item.Row_Sums);
+   
+      const labels = jsonData?.map((item) => item[dateColumn]);
 
-    const Cost = (jsonData.reduce((total, item) => total + item.Row_Sums, 0) * 0.19).toFixed(2);
+      const totalUsage = jsonData?.map((item) => item.grid * 0.25);
+
+      const totalUsageSum = totalUsage.reduce((acc, value) => acc + value, 0);
+
 
 
     const chartData = {
@@ -28,7 +70,7 @@ function HomeChart() {
         datasets: [
             {
                 label: 'Total Usage of all Appliances',
-                data: data,
+                data: totalUsage,
                 fill: true,
                 borderColor: 'green',
                 backgroundColor: 'rgba(19, 146, 97, 0.2)', // Set the background color for bars
@@ -52,7 +94,7 @@ function HomeChart() {
             y: {
                 title: {
                     display: true,
-                    text: 'kW',
+                    text: 'kWh',
                 },
                 beginAtZero: true, // Customize Y-axis as needed
             },
@@ -62,7 +104,7 @@ function HomeChart() {
     return (
         <div>
             <h2>Total House Usage 24 Hours</h2>
-            <h3>Expected Cost: ${Cost}</h3>
+            <h3>Total Usage : {totalUsageSum} kWh</h3>
             <Line data={chartData} options={chartOptions}/>
         </div>
     );

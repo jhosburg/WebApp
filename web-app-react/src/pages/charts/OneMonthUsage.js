@@ -5,63 +5,133 @@ import { Chart }            from 'react-chartjs-2'
 
 function OneMonth() {
     const [jsonData, setJsonData] = useState([]);
+    const [dateColumn, setDateColumn] = useState(null); // Initialize dateColumn state
+    const [endDate, setEndDate] = useState(null); // Manage end date with useState
+
+
     
     useEffect(() => {
-        const filename = '30_days_total_usage.json';
-        axios.get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
-            .then((response) => {  
-                setJsonData(response.data);
-            })
-            .catch((error) => {
-                console.error('Error grabbing JSON Data:', error);
-            });
-    }, []);
+      const filename = '15_MIN_AUSTIN.json';
+      axios
+        .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
+        .then((response) => {
+          const data = response.data;
+  
+          if (data.length === 0) {
+            console.error('No data found.');
+            return;
+          }
 
-    const labels = Object.keys(jsonData);
-    const data = labels.map((day) => jsonData[day].TotalUsage);
-    const Cost = (Object.values(jsonData).reduce((total, day) => total + day.TotalUsage, 0) * 0.19).toFixed(2);
+          // Find the date column dynamically by checking if values can be parsed as Dates
+        if (!dateColumn) {
+          for (const key in data[0]) {
+            if (data[0].hasOwnProperty(key)) {
+              const sampleValue = data[0][key];
+              if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
+                setDateColumn(key);
+                break;
+              }
+            }
+          }
+        }
+    
+          if (!dateColumn) {
+            console.error('No date column found in the data.');
+            return;
+          }
+  
+          // Find the minimum and maximum timestamps in the dataset
+          const timestamps = data.map((entry) => new Date(entry[dateColumn]).getTime());
+          const startDate = new Date(Math.min(...timestamps));
+
+            // Set the end date to the last day of the month of the minimum start date
+          const endOfMonth = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+          setEndDate(endOfMonth);
+
+  
+          // Filter the data to include the entire time range
+          const filteredData = data;
+  
+          setJsonData(filteredData);
+        })
+        .catch((error) => {
+          console.error('Error grabbing JSON Data:', error);
+        });
+    }, [dateColumn]);
+
+
+    
+      const labels = [];
+      const dailyTotalUsage = [];
+
+      // Calculate the total kWh consumed for each day
+      const calculateTotalUsageForDay = (date) => {
+          return jsonData
+              .filter((entry) => {
+                  const entryDate = new Date(entry[dateColumn]);
+                  return entryDate.toDateString() === date.toDateString();
+              })
+              .reduce((total, entry) => {
+                  return total + (entry.grid * 0.25); // Convert grid (kW) to kWh for each 15-minute interval
+              }, 0);
+      };
+
+
+    
+      if (jsonData.length > 0) {
+        const currentDate = new Date(jsonData[0][dateColumn]);
+    
+        while (currentDate <= endDate) {
+          labels.push(currentDate.toLocaleDateString());
+          dailyTotalUsage.push(calculateTotalUsageForDay(currentDate));
+          currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
+        }
+      }
+
+      const totalKWhConsumed = dailyTotalUsage.reduce((acc, value) => acc + value, 0);
+
 
 
     const chartData = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Total Usage of all Appliances',
-                data: data,
-                fill: true,
-                borderColor: 'green',
-                backgroundColor: 'rgba(19, 146, 97, 0.2)', // Set the background color for bars
-                borderWidth: 1, // Set the border width for bars
-                hoverBackgroundColor: 'rgba(19, 146, 97, 0.4)', // Set the background color when hovering
-            },
-        ],
-        
-    };
+    labels: labels,
+    datasets: [
+      {
+        label: 'Total Usage of all Appliances',
+        data: dailyTotalUsage,
+        fill: true,
+        borderColor: 'green',
+        backgroundColor: 'rgba(19, 146, 97, 0.2)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(19, 146, 97, 0.4)',
+      },
+    ],
+  };
 
-    const chartOptions = {
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Date/Time'
-                },
-                type: 'category', // Use 'category' scale for X-axis
-                position: 'bottom', // Optional: Position the labels at the bottom
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: 'kW',
-                },
-                beginAtZero: true, // Customize Y-axis as needed
-            },
+  const chartOptions = {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Date',
         },
-    };
+        type: 'category',
+        position: 'bottom',
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'kWh',
+        },
+        beginAtZero: true,
+      },
+    },
+  };
+
 
     return (
         <div>
             <h2>Total House Usage One Month</h2>
-            <h3>Expected Cost: ${Cost}</h3>
+            <h3>Total Usage: {totalKWhConsumed} kWh</h3>
             <Line data={chartData} options={chartOptions}/>
         </div>
     );
