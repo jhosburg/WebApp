@@ -5,20 +5,44 @@ import { Chart }            from 'react-chartjs-2'
 
 function HomeChart() {
     const [jsonData, setJsonData] = useState([]);
+    const [dateColumn, setDateColumn] = useState(null); // Initialize dateColumn state
     
     useEffect(() => {
         const filename = '15_MIN_AUSTIN.json';
         axios
           .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
           .then((response) => {
-            // Filter the data to include only the 24-hour period ending at 23:45:00 on January 1st
-            const endDate = new Date('2018-01-01 23:45:00');
-            const startDate = new Date(endDate);
-            startDate.setDate(startDate.getDate() - 1); // Go back 24 hours
+            const data = response.data;
+        
+            // Find the date column dynamically by checking if values can be parsed as Dates
+            if (!dateColumn) {
+              for (const key in data[0]) {
+                if (data[0].hasOwnProperty(key)) {
+                  const sampleValue = data[0][key];
+                  if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
+                    setDateColumn(key);
+                    break;
+                  }
+                }
+              }
+            }
       
-            const filteredData = response.data.filter((entry) => {
-              const entryTimestamp = new Date(entry.local_15min);
-              return entryTimestamp >= startDate && entryTimestamp <= endDate;
+            if (!dateColumn) {
+              console.error('No date column found in the data.');
+              return;
+            }
+      
+            // Find the latest date in the data
+            const latestDate = new Date(data[data.length - 1][dateColumn]);
+      
+            // Calculate the start date as 24 hours before the latest date
+            const startDate = new Date(latestDate);
+            startDate.setHours(startDate.getHours() - 24);
+      
+            // Filter the data to include only the 24-hour period starting from the calculated start date
+            const filteredData = data.filter((entry) => {
+              const entryDate = new Date(entry[dateColumn]);
+              return entryDate >= startDate && entryDate <= latestDate;
             });
       
             setJsonData(filteredData);
@@ -26,10 +50,14 @@ function HomeChart() {
           .catch((error) => {
             console.error('Error grabbing JSON Data:', error);
           });
-      }, []);
+      }, [dateColumn]);
+      
+      
+      
+      
 
    
-      const labels = jsonData?.map((item) => item.local_15min);
+      const labels = jsonData?.map((item) => item[dateColumn]);
 
       const totalUsage = jsonData?.map((item) => item.grid * 0.25);
 
