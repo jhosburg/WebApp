@@ -5,29 +5,61 @@ import { Chart }            from 'react-chartjs-2'
 
 function OneMonth() {
     const [jsonData, setJsonData] = useState([]);
+    const [dateColumn, setDateColumn] = useState(null); // Initialize dateColumn state
+    const [endDate, setEndDate] = useState(null); // Manage end date with useState
 
-    const endDate = new Date('2018-01-31 23:45:00');
+
     
     useEffect(() => {
-        const filename = '15_MIN_AUSTIN.json';
-        axios
-          .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
-          .then((response) => {
-            // Filter the data to include the entire month of January
-            const startDate = new Date('2018-01-01 00:00:00');
+      const filename = '15_MIN_AUSTIN.json';
+      axios
+        .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
+        .then((response) => {
+          const data = response.data;
+  
+          if (data.length === 0) {
+            console.error('No data found.');
+            return;
+          }
 
+          // Find the date column dynamically by checking if values can be parsed as Dates
+        if (!dateColumn) {
+          for (const key in data[0]) {
+            if (data[0].hasOwnProperty(key)) {
+              const sampleValue = data[0][key];
+              if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
+                setDateColumn(key);
+                break;
+              }
+            }
+          }
+        }
     
-            const filteredData = response.data.filter((entry) => {
-              const entryTimestamp = new Date(entry.local_15min);
-              return entryTimestamp >= startDate && entryTimestamp <= endDate;
-            });
-    
-            setJsonData(filteredData);
-          })
-          .catch((error) => {
-            console.error('Error grabbing JSON Data:', error);
-          });
-      }, []);
+          if (!dateColumn) {
+            console.error('No date column found in the data.');
+            return;
+          }
+  
+          // Find the minimum and maximum timestamps in the dataset
+          const timestamps = data.map((entry) => new Date(entry[dateColumn]).getTime());
+          const startDate = new Date(Math.min(...timestamps));
+
+            // Set the end date to the last day of the month of the minimum start date
+          const endOfMonth = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+          setEndDate(endOfMonth);
+
+  
+          // Filter the data to include the entire time range
+          const filteredData = data;
+  
+          setJsonData(filteredData);
+        })
+        .catch((error) => {
+          console.error('Error grabbing JSON Data:', error);
+        });
+    }, [dateColumn]);
+
+
     
       const labels = [];
       const dailyTotalUsage = [];
@@ -36,7 +68,7 @@ function OneMonth() {
       const calculateTotalUsageForDay = (date) => {
           return jsonData
               .filter((entry) => {
-                  const entryDate = new Date(entry.local_15min);
+                  const entryDate = new Date(entry[dateColumn]);
                   return entryDate.toDateString() === date.toDateString();
               })
               .reduce((total, entry) => {
@@ -44,9 +76,10 @@ function OneMonth() {
               }, 0);
       };
 
+
     
       if (jsonData.length > 0) {
-        const currentDate = new Date(jsonData[0].local_15min);
+        const currentDate = new Date(jsonData[0][dateColumn]);
     
         while (currentDate <= endDate) {
           labels.push(currentDate.toLocaleDateString());

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './Contacts.css';
+<<<<<<< HEAD
+=======
 import mpower from './mPower.png';
+>>>>>>> 2e336435ae6578c18aff9eadc9ac2e0bab4887c7
 
 const Contacts = () => {
   return (
@@ -9,21 +12,15 @@ const Contacts = () => {
       <Row>
         <Col lg={6} className="info-section">
           <div className="company-info">
-            <h2>Company Information</h2>
-            <p>
-              Sea Dragon Energy Inc. understands the needs of California.
-            </p>
-            <strong>Email:</strong> <a href="mailto:www.seadragon.energy">www.seadragon.energy</a>
+            <h2>Sea Dragon Understands the Needs of California</h2>
             
-            {/* Corporate Address */}
+            <strong>Email:</strong> <a href="mailto:www.seadragon.energy">www.seadragon.energy</a>
             <address>
               <strong>Corporate Address:</strong><br />
               401 Strada Luca<br />
               Florence, TX 76527<br />
               USA
             </address>
-
-            {/* Additional company information */}
             <p>
               We are dedicated to providing innovative solutions for energy management and sustainability.
             </p>
@@ -50,18 +47,6 @@ const Contacts = () => {
                 Submit
               </Button>
             </Form>
-          </div>
-        </Col>
-        <Col lg={6} className="image-section">
-          <div className="text-center">
-            <img
-              src={mpower}
-              alt="Image Description"
-              style={{ width: '70%', height: 'auto' }}
-            />
-            <p className="image-description">
-              The mPower allows users to manage their energy consumption at less cost.
-            </p>
           </div>
         </Col>
       </Row>

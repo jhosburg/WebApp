@@ -16,6 +16,7 @@ from .models import EnergyUsage
 from .utilities import calculate_energy_cost
 from .serializers import JsonModelSerializer
 from django.http import JsonResponse
+import pandas as pd
 
 def api_hello(request):
     data = {'message': 'This is where a graph will be!\n Also this message verifies API is working!\n We are also able to upload files.'}
@@ -31,6 +32,29 @@ class UploadJsonView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+
+
+def moving_average_fill(data, window_size=5):
+    filled_data = []
+
+    for i, item in enumerate(data):
+        filled_item = item.copy()
+
+        for key, value in item.items():
+            if value is None:
+                start_idx = max(0, i - window_size + 1)
+                end_idx = i + 1
+                recent_values = [data[j][key] for j in range(start_idx, end_idx) if data[j][key] is not None]
+                if recent_values:
+                    filled_item[key] = sum(recent_values) / len(recent_values)
+                else:
+                    
+                    filled_item[key] = 0  # You can change 0 to any other default value
+
+        filled_data.append(filled_item)
+
+    return filled_data
+
 def grab_json(request, filename):
     # Define the directory where your JSON files are stored.
     json_dir = 'media/json_data/'
@@ -41,6 +65,7 @@ def grab_json(request, filename):
     if os.path.exists(file_path):
         with open(file_path, 'r') as json_file:
             data = json.load(json_file)
+            data = moving_average_fill(data)
         return JsonResponse(data, safe=False)
     else:
         # Handle the case where the specified file does not exist.

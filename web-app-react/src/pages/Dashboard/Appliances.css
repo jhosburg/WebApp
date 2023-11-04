@@ -163,7 +163,7 @@
 
 .toggle-btn.ON {
   left: 32px;
-  background-color:rgb(70, 168, 131);
+  background-color:#46a883;
   transition: left 0.2s ease-in-out, background-color 0.2s ease;
 }
 
@@ -257,6 +257,123 @@
 
 #applianceButton:hover {
   background-color: #2b8b56;
+}
+
+.powerOffModal {
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  max-width: 300px;
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Center both horizontally and vertically */
+  z-index: 999; /* Ensure it's above other content */
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+.timeSelection {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeSelector {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 0;
+}
+
+label {
+  margin-right: 10px;
+}
+
+h2, p {
+  text-align: center; /* Center text content */
+}
+
+/* Styling for hour and minute dropdowns */
+.timeDropdown select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+  width: 70px; /* Adjust the width as needed */
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.timeDropdown select:hover {
+  border-color: #666;
+}
+
+.timeDropdown select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Add styles for the dropdown button */
+.timeDropdown select::-ms-expand {
+  display: none; /* Remove the default arrow in IE/Edge */
+}
+
+/* Style the options within the dropdown */
+.timeDropdown select option {
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+}
+
+/* Customize the appearance of the dropdown container */
+.timeDropdown {
+  position: relative;
+}
+
+/* Add an arrow next to the dropdown */
+.timeDropdown::before {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  font-size: 12px;
+}
+
+
+
+.modalButton {
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#cancelButton {
+  background: #961616;
+  color: #fff;
+}
+
+#cancelButton:hover {
+  background: rgb(227, 81, 81);
+}
+
+#confirmButton {
+  background: #2b8b56;
+  color: #fff;
+}
+
+#confirmButton:hover{
+  background: #46a883;
 }
 
 @media (max-width: 768px) {
