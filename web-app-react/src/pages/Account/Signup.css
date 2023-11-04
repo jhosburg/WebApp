@@ -8,10 +8,10 @@
   
   
 .signup {
-  margin: -58rem 0 0 67rem;
+  margin: -65rem 0 0 67rem;
   background-color: rgb(241, 253, 247);
   width: 35em;
-  height: 50em;
+  height: 56em;
   position: absolute;
   border-radius: 1em;
   box-shadow: 0 0.188em 1.550em rgb(156, 156, 156);
@@ -20,6 +20,7 @@
   align-items: center;
   justify-content: space-around;
   opacity: 85%;
+
   }
   
   /* notice input has no dot becasue we are calling the html "input" tage from login.js */
