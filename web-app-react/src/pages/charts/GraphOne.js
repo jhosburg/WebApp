@@ -32,17 +32,17 @@ function HomeChart() {
               return;
             }
       
-            // Find the latest date in the data
-            const latestDate = new Date(data[data.length - 1][dateColumn]);
-      
-            // Calculate the start date as 24 hours before the latest date
-            const startDate = new Date(latestDate);
-            startDate.setHours(startDate.getHours() - 24);
+            // Calculate the start date as the earliest date found in the data
+            const startDate = new Date(data[0][dateColumn]);
+
+            // Calculate the end date as 24 hours after the start date
+            const endDate = new Date(startDate);
+            endDate.setHours(endDate.getHours() + 24);
       
             // Filter the data to include only the 24-hour period starting from the calculated start date
             const filteredData = data.filter((entry) => {
               const entryDate = new Date(entry[dateColumn]);
-              return entryDate >= startDate && entryDate <= latestDate;
+              return entryDate >= startDate && entryDate <= endDate;
             });
       
             setJsonData(filteredData);
@@ -52,16 +52,17 @@ function HomeChart() {
           });
       }, [dateColumn]);
       
-      
-      
-      
+
+      console.log("Data in State:", jsonData);
 
    
       const labels = jsonData?.map((item) => item[dateColumn]);
 
       const totalUsage = jsonData?.map((item) => (item.grid + item.solar) * 0.25); // Calculate total usage as grid + solar
 
-      const solarData = jsonData?.map((item) => item.solar *0.25);
+      const solarData = jsonData?.map((item) => item.solar * 0.25);
+      
+      
 
       const totalUsageSum = totalUsage.reduce((acc, value) => acc + value, 0);
 
