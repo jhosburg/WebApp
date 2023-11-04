@@ -63,7 +63,7 @@ function OneMonth() {
     labels: labels,
     datasets: [
       {
-        label: 'Total Usage of all Appliances',
+        label: 'Total Usage of Home',
         data: dailyTotalUsage,
         fill: true,
         borderColor: 'green',

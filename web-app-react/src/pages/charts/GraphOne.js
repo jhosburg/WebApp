@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Line } from 'react-chartjs-2';
+import { Line, Bar } from 'react-chartjs-2';
 import { Chart }            from 'react-chartjs-2'
 
 function HomeChart() {
@@ -31,7 +31,9 @@ function HomeChart() {
    
       const labels = jsonData?.map((item) => item.local_15min);
 
-      const totalUsage = jsonData?.map((item) => item.grid * 0.25);
+      const totalUsage = jsonData?.map((item) => (item.grid + item.solar) * 0.25); // Calculate total usage as grid + solar
+
+      const solarData = jsonData?.map((item) => item.solar *0.25);
 
       const totalUsageSum = totalUsage.reduce((acc, value) => acc + value, 0);
 
@@ -41,14 +43,26 @@ function HomeChart() {
         labels: labels,
         datasets: [
             {
-                label: 'Total Usage of all Appliances',
+                label: 'Total Usage of Home',
                 data: totalUsage,
                 fill: true,
                 borderColor: 'green',
                 backgroundColor: 'rgba(19, 146, 97, 0.2)', // Set the background color for bars
                 borderWidth: 1, // Set the border width for bars
                 hoverBackgroundColor: 'rgba(19, 146, 97, 0.4)', // Set the background color when hovering
+                type: 'line',
+
             },
+            {
+                label: 'Solar',
+                data: solarData,
+                fill: true,
+                borderColor: 'grey',
+                backgroundColor: 'rgba(255, 255, 0, 0.2)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255, 255, 0, 0.4)',
+                type: 'line',
+              },
         ],
         
     };
@@ -70,6 +84,7 @@ function HomeChart() {
                 },
                 beginAtZero: true, // Customize Y-axis as needed
             },
+            
         },
     };
 
