@@ -16,6 +16,24 @@ function Home() {
    const [file, setFile] = useState(null);
    const [fileError, setFileError] = useState('');
    const [fileAccepted, setFileAccepted] = useState(false); // Added state for accepted file
+   const [fileList, setFileList] = useState([]);
+   const [selectedFile, setSelectedFile] = useState('');
+
+  useEffect(() => {
+    // Fetch the list of files from your Django backend when the component mounts
+    axios.get('http://127.0.0.1:8000/sdei/file_list')
+      .then(response => {
+        console.log(response.data); // Check the response data
+        setFileList(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching file list:', error);
+      });
+  }, []);
+
+  const handleFileSelection = (event) => {
+    setSelectedFile(event.target.value);
+  };
 
    const handleFileChange = (event) => {
       const selectedFile = event.target.files[0];
@@ -97,6 +115,16 @@ function Home() {
                 {fileAccepted && <p className="success-message">JSON file accepted.</p>}
                 {fileError && <p className="error-message">{fileError}</p>}
               </div>
+            </div>
+
+            <div>
+              <select value={selectedFile} onChange={handleFileSelection}>
+                <option value="">Select a file</option>
+                  {fileList.map((fileName, index) => (
+                <option key={index} value={fileName}>{fileName}</option>
+                  ))}
+              </select>
+              
             </div>
 
             <div className="tabs">

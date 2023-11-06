@@ -92,7 +92,11 @@ def calculate_energy_usage_cost(request):
 
 def file_list(request):
     media_root = settings.MEDIA_ROOT
-    files = [file for file in os.listdir(media_root) if os.path.isfile(os.path.join(media_root, file))]
+    json_data_dir = os.path.join(media_root, 'json_data')
+
+    # List files within the 'json_data' subdirectory
+    files = [file for file in os.listdir(json_data_dir) if os.path.isfile(os.path.join(json_data_dir, file))]
+
     return JsonResponse(files, safe=False)
 
 
