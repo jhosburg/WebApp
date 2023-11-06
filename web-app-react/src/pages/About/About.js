@@ -96,8 +96,14 @@ function About() {
                     <a className='title' href='https://www.linkedin.com/in/jakobtiger/'> 
                             <img src={linkedin} alt='linkedin' width="25" height="25" /> 
                     </a>
-                    <p className='bio'> Jakob is a computer engineer. (fill this in with a biography or 
-                        something but it needs to atleast be long enough to push the image)</p>
+                    <p className='bio'> Jakob is a Computer Engineer, earning his Bachelors of Science from San Diego State University. His education has built him a 
+                    strong foundation in Computer Science and Engineering principles.
+                    He has a very strong passion for Backend Web Development and Software Development. He is experienced with multiple languages but his strongest
+                    are Python, C/C++, Javascript, and React. He has experience with mutliple tools such as Github, Django Rest Framework, Vivado, and more.  
+                    <div className='spacer'></div>
+                    Overall, he is a highly motivated Engineer who is eager to learn more everyday. His expertise in various programming languages, along with his knowledge in various
+                    development tools, adds to his toolbox in the tech field. 
+                        </p>
                 </div>
                 <div className='left'>
                     <img src={jakob} alt='jakob' width="175" height="175" />
