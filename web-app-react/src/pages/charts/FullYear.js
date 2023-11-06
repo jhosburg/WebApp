@@ -18,7 +18,7 @@ function OneYear() {
           });
       }, []);
     
-      const labels = [];
+    const labels = [];
     const monthlyTotalKWh = [];
 
     // Calculate the total kWh consumed for each month
@@ -58,11 +58,13 @@ function OneYear() {
         monthlyTotalKWh.push(calculateTotalKWhForMonth(currentMonthData));
     }
 
+    const totalKWhConsumed = monthlyTotalKWh.reduce((acc, value) => acc + value, 0);
+
     const chartData = {
         labels: labels,
         datasets: [
             {
-                label: 'Total Usage of all Appliances',
+                label: 'Total Usage of Home',
                 data: monthlyTotalKWh,
                 fill: true,
                 borderColor: 'green',
@@ -97,7 +99,7 @@ function OneYear() {
     return (
         <div>
             <h2>Total House Usage One Year</h2>
-
+            <h3>Total Usage: {totalKWhConsumed} kWh</h3>
             <Line data={chartData} options={chartOptions}/>
         </div>
     );

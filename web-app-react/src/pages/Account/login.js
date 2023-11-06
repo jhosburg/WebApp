@@ -1,73 +1,69 @@
-import React from 'react'
-import './login.css'
+import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import './login.css';
 import logo_pic from './graphic_seaDragon.png';
-import password_pic from './password.png';
-import user_img from './user.jpeg';
-import email_pic from './email.jpeg';
 
-// const picture = new URL("./pages./Account", import.meta.url)
+function Login() {
+  const { control, handleSubmit, formState: { errors } } = useForm();
+  
+  const onSubmit = (data) => {
+    // Handle form submission logic here
+    console.log(data);
+  };
 
-function Account() {
   return (
     <div className="main">
-
       <div className='logo'>
-          <img src={logo_pic}/>
+        <img src={logo_pic} alt="Logo" />
       </div>
-      
+
       <div className="login">
         <h1>SIGN IN</h1>
-    
-    {/* <div className='user_img'>
-       <img src={user_img} alt='user_img' width="100" height="100" /> 
-       </div> */}
-       
-    <div className='username'>
 
-
-      <div className='input'>
-            {/* <img src={user_pic} alt='user_pic' width="10" height="10" /> */}
-            <input type="username" placeholder="username"/>
-  
-      </div>
-    </div>
-
-    <div className='password'> 
-        <div className='input'>
-          <input type = "password" placeholder="password"/>
-          {/* <img src={user}/> */}
+        <div className='username'>
+          <div className='input'>
+            <Controller
+              name="username"
+              control={control}
+              defaultValue=""
+              rules={{ required: 'Username is required' }}
+              render={({ field }) => <input {...field} placeholder="Username" />}
+            />
+            {errors.username && <p>{errors.username.message}</p>}
+          </div>
         </div>
-    </div>
 
-     
-        <div> 
+        <div className='password'> 
+          <div className='input'>
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              rules={{ required: 'Password is required' }}
+              render={({ field }) => <input type="password" {...field} placeholder="Password" />}
+            />
+            {errors.password && <p>{errors.password.message}</p>}
+          </div>
+        </div>
 
+
+        <div>
+          <div>
+            <button className='btn-link-container' onClick={handleSubmit(onSubmit)}>
+            <a className="btn-link">SIGN IN</a>
+            </button>
+          </div>
+          
 
           <div>
             <button className='btn-link-container'>
-              <a className="btn-link" href="/">SIGN IN</a>  
+              <a className="btn-link" href="/Signup">SIGNUP</a>
             </button>
-           </div>
-          
-         
-           <div>
-            <button className='btn-link-container'>
-              <a className="btn-link" href="/Signup">SIGNUP</a>  
-            </button>
-           </div>
-          
-          
-
+          </div>
         </div>
       </div>
-{
-   
-  }
-</div>
-
-
-
-  )
+    </div>
+  );
 }
 
-export default Account
+export default Login;

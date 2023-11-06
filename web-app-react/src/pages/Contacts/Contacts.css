@@ -1,25 +1,27 @@
 .contact-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   min-height: 100vh;
-  background-color: #e0f0e0;
+  background-color: #fff;
+  font-family: 'Arial', sans-serif;
 }
 
 .info-section {
   display: flex;
   justify-content: space-between;
   flex: 1;
-  padding: 20px;
+  padding: 40px;
 }
 
 .company-info, .contact-form {
   flex: 1;
-  background-color: #f7f7f7; /* Light gray background color */
-  padding: 20px;
-  border-radius: 10px;
+  background-color: #f7f7f7;
+  padding: 40px;
+  border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: left;
+  text-align: center; /* Center the text */
 }
 
 .company-info h2, .contact-form h2 {
@@ -37,7 +39,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f7f7f7; /* Light gray background color */
+  background-color: #f7f7f7;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -59,4 +61,12 @@
 
 .ac_btn:hover {
   background-color: #0056b3;
+}
+
+/* Center the text in the contact form */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }

@@ -6,10 +6,10 @@
 
 
 .login {
-  margin: 0 auto;
+  margin: 100px auto;
   background-color: rgb(241, 253, 247);
   width: 30em;
-  height: 35em;
+  height: 43em;
   position: relative;
   border-radius: 1em;
   box-shadow: 0 0.188em 1.550em rgb(156, 156, 156);
@@ -34,13 +34,6 @@ input{
 
 
 
-/* .user_img {
-  background-color: #2dbd39;
-  margin: 100;
-  left: ;
-
-} */
-
 .user_img img {
   
   background-color: #b7f5cc;
@@ -56,11 +49,11 @@ input{
 
 
 .logo img{
-  width: 25%;
+  width: 33%;
   margin: auto;
   position: absolute;
   top: 8rem;
-  left: 25rem;
+  left: 23rem;
 }
 
 .btn-link {
