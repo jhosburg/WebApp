@@ -17,6 +17,7 @@ from .utilities import calculate_energy_cost
 from .serializers import JsonModelSerializer
 from django.http import JsonResponse
 import pandas as pd
+from django.conf import settings
 
 def api_hello(request):
     data = {'message': 'This is where a graph will be!\n Also this message verifies API is working!\n We are also able to upload files.'}
@@ -87,6 +88,12 @@ def calculate_energy_usage_cost(request):
 
         return JsonResponse({'total_cost': total_cost})
     return JsonResponse({'error': 'Invalid request'})
+
+
+def file_list(request):
+    media_root = settings.MEDIA_ROOT
+    files = [file for file in os.listdir(media_root) if os.path.isfile(os.path.join(media_root, file))]
+    return JsonResponse(files, safe=False)
 
 
 
