@@ -3,17 +3,20 @@ import axios from 'axios';
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart }            from 'react-chartjs-2'
 
-function HomeChart() {
+function HomeChart({selectedFileName}) {
     const [jsonData, setJsonData] = useState([]);
     const [dateColumn, setDateColumn] = useState(null); // Initialize dateColumn state
+    const [fetchingData, setFetchingData] = useState(false);
     
-    useEffect(() => {
-        const filename = '15_MIN_AUSTIN.json';
+    const fetchData = () => {
+      if (selectedFileName) {
+        setFetchingData(true);
+        const filename = selectedFileName;
         axios
           .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
           .then((response) => {
             const data = response.data;
-        
+  
             // Find the date column dynamically by checking if values can be parsed as Dates
             if (!dateColumn) {
               for (const key in data[0]) {
@@ -26,32 +29,42 @@ function HomeChart() {
                 }
               }
             }
-      
+  
             if (!dateColumn) {
               console.error('No date column found in the data.');
+              setFetchingData(false);
               return;
             }
-      
+  
             // Calculate the start date as the earliest date found in the data
             const startDate = new Date(data[0][dateColumn]);
-
+  
             // Calculate the end date as 24 hours after the start date
             const endDate = new Date(startDate);
             endDate.setHours(endDate.getHours() + 24);
-      
+  
             // Filter the data to include only the 24-hour period starting from the calculated start date
             const filteredData = data.filter((entry) => {
               const entryDate = new Date(entry[dateColumn]);
               return entryDate >= startDate && entryDate <= endDate;
             });
-      
+  
             setJsonData(filteredData);
+            setFetchingData(false);
           })
           .catch((error) => {
             console.error('Error grabbing JSON Data:', error);
+            setFetchingData(false);
           });
-      }, [dateColumn]);
-      
+      }
+    };
+
+
+    useEffect(() => {
+      if (selectedFileName) {
+        fetchData(); // Fetch data when selectedFileName changes
+      }
+    }, [selectedFileName, dateColumn]);
 
       console.log("Data in State:", jsonData);
 

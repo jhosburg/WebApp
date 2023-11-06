@@ -3,20 +3,71 @@ import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import { Chart }            from 'react-chartjs-2'
 
-function OneYear() {
+function OneYear({selectedFileName}) {
     const [jsonData, setJsonData] = useState([]);
-    
+    const [dateColumn, setDateColumn] = useState(null); // Initialize dateColumn state
+    const [endDate, setEndDate] = useState(null); // Manage end date with useState
+    const [startDate, setStartDate] = useState(null); // Manage start date with useState
+    const [fetchingData, setFetchingData] = useState(false);
+
+    const fetchData = () => {
+        if (selectedFileName) {
+            setFetchingData(true);
+            const filename = selectedFileName;
+            axios
+            .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
+            .then((response) => {
+                const data = response.data;
+
+                if (data.length === 0) {
+                    console.error('No data found.');
+                    return;
+                  }
+
+                if (!dateColumn) {
+                    for (const key in data[0]) {
+                    if (data[0].hasOwnProperty(key)) {
+                        const sampleValue = data[0][key];
+                        if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
+                        setDateColumn(key);
+                        break;
+                        }
+                    }
+                    }
+                }
+            
+                    if (!dateColumn) {
+                    console.error('No date column found in the data.');
+                    setFetchingData(false);
+                    return;
+                    }
+
+                    const timestamps = response.data.map((entry) => new Date(entry[dateColumn]).getTime());
+                    const minTimestamp = Math.min(...timestamps);
+                    setStartDate(new Date(minTimestamp));
+
+                    // Calculate the end date as exactly one year from the start date
+                    const oneYearLater = new Date(minTimestamp);
+                    oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+                    setEndDate(oneYearLater);
+
+                    const filteredData = data;
+                    setJsonData(filteredData);
+                    setFetchingData(false);
+
+            })
+            .catch((error) => {
+                console.error('Error grabbing JSON Data:', error);
+                setFetchingData(false);
+            });
+        } 
+    };
+
     useEffect(() => {
-        const filename = '15_MIN_AUSTIN.json';
-        axios
-          .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
-          .then((response) => {
-            setJsonData(response.data);
-          })
-          .catch((error) => {
-            console.error('Error grabbing JSON Data:', error);
-          });
-      }, []);
+        if (selectedFileName) {
+          fetchData(); // Fetch data when selectedFileName changes
+        }
+      }, [selectedFileName, dateColumn]);
     
     const labels = [];
     const monthlyTotalKWh = [];
@@ -34,7 +85,7 @@ function OneYear() {
         let currentMonthData = [];
 
         jsonData.forEach((entry) => {
-            const entryDate = new Date(entry.local_15min);
+            const entryDate = new Date(entry[dateColumn]);
             const entryMonth = entryDate.getMonth();
             const entryYear = entryDate.getFullYear();
 

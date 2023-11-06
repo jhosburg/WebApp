@@ -18,6 +18,8 @@ function Home() {
    const [fileAccepted, setFileAccepted] = useState(false); // Added state for accepted file
    const [fileList, setFileList] = useState([]);
    const [selectedFile, setSelectedFile] = useState('');
+   const [selectedFileName, setSelectedFileName] = useState(''); // Add a state variable to store the selected file name
+
 
   useEffect(() => {
     // Fetch the list of files from your Django backend when the component mounts
@@ -31,9 +33,19 @@ function Home() {
       });
   }, []);
 
+  const handleFetchData = () => {
+    // Fetch data when the button is clicked
+    if (selectedFileName) {
+       HomeChart.fetchData(selectedFileName); // Call a function in the HomeChart component
+    }
+ };
+
   const handleFileSelection = (event) => {
     setSelectedFile(event.target.value);
+    setSelectedFileName(event.target.options[event.target.selectedIndex].text); // Set the selected file name
+
   };
+
 
    const handleFileChange = (event) => {
       const selectedFile = event.target.files[0];
@@ -124,7 +136,7 @@ function Home() {
                 <option key={index} value={fileName}>{fileName}</option>
                   ))}
               </select>
-              
+
             </div>
 
             <div className="tabs">
@@ -151,21 +163,21 @@ function Home() {
             {activeTab === 'mainGraph' && (
               <div>
                 <h2>24 Hours</h2>
-                <HomeChart />
+                <HomeChart selectedFileName={selectedFileName}/>
               </div>
             )}
 
             {activeTab === 'tab2' && (
               <div>
                 <h2>30 Day Power Usage</h2>
-                <OneMonth />
+                <OneMonth selectedFileName={selectedFileName}/>
               </div>
             )}
 
             {activeTab === 'tab3' && (
               <div>
                 <h2>12 month power Usage</h2>
-                <OneYear />
+                <OneYear selectedFileName={selectedFileName}/>
               </div>
             )}
           </div>

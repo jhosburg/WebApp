@@ -3,61 +3,73 @@ import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import { Chart }            from 'react-chartjs-2'
 
-function OneMonth() {
+function OneMonth({selectedFileName}) {
     const [jsonData, setJsonData] = useState([]);
     const [dateColumn, setDateColumn] = useState(null); // Initialize dateColumn state
     const [endDate, setEndDate] = useState(null); // Manage end date with useState
-
+    const [fetchingData, setFetchingData] = useState(false);
 
     
-    useEffect(() => {
-      const filename = '15_MIN_AUSTIN.json';
-      axios
-        .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
-        .then((response) => {
-          const data = response.data;
-  
-          if (data.length === 0) {
-            console.error('No data found.');
-            return;
-          }
+    const fetchData = () => {
+      if (selectedFileName) {
+        setFetchingData(true);
+        const filename = selectedFileName;
+        axios
+          .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
+          .then((response) => {
+            const data = response.data;
+    
+            if (data.length === 0) {
+              console.error('No data found.');
+              return;
+            }
 
-          // Find the date column dynamically by checking if values can be parsed as Dates
-        if (!dateColumn) {
-          for (const key in data[0]) {
-            if (data[0].hasOwnProperty(key)) {
-              const sampleValue = data[0][key];
-              if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
-                setDateColumn(key);
-                break;
+            // Find the date column dynamically by checking if values can be parsed as Dates
+          if (!dateColumn) {
+            for (const key in data[0]) {
+              if (data[0].hasOwnProperty(key)) {
+                const sampleValue = data[0][key];
+                if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
+                  setDateColumn(key);
+                  break;
+                }
               }
             }
           }
-        }
+      
+            if (!dateColumn) {
+              console.error('No date column found in the data.');
+              setFetchingData(false);
+              return;
+            }
     
-          if (!dateColumn) {
-            console.error('No date column found in the data.');
-            return;
-          }
-  
-          // Find the minimum and maximum timestamps in the dataset
-          const timestamps = data.map((entry) => new Date(entry[dateColumn]).getTime());
-          const startDate = new Date(Math.min(...timestamps));
+            // Find the minimum and maximum timestamps in the dataset
+            const timestamps = data.map((entry) => new Date(entry[dateColumn]).getTime());
+            const startDate = new Date(Math.min(...timestamps));
 
-            // Set the end date to the last day of the month of the minimum start date
-          const endOfMonth = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-          setEndDate(endOfMonth);
+              // Set the end date to the last day of the month of the minimum start date
+            const endOfMonth = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+            setEndDate(endOfMonth);
 
-  
-          // Filter the data to include the entire time range
-          const filteredData = data;
-  
-          setJsonData(filteredData);
-        })
-        .catch((error) => {
-          console.error('Error grabbing JSON Data:', error);
-        });
-    }, [dateColumn]);
+    
+            // Filter the data to include the entire time range
+            const filteredData = data;
+    
+            setJsonData(filteredData);
+            setFetchingData(false);
+          })
+          .catch((error) => {
+            console.error('Error grabbing JSON Data:', error);
+            setFetchingData(false);
+          });
+      }
+    };
+
+    useEffect(() => {
+      if (selectedFileName) {
+        fetchData(); // Fetch data when selectedFileName changes
+      }
+    }, [selectedFileName, dateColumn]);
 
 
     
