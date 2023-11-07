@@ -292,3 +292,20 @@
     line-height: 1.5em;
     margin: 410px 0 0 25px;
   }
+
+  select {
+    border: 1px solid #ccc;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    height: 40px; /* Adjust the height as needed */
+    width: 200px; /* Adjust the width as needed */
+  }
+
+  select:hover, select:focus {
+    transition: 0.3s;
+    border-color: #77ce86;
+    background-color: rgba(44,187,99,.35);;
+  }
+  
+  
+   

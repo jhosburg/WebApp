@@ -68,15 +68,32 @@ function HomeChart({selectedFileName}) {
 
       console.log("Data in State:", jsonData);
 
+      function calculateTotalUsage(entry) {
+        if ('grid' in entry && 'solar' in entry) {
+          return (entry.grid + entry.solar) * 0.25;
+        }
+        else {
+          let total = 0;
+
+          for (const key in entry) {
+            if (key !== dateColumn && key !== 'grid' && key !== 'solar') {
+              const value = entry[key];
+              if (!isNaN(value)) {
+                total += value;
+              }
+            }
+          }
+          return total * 0.25;
+        }
+      }
+
    
       const labels = jsonData?.map((item) => item[dateColumn]);
 
-      const totalUsage = jsonData?.map((item) => (item.grid + item.solar) * 0.25); // Calculate total usage as grid + solar
+      const totalUsage = jsonData?.map(calculateTotalUsage);
 
       const solarData = jsonData?.map((item) => item.solar * 0.25);
       
-      
-
       const totalUsageSum = totalUsage.reduce((acc, value) => acc + value, 0);
 
 

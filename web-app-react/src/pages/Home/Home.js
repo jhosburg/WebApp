@@ -129,7 +129,7 @@ function Home() {
               </div>
             </div>
 
-            <div>
+            <div style={{padding: '20px'}}>
               <select value={selectedFile} onChange={handleFileSelection}>
                 <option value="">Select a file</option>
                   {fileList.map((fileName, index) => (
