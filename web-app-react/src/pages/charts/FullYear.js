@@ -75,7 +75,22 @@ function OneYear({selectedFileName}) {
     // Calculate the total kWh consumed for each month
     const calculateTotalKWhForMonth = (monthData) => {
         return monthData.reduce((total, entry) => {
-            return total + (entry.grid * 0.25); // Convert grid (kW) to kWh for each 15-minute interval
+            if ('grid' in entry) {
+                return total + (entry.grid * 0.25); // Convert grid (kW) to kWh for each 15-minute interval
+            }
+            else {
+                let totalNoGrid = 0;
+
+                for (const key in entry) {
+                  if (key !== dateColumn && key !== 'grid' && key !== 'solar') {
+                    const value = entry[key];
+                    if (!isNaN(value)) {
+                      totalNoGrid += value;
+                }
+              }
+            }
+            return total + (totalNoGrid * 0.25);
+        }
         }, 0);
     };
 

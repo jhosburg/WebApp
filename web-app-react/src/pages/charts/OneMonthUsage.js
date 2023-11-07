@@ -84,7 +84,22 @@ function OneMonth({selectedFileName}) {
                   return entryDate.toDateString() === date.toDateString();
               })
               .reduce((total, entry) => {
+                if ('grid' in entry) {
                   return total + (entry.grid * 0.25); // Convert grid (kW) to kWh for each 15-minute interval
+                }
+                else { //if there is no grid column, compute usage by adding all columns besides time column
+                  let totalNoGrid = 0;
+
+                  for (const key in entry) {
+                    if (key !== dateColumn && key !== 'grid' && key !== 'solar') {
+                      const value = entry[key];
+                      if (!isNaN(value)) {
+                        totalNoGrid += value;
+                  }
+                }
+              }
+              return total + (totalNoGrid * 0.25); //multiply by 0.25 assuming 15 min increments for kWh
+            }
               }, 0);
       };
 

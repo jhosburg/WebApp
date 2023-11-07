@@ -6,7 +6,10 @@ import { Chart }            from 'react-chartjs-2'
 function HomeChart({selectedFileName}) {
     const [jsonData, setJsonData] = useState([]);
     const [dateColumn, setDateColumn] = useState(null); // Initialize dateColumn state
-    const [fetchingData, setFetchingData] = useState(false);
+    const [fetchingData, setFetchingData] = useState(null);
+    const [hourlyData, setHourlyData] = useState([]); // Define hourlyData state
+    const [is15MinuteIncrement, setIs15MinuteIncrement] = useState(false); // Define is15MinuteIncrement state
+    const [isLoading, setIsLoading] = useState(true); // Add a loading state
     
     const fetchData = () => {
       if (selectedFileName) {
@@ -48,13 +51,38 @@ function HomeChart({selectedFileName}) {
               const entryDate = new Date(entry[dateColumn]);
               return entryDate >= startDate && entryDate <= endDate;
             });
-  
-            setJsonData(filteredData);
-            setFetchingData(false);
+
+            const hourlyData = {};
+            filteredData.forEach((entry) => {
+              const entryDate = new Date(entry[dateColumn]);
+              const hourKey = `${entryDate.getHours()}:00`; // Hourly key, e.g., "8:00", "9:00"
+              if (!hourlyData[hourKey]) {
+                hourlyData[hourKey] = {
+                  totalUsage: 0,
+                  solarUsage: 0,
+                  count: 0,
+                };
+              }
+              hourlyData[hourKey].totalUsage += calculateTotalUsage(entry);
+              hourlyData[hourKey].solarUsage += entry.solar * 0.25;
+              hourlyData[hourKey].count++;
+            });
+
+            const timeIncrement = new Date(filteredData[1][dateColumn]) - new Date(filteredData[0][dateColumn]);
+            setIs15MinuteIncrement(timeIncrement === 900000); // 900000ms = 15 mins
+          
+
+            setHourlyData(hourlyData);
+            setJsonData(jsonData);
+            setFetchingData(false);            
+            setIsLoading(false); // Set loading state to false when data is fetched
+
           })
           .catch((error) => {
             console.error('Error grabbing JSON Data:', error);
             setFetchingData(false);
+            setIsLoading(false); // Set loading state to false when data is fetched
+
           });
       }
     };
@@ -64,17 +92,21 @@ function HomeChart({selectedFileName}) {
       if (selectedFileName) {
         fetchData(); // Fetch data when selectedFileName changes
       }
-    }, [selectedFileName, dateColumn]);
+    }, [selectedFileName, dateColumn, is15MinuteIncrement]);
 
       console.log("Data in State:", jsonData);
+      console.log("Data in State:", hourlyData);
 
       function calculateTotalUsage(entry) {
         if ('grid' in entry && 'solar' in entry) {
-          return (entry.grid + entry.solar) * 0.25;
-        }
-        else {
+          if (is15MinuteIncrement) {
+            return (entry.grid + entry.solar) * 0.25;
+          }
+          return entry.grid + entry.solar;
+        } 
+        else { //if no grid and no solar column manually calc usage
           let total = 0;
-
+      
           for (const key in entry) {
             if (key !== dateColumn && key !== 'grid' && key !== 'solar') {
               const value = entry[key];
@@ -83,27 +115,30 @@ function HomeChart({selectedFileName}) {
               }
             }
           }
-          return total * 0.25;
+      
+          if (is15MinuteIncrement) { //if 15 min increments, convert to kwh
+            return total * 0.25;
+          }
+      
+          return total;
         }
       }
 
-   
-      const labels = jsonData?.map((item) => item[dateColumn]);
-
-      const totalUsage = jsonData?.map(calculateTotalUsage);
-
-      const solarData = jsonData?.map((item) => item.solar * 0.25);
       
-      const totalUsageSum = totalUsage.reduce((acc, value) => acc + value, 0);
+
+      const hourlyLabels = Object.keys(hourlyData);
+      const hourlyTotalUsage = hourlyLabels.map((hour) => hourlyData[hour]?.totalUsage);
+      const hourlySolarData = hourlyLabels.map((hour) => hourlyData[hour]?.solarUsage);
+      const totalUsageSum = hourlyTotalUsage.reduce((acc, value) => acc + value, 0);
 
 
 
     const chartData = {
-        labels: labels,
+        labels: hourlyLabels,
         datasets: [
             {
                 label: 'Total Usage of Home',
-                data: totalUsage,
+                data: hourlyTotalUsage,
                 fill: true,
                 borderColor: 'green',
                 backgroundColor: 'rgba(19, 146, 97, 0.2)', // Set the background color for bars
@@ -114,7 +149,7 @@ function HomeChart({selectedFileName}) {
             },
             {
                 label: 'Solar',
-                data: solarData,
+                data: hourlySolarData,
                 fill: true,
                 borderColor: 'grey',
                 backgroundColor: 'rgba(255, 255, 0, 0.2)',
@@ -149,6 +184,7 @@ function HomeChart({selectedFileName}) {
 
     return (
         <div>
+
             <h2>Total House Usage 24 Hours</h2>
             <h3>Total Usage : {totalUsageSum} kWh</h3>
             <Line data={chartData} options={chartOptions}/>
