@@ -190,7 +190,7 @@ function OneYear({selectedFileName}) {
     return (
         <div>
             <h2>Total House Usage One Year</h2>
-            <h3>Total Usage: {totalKWhConsumed} kWh</h3>
+            <h3>Total Usage: {totalKWhConsumed.toFixed(2)} kWh</h3>
             <Line data={chartData} options={chartOptions}/>
         </div>
     );

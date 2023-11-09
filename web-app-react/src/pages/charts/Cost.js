@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Line, Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { Chart }            from 'react-chartjs-2'
 
-function HomeChart({selectedFileName}) {
+function Cost({selectedFileName}) {
     const [jsonData, setJsonData] = useState([]);
     const [dateColumn, setDateColumn] = useState(null); // Initialize dateColumn state
     const [fetchingData, setFetchingData] = useState(null);
     const [hourlyData, setHourlyData] = useState([]); // Define hourlyData state
     const [is15MinuteIncrement, setIs15MinuteIncrement] = useState(false); // Define is15MinuteIncrement state
     const [isLoading, setIsLoading] = useState(true); // Add a loading state
+    const [selectedStartDate, setSelectedStartDate] = useState(null); // Add selectedStartDate state
+
     
     const fetchData = async () => {
       setFetchingData(true);
@@ -41,7 +43,7 @@ function HomeChart({selectedFileName}) {
         setDateColumn(newDateColumn);
   
         // Calculate the start date as the earliest date found in the data
-        const startDate = new Date(data[0][newDateColumn]);
+        const startDate = selectedStartDate || new Date(data[0][newDateColumn]);
   
         // Calculate the end date as 24 hours after the start date
         const endDate = new Date(startDate);
@@ -60,21 +62,14 @@ function HomeChart({selectedFileName}) {
           if (!newHourlyData[hourKey]) {
             newHourlyData[hourKey] = {
               totalUsage: 0,
-              BatUsage: 0,
-              Charge: 0,
-              DisCharge: 0,
+              totalAfter: 0,
               count: 0,
             };
           }
-          newHourlyData[hourKey].totalUsage += calculateTotalUsage(entry);
-          newHourlyData[hourKey].BatUsage += entry.net * 0.25;
-          newHourlyData[hourKey].Charge += entry.charge * 0.25;
-          newHourlyData[hourKey].DisCharge += entry.discharge * 0.25;
+          newHourlyData[hourKey].totalUsage += calculateTotalCost(entry);
+          newHourlyData[hourKey].totalAfter += calculateTotalCostAfter(entry);
           newHourlyData[hourKey].count++;
         });
-  
-        const timeIncrement = new Date(filteredData[1][newDateColumn]) - new Date(filteredData[0][newDateColumn]);
-        setIs15MinuteIncrement(timeIncrement === 900000); // 900000ms = 15 mins
   
         setHourlyData(newHourlyData);
         setJsonData(data);
@@ -96,99 +91,68 @@ function HomeChart({selectedFileName}) {
       };
   
       fetchDataWrapper();
-    }, [selectedFileName, dateColumn, is15MinuteIncrement]);
+    }, [selectedFileName, dateColumn]);
 
-      console.log("Data in State:", jsonData);
-      console.log("Data in State:", hourlyData);
-
-      function calculateTotalUsage(entry) {
-        if ('grid' in entry) {
-          if (is15MinuteIncrement) {
-            return (entry.grid * 0.25);
-          }
-          return entry.grid;;
+    function calculateTotalCost(entry) {
+        if ('cost_before' in entry) {
+          
+          return entry.cost_before;
         } 
-        else if ('grid' in entry && 'net' in entry) {
-          if (is15MinuteIncrement) {
-            return (entry.grid) * 0.25;
-          }
-          return entry.grid;
-        } 
+        
         else { //if no grid and no solar column manually calc usage
-          let total = 0;
+          
       
-          for (const key in entry) {
-            if (key !== dateColumn && key !== 'grid' && key !== 'solar') {
-              const value = entry[key];
-              if (!isNaN(value)) {
-                total += value;
-              }
-            }
-          }
-      
-          if (is15MinuteIncrement) { //if 15 min increments, convert to kwh
-            return total * 0.25;
-          }
-      
-          return total;
+          return null;
         }
       }
 
+      function calculateTotalCostAfter(entry) {
+        if ('cost_after' in entry) {
+          
+          return entry.cost_after;
+        } 
+        
+        else { //if no grid and no solar column manually calc usage
+          
       
-
-      const hourlyLabels = Object.keys(hourlyData);
-      const hourlyTotalUsage = hourlyLabels.map((hour) => hourlyData[hour]?.totalUsage);
-      const hourlyBatData = hourlyLabels.map((hour) => hourlyData[hour]?.BatUsage);
-      const hourlyCharge = hourlyLabels.map((hour) => hourlyData[hour]?.Charge);
-      const hourlyDisCharge = hourlyLabels.map((hour) => hourlyData[hour]?.DisCharge);
-      const totalUsageSum = hourlyTotalUsage.reduce((acc, value) => acc + value, 0);
+          return null;
+        }
+      }
 
 
 
-    const chartData = {
+    const hourlyLabels = Object.keys(hourlyData);
+    const hourlyTotalCost = hourlyLabels.map((hour) => hourlyData[hour]?.totalUsage);
+    const hourlyTotalAfter = hourlyLabels.map((hour) => hourlyData[hour]?.totalAfter);
+    const totalCostSum = hourlyTotalCost.reduce((acc, value) => acc + value, 0);
+    const totalCostAfter = hourlyTotalAfter.reduce((acc, value) => acc + value, 0);
+
+
+      const chartData = {
         labels: hourlyLabels,
         datasets: [
             {
-                label: 'Total Usage of Home without Battery',
-                data: hourlyTotalUsage,
+                label: 'Cost Before',
+                data: hourlyTotalCost,
+                fill: true,
+                borderColor: 'grey',
+                backgroundColor: 'rgba(255, 128, 0, 0.2)', // Set the background color for bars
+                borderWidth: 1, // Set the border width for bars
+                hoverBackgroundColor: 'rgba(255, 128, 0, 0.4)', // Set the background color when hovering
+                type: 'bar',
+
+            },
+            {
+                label: 'Cost After',
+                data: hourlyTotalAfter,
                 fill: true,
                 borderColor: 'green',
                 backgroundColor: 'rgba(46, 204, 113, 0.2)', // Set the background color for bars
                 borderWidth: 1, // Set the border width for bars
                 hoverBackgroundColor: 'rgba(46, 204, 113, 0.4)', // Set the background color when hovering
-                type: 'line',
+                type: 'bar',
 
             },
-            {
-                label: 'With Battery',
-                data: hourlyBatData,
-                fill: true,
-                borderColor: 'grey',
-                backgroundColor: 'rgba(127, 140, 141, 0.2)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(127, 140, 141, 0.4)',
-                type: 'line',
-              },
-              {
-                label: 'Battery Charge',
-                data: hourlyCharge,
-                fill: true,
-                borderColor: 'grey',
-                backgroundColor: 'rgba(243, 156, 18, 0.2)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(243, 156, 18, 0.4)',
-                type: 'bar',
-              },
-              {
-                label: 'Battery DisCharge',
-                data: hourlyDisCharge,
-                fill: true,
-                borderColor: 'grey',
-                backgroundColor: 'rgba(52, 152, 219, 0.2)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(52, 152, 219, 0.4)',
-                type: 'bar',
-              },
         ],
         
     };
@@ -206,7 +170,7 @@ function HomeChart({selectedFileName}) {
             y: {
                 title: {
                     display: true,
-                    text: 'kWh',
+                    text: 'Cost',
                 },
                 beginAtZero: true, // Customize Y-axis as needed
             },
@@ -214,14 +178,59 @@ function HomeChart({selectedFileName}) {
         },
     };
 
+    const getFormattedDate = (date) => {
+        if (jsonData && jsonData[0] && dateColumn) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        } else {
+            return null; // or handle it accordingly based on your requirements
+        }
+    };
+    
+
+    const handleStartDateChange = (event) => {
+        const selectedDate = new Date(event.target.value);
+      
+        // Check if the selected date is within the range of your data
+        const earliestDate = new Date(jsonData[0][dateColumn]);
+        const latestDate = new Date(jsonData[jsonData.length - 1][dateColumn]);
+      
+        if (selectedDate >= earliestDate && selectedDate <= latestDate) {
+          setSelectedStartDate(selectedDate);
+          // Call fetchData when the selected date changes
+          fetchData();
+        } else {
+          // Provide feedback to the user if the selected date is outside the data range
+          alert("Please select a date within the range of your data.");
+        }
+      };
+      
+
     return (
         <div>
 
-            <h2>Total House Usage 24 Hours</h2>
-            <h3>Total Usage : {totalUsageSum.toFixed(2)} kWh</h3>
+            <h2>Total Cost 24 Hours</h2>
+
+            {/* Add a dropdown for users to select the start date */}
+            <label htmlFor="startDate">Select Start Date:</label>
+            <input
+            type="date"
+            id="startDate"
+            name="startDate"
+            onChange={handleStartDateChange}
+            min={isLoading ? "" : getFormattedDate(new Date(jsonData[0][dateColumn]))}
+            max={isLoading ? "" : getFormattedDate(new Date(jsonData[jsonData.length - 1][dateColumn]))}
+            />
+            <h3>Total Cost Before : ${totalCostSum}</h3>
+            <h3>Total Cost After : ${totalCostAfter}</h3>
             <Line data={chartData} options={chartOptions}/>
         </div>
     );
 }
 
-export default HomeChart;
+
+
+
+export default Cost;

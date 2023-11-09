@@ -6,7 +6,9 @@ import { Chart }            from 'react-chartjs-2'
 import HomeChart from '../charts/GraphOne'
 import OneMonth from '../charts/OneMonthUsage';
 import OneYear from '../charts/FullYear';
+import Cost from '../charts/Cost';
 import solar from './solar.jpg';
+import CostOneMonth from '../charts/CostOneMonth';
 
 
 
@@ -158,6 +160,12 @@ function Home() {
               >
                 1 Year
               </button>
+              <button
+                className={activeTab === 'tab4' ? 'active-tab' : 'tab'}
+                onClick={() => handleTabClick('tab4')}
+              >
+                Cost
+              </button>
             </div>
 
             {activeTab === 'mainGraph' && (
@@ -178,6 +186,12 @@ function Home() {
               <div>
                 <h2>12 month power Usage</h2>
                 <OneYear selectedFileName={selectedFileName}/>
+              </div>
+            )}
+            {activeTab === 'tab4' && (
+              <div>
+                <h2>Cost</h2>
+                <CostOneMonth selectedFileName={selectedFileName}/>
               </div>
             )}
           </div>
