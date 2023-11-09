@@ -10,37 +10,34 @@ function OneYear({selectedFileName}) {
     const [startDate, setStartDate] = useState(null); // Manage start date with useState
     const [fetchingData, setFetchingData] = useState(false);
 
-    const fetchData = () => {
-        if (selectedFileName) {
-            setFetchingData(true);
-            const filename = selectedFileName;
-            axios
-            .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
-            .then((response) => {
-                const data = response.data;
-
-                if (data.length === 0) {
-                    console.error('No data found.');
-                    return;
-                  }
-
-                if (!dateColumn) {
-                    for (const key in data[0]) {
-                    if (data[0].hasOwnProperty(key)) {
-                        const sampleValue = data[0][key];
-                        if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
-                        setDateColumn(key);
-                        break;
-                        }
-                    }
-                    }
-                }
-            
-                    if (!dateColumn) {
-                    console.error('No date column found in the data.');
-                    setFetchingData(false);
-                    return;
-                    }
+    const fetchData = async () => {
+        setFetchingData(true);
+        const filename = selectedFileName;
+    
+        try {
+          const response = await axios.get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`);
+          const data = response.data;
+    
+          let newDateColumn = null;
+    
+          // Find the date column dynamically by checking if values can be parsed as Dates
+          for (const key in data[0]) {
+            if (data[0].hasOwnProperty(key)) {
+              const sampleValue = data[0][key];
+              if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
+                newDateColumn = key;
+                break;
+              }
+            }
+          }
+    
+          if (!newDateColumn) {
+            console.error('No date column found in the data.');
+            setFetchingData(false);
+            return;
+          }
+    
+          setDateColumn(newDateColumn);
 
                     const timestamps = response.data.map((entry) => new Date(entry[dateColumn]).getTime());
                     const minTimestamp = Math.min(...timestamps);
@@ -55,22 +52,27 @@ function OneYear({selectedFileName}) {
                     setJsonData(filteredData);
                     setFetchingData(false);
 
-            })
-            .catch((error) => {
-                console.error('Error grabbing JSON Data:', error);
-                setFetchingData(false);
-            });
-        } 
-    };
 
-    useEffect(() => {
-        if (selectedFileName) {
-          fetchData(); // Fetch data when selectedFileName changes
-        }
-      }, [selectedFileName, dateColumn]);
+                } catch (error) {
+                    console.error('Error grabbing JSON Data:', error);
+                    setFetchingData(false);
+          
+                  }
+                };
+              
+                useEffect(() => {
+                  const fetchDataWrapper = async () => {
+                    if (selectedFileName) {
+                      await fetchData();
+                    }
+                  };
+              
+                  fetchDataWrapper();
+                }, [selectedFileName, dateColumn]);
     
     const labels = [];
     const monthlyTotalKWh = [];
+    const monthlyNetTotal = [];
 
     // Calculate the total kWh consumed for each month
     const calculateTotalKWhForMonth = (monthData) => {
@@ -94,6 +96,18 @@ function OneYear({selectedFileName}) {
         }, 0);
     };
 
+        // Calculate the total kWh consumed for each month
+        const calculateTotalNetForMonth = (monthData) => {
+            return monthData.reduce((total, entry) => {
+                if ('net' in entry) {
+                    return total + (entry.net * 0.25); // Convert grid (kW) to kWh for each 15-minute interval
+                }
+                else {
+                    return null;
+                }
+            }, 0);
+        };
+
     if (jsonData.length > 0) {
         let currentMonth = -1;
         let currentYear = -1;
@@ -114,6 +128,7 @@ function OneYear({selectedFileName}) {
             } else {
                 labels.push(`${currentMonth + 1}/${currentYear}`);
                 monthlyTotalKWh.push(calculateTotalKWhForMonth(currentMonthData));
+                monthlyNetTotal.push(calculateTotalNetForMonth(currentMonthData));
                 currentMonth = entryMonth;
                 currentYear = entryYear;
                 currentMonthData = [entry];
@@ -122,6 +137,7 @@ function OneYear({selectedFileName}) {
 
         labels.push(`${currentMonth + 1}/${currentYear}`);
         monthlyTotalKWh.push(calculateTotalKWhForMonth(currentMonthData));
+        monthlyNetTotal.push(calculateTotalNetForMonth(currentMonthData));
     }
 
     const totalKWhConsumed = monthlyTotalKWh.reduce((acc, value) => acc + value, 0);
@@ -138,6 +154,15 @@ function OneYear({selectedFileName}) {
                 borderWidth: 1, // Set the border width for bars
                 hoverBackgroundColor: 'rgba(19, 146, 97, 0.4)', // Set the background color when hovering
             },
+            {
+                label: 'With Battery',
+                data: monthlyNetTotal,
+                fill: true,
+                borderColor: 'green',
+                backgroundColor: 'rgba(127, 140, 141, 0.2)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(127, 140, 141, 0.4)',
+              },
         ],
         
     };
