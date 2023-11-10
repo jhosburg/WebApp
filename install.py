@@ -87,4 +87,4 @@ else:  # For Linux and Mac
 
 run_in_virtualenv(virtualenv_commands,dest_file_path)
 
-print("All packages for the website have been properly installed")
+print("All packages for the web application have been successfully installed")
