@@ -18,6 +18,14 @@ Packages neccessary to run:
 **PROJECT MANAGEMENT**
 "TeamGantt"
 
+**Run Web Application**
+    To view the website as a user, you can run the run_as_user.py script. It will 
+    invoke the backend server as well as run the web application development server.
+    You will still need to install the necessary dependencies using install.py or manually 
+    installing the packages yourself.
+
+**Install Necessary Dependencies**
+    Run the install.py script to install the required dependencies to view the website.
 
 ## RULES
 

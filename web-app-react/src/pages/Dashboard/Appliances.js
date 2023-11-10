@@ -226,7 +226,7 @@ function Appliances() {
         </div>
         <div className="buttonContainer">
           <button onClick={onClose} className="modalButton" id='cancelButton'>Cancel</button>
-          <button className="modalButton" id='confirmButton'>Confirm</button>
+          <button onClick={onClose} className="modalButton" id='confirmButton'>Confirm</button>
         </div>
       </div>
     );
