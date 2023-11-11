@@ -33,8 +33,9 @@ CSRF_COOKIE_NAME = 'csrftoken'  # Default CSRF cookie name
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Add the origin of your frontend application
-    # Add other origins as needed
-]
+    'http://127.0.0.1:3000',
+    
+    ]
 
 ALLOWED_HOSTS = ['*']
 
@@ -89,15 +90,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sdei',
+    #'sdei',
     'corsheaders',
     'rest_framework',
-]
+    'sdei.apps.SdeiConfig', 
+    ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -137,6 +139,17 @@ DATABASES = {
     }
 }
 
+## User model
+AUTH_USER_MODEL = 'sdei.AppUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

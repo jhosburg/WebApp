@@ -147,3 +147,13 @@ Use these commands if you clone the repo and the backend(Django) does not run:
 
 
 **New Comments Coming Soon! Stay Tuned!**
+
+
+
+
+
+{
+  "email": "test@example.com",
+   "username": "tester",
+   "password": "testing123"
+}
