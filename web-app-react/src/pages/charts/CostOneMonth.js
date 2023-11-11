@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import { Chart }            from 'react-chartjs-2'
-import DatePicker from 'react-datepicker';
+
 
 function CostOneMonth({selectedFileName}) {
     const [jsonData, setJsonData] = useState([]);
