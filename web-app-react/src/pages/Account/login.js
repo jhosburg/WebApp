@@ -1,69 +1,163 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useNavigate, useHistory } from 'react-router-dom'; // Import useHistory
 import './login.css';
 import logo_pic from './graphic_seaDragon.png';
+import axios from 'axios';
 
 function Login() {
   const { control, handleSubmit, formState: { errors } } = useForm();
-  
-  const onSubmit = (data) => {
-    // Handle form submission logic here
-    console.log(data);
+  const [loading, setLoading] = useState(false);
+  const history = useHistory(); // Define history using useHistory
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      const response = await axios.post('http://127.0.0.1:8000/sdei/login/', data);
+      console.log(response.data);
+      history.push('/dashboard'); // Use history for navigation
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   return (
-    <div className="main">
-      <div className='logo'>
-        <img src={logo_pic} alt="Logo" />
-      </div>
-
-      <div className="login">
-        <h1>SIGN IN</h1>
-
-        <div className='username'>
-          <div className='input'>
-            <Controller
-              name="username"
-              control={control}
-              defaultValue=""
-              rules={{ required: 'Username is required' }}
-              render={({ field }) => <input {...field} placeholder="Username" />}
-            />
-            {errors.username && <p>{errors.username.message}</p>}
-          </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="main">
+        <div className='logo'>
+          <img src={logo_pic} alt="Logo" />
         </div>
 
-        <div className='password'> 
-          <div className='input'>
-            <Controller
-              name="password"
-              control={control}
-              defaultValue=""
-              rules={{ required: 'Password is required' }}
-              render={({ field }) => <input type="password" {...field} placeholder="Password" />}
-            />
-            {errors.password && <p>{errors.password.message}</p>}
-          </div>
-        </div>
+        <div className="login">
+          <h1>SIGN IN</h1>
 
-
-        <div>
-          <div>
-            <button className='btn-link-container' onClick={handleSubmit(onSubmit)}>
-            <a className="btn-link">SIGN IN</a>
-            </button>
+          <div className='email'>
+            <div className='input'>
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                rules={{ required: 'Email is required' }}
+                render={({ field }) => <input {...field} placeholder="Email" />}
+              />
+              {errors.email && <p>{errors.email.message}</p>}
+            </div>
           </div>
-          
+
+          <div className='password'> 
+            <div className='input'>
+              <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                rules={{ required: 'Password is required' }}
+                render={({ field }) => <input type="password" {...field} placeholder="Password" />}
+              />
+              {errors.password && <p>{errors.password.message}</p>}
+            </div>
+          </div>
 
           <div>
-            <button className='btn-link-container'>
-              <a className="btn-link" href="/Signup">SIGNUP</a>
-            </button>
+            <div>
+              <button className='btn-link-container' type="submit">
+                <span className="btn-link">SIGN IN</span>
+              </button>
+            </div>
+
+            <div>
+              <button className='btn-link-container'>
+                <a className="btn-link" href="/Signup">SIGNUP</a>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
 
 export default Login;
+
+
+
+
+
+
+
+  // function Login() {
+  //   const { control, handleSubmit, formState: { errors } } = useForm();
+  
+  //   const onSubmit = async (data) => {
+  //     try {
+  //       const response = await axios.post('http://your-django-server/api/login/', data);
+  //       console.log(response.data);
+  //       // Perform any necessary actions upon successful login (e.g., redirect)
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+
+
+
+
+//   return (
+//     <div className="main">
+//       <div className='logo'>
+//         <img src={logo_pic} alt="Logo" />
+//       </div>
+
+//       <div className="login">
+//         <h1>SIGN IN</h1>
+
+//         <div className='email'>
+//           <div className='input'>
+//             <Controller
+//               name="email"
+//               control={control}
+//               defaultValue=""
+//               rules={{ required: 'email is required' }}
+//               render={({ field }) => <input {...field} placeholder="email" />}
+//             />
+//             {errors.username && <p>{errors.username.message}</p>}
+//           </div>
+//         </div>
+
+//         <div className='password'> 
+//           <div className='input'>
+//             <Controller
+//               name="password"
+//               control={control}
+//               defaultValue=""
+//               rules={{ required: 'Password is required' }}
+//               render={({ field }) => <input type="password" {...field} placeholder="Password" />}
+//             />
+//             {errors.password && <p>{errors.password.message}</p>}
+//           </div>
+//         </div>
+
+
+//         <div>
+//           <div>
+//             <button className='btn-link-container' onClick={handleSubmit(onSubmit)}>
+//             <a className="btn-link">SIGN IN</a>
+//             </button>
+//           </div>
+          
+
+//           <div>
+//             <button className='btn-link-container'>
+//               <a className="btn-link" href="/Signup">SIGNUP</a>
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Login;
