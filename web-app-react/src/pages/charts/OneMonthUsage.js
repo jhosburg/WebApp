@@ -10,38 +10,34 @@ function OneMonth({selectedFileName}) {
     const [fetchingData, setFetchingData] = useState(false);
 
     
-    const fetchData = () => {
-      if (selectedFileName) {
-        setFetchingData(true);
-        const filename = selectedFileName;
-        axios
-          .get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`)
-          .then((response) => {
-            const data = response.data;
-    
-            if (data.length === 0) {
-              console.error('No data found.');
-              return;
-            }
-
-            // Find the date column dynamically by checking if values can be parsed as Dates
-          if (!dateColumn) {
-            for (const key in data[0]) {
-              if (data[0].hasOwnProperty(key)) {
-                const sampleValue = data[0][key];
-                if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
-                  setDateColumn(key);
-                  break;
-                }
-              }
+    const fetchData = async () => {
+      setFetchingData(true);
+      const filename = selectedFileName;
+  
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`);
+        const data = response.data;
+  
+        let newDateColumn = null;
+  
+        // Find the date column dynamically by checking if values can be parsed as Dates
+        for (const key in data[0]) {
+          if (data[0].hasOwnProperty(key)) {
+            const sampleValue = data[0][key];
+            if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
+              newDateColumn = key;
+              break;
             }
           }
-      
-            if (!dateColumn) {
-              console.error('No date column found in the data.');
-              setFetchingData(false);
-              return;
-            }
+        }
+  
+        if (!newDateColumn) {
+          console.error('No date column found in the data.');
+          setFetchingData(false);
+          return;
+        }
+  
+        setDateColumn(newDateColumn);
     
             // Find the minimum and maximum timestamps in the dataset
             const timestamps = data.map((entry) => new Date(entry[dateColumn]).getTime());
@@ -57,24 +53,30 @@ function OneMonth({selectedFileName}) {
     
             setJsonData(filteredData);
             setFetchingData(false);
-          })
-          .catch((error) => {
-            console.error('Error grabbing JSON Data:', error);
-            setFetchingData(false);
-          });
-      }
-    };
+          
 
-    useEffect(() => {
-      if (selectedFileName) {
-        fetchData(); // Fetch data when selectedFileName changes
-      }
-    }, [selectedFileName, dateColumn]);
+        } catch (error) {
+          console.error('Error grabbing JSON Data:', error);
+          setFetchingData(false);
+
+        }
+      };
+    
+      useEffect(() => {
+        const fetchDataWrapper = async () => {
+          if (selectedFileName) {
+            await fetchData();
+          }
+        };
+    
+        fetchDataWrapper();
+      }, [selectedFileName, dateColumn]);
 
 
     
       const labels = [];
       const dailyTotalUsage = [];
+      const dailyNetUsage = [];
 
       // Calculate the total kWh consumed for each day
       const calculateTotalUsageForDay = (date) => {
@@ -103,6 +105,23 @@ function OneMonth({selectedFileName}) {
               }, 0);
       };
 
+            // Calculate the total kWh consumed for each day
+            const calculateTotalNetUsageForDay = (date) => {
+              return jsonData
+                  .filter((entry) => {
+                      const entryDate = new Date(entry[dateColumn]);
+                      return entryDate.toDateString() === date.toDateString();
+                  })
+                  .reduce((total, entry) => {
+                    if ('net' in entry) {
+                      return total + (entry.net * 0.25); // Convert grid (kW) to kWh for each 15-minute interval
+                    }
+                    else { //if there is no grid column, compute usage by adding all columns besides time column
+                      return null;
+                    }
+                  }, 0);
+          };
+
 
     
       if (jsonData.length > 0) {
@@ -111,6 +130,7 @@ function OneMonth({selectedFileName}) {
         while (currentDate <= endDate) {
           labels.push(currentDate.toLocaleDateString());
           dailyTotalUsage.push(calculateTotalUsageForDay(currentDate));
+          dailyNetUsage.push(calculateTotalNetUsageForDay(currentDate));
           currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
         }
       }
@@ -130,6 +150,15 @@ function OneMonth({selectedFileName}) {
         backgroundColor: 'rgba(19, 146, 97, 0.2)',
         borderWidth: 1,
         hoverBackgroundColor: 'rgba(19, 146, 97, 0.4)',
+      },
+      {
+        label: 'With Battery',
+        data: dailyNetUsage,
+        fill: true,
+        borderColor: 'green',
+        backgroundColor: 'rgba(127, 140, 141, 0.2)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(127, 140, 141, 0.4)',
       },
     ],
   };
@@ -158,7 +187,7 @@ function OneMonth({selectedFileName}) {
     return (
         <div>
             <h2>Total House Usage One Month</h2>
-            <h3>Total Usage: {totalKWhConsumed} kWh</h3>
+            <h3>Total Usage: {totalKWhConsumed.toFixed(2)} kWh</h3>
             <Line data={chartData} options={chartOptions}/>
         </div>
     );

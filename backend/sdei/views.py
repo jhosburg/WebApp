@@ -98,14 +98,13 @@ def moving_average_fill(data, window_size=5):
         filled_item = item.copy()
 
         for key, value in item.items():
-            if value is None:
+            if value is None or value == 0:
                 start_idx = max(0, i - window_size + 1)
                 end_idx = i + 1
-                recent_values = [data[j][key] for j in range(start_idx, end_idx) if data[j][key] is not None]
+                recent_values = [data[j][key] for j in range(start_idx, end_idx) if data[j][key] is not None and data[j][key] != 0]
                 if recent_values:
                     filled_item[key] = sum(recent_values) / len(recent_values)
                 else:
-                    
                     filled_item[key] = 0  # You can change 0 to any other default value
 
         filled_data.append(filled_item)

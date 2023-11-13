@@ -31,7 +31,7 @@ function Appliances() {
 
   const toggleAppliance = (index) => {
     if (!masterSwitch) return;
-    if (showPowerOffModal, showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     if (openAppliance === index) {
       setOpenAppliance(null);
     } else {
@@ -41,7 +41,7 @@ function Appliances() {
 
   const togglePower = (index) => {
     if (!masterSwitch) return;
-    if (showPowerOffModal, showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     const isTurningOff = appliances[index].power === true;
 
     if (isTurningOff) {
@@ -57,7 +57,7 @@ function Appliances() {
   };
 
   const toggleMasterSwitch = () => {
-    if (showPowerOffModal, showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     const newState = !masterSwitch;
     setMasterSwitch(newState);
     const updatedAppliances = appliances.map((appliance) => ({
@@ -68,7 +68,7 @@ function Appliances() {
   };
 
   const addNewAppliance = () => {
-    if (showPowerOffModal, showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     // Define a new appliance
     const defaultName = 'New Room';
     const newAppliance = {
@@ -81,13 +81,13 @@ function Appliances() {
   };
 
   const startEditing = (index) => {
-    if (showPowerOffModal, showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     setEditingApplianceIndex(index);
     setEditedApplianceName(appliances[index].name);
   };
 
   const saveEditedName = (index) => {
-    if (showPowerOffModal, showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     const updatedAppliances = [...appliances];
     const truncatedName = editedApplianceName.substring(0, 20);
     updatedAppliances[index].name = truncatedName;
@@ -97,7 +97,7 @@ function Appliances() {
 
   
   const deleteAppliance = (index) => {
-    if (showPowerOffModal, showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     setApplianceToDelete(index);
     setShowConfirmation(true);
   };
@@ -226,7 +226,7 @@ function Appliances() {
         </div>
         <div className="buttonContainer">
           <button onClick={onClose} className="modalButton" id='cancelButton'>Cancel</button>
-          <button className="modalButton" id='confirmButton'>Confirm</button>
+          <button onClick={onClose} className="modalButton" id='confirmButton'>Confirm</button>
         </div>
       </div>
     );
