@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import './Contacts.css';
+
 const Contacts = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -20,7 +21,6 @@ const Contacts = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your form submission logic here
     console.log('Form submitted:', formData);
     // You can implement form submission to your backend or any other desired action
   };
@@ -29,62 +29,62 @@ const Contacts = () => {
     <div className="contact-container">
       <div className="main-content">
         <h1>Contact Us</h1>
-        <p>
-          Please use the form to get  in touch with us.
-        </p>
+        <h2>Please use the form to get in touch with us.</h2>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-row">
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-row">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <label htmlFor="subject">Subject:</label>
-          <input
-            type="text"
-            id="subject"
-            name="subject"
-            value={formData.subject}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-row">
+            <label htmlFor="subject">Subject:</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              value={formData.subject}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <label htmlFor="message">Message:</label>
-          <textarea
-            id="message"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            required
-          ></textarea>
+          <div className="form-row">
+            <label htmlFor="message">Message:</label>
+            <textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+            ></textarea>
+          </div>
 
           <button type="submit">Submit</button>
         </form>
       </div>
       <div className="side-note">
-       <p>
-          Sea Dragon Energy, Inc. is a majority- <br />
-          owned subsidiary of Global Air <br />
-          Logistics and Training, Inc., a veteran- <br />
-          owned small business focused on <br />
-          developing warfighter centric <br />
-          solutions for command, control and <br />
-          communications (C3) systems.
-
+        <h2>About Our Company</h2>
+        <p>
+          Sea Dragon Energy, Inc. is a majority-owned subsidiary of Global Air Logistics and Training, Inc., a veteran-owned small business focused on developing warfighter-centric solutions for command, control, and communications (C3) systems.
         </p>
         <div className="company-info">
           <h3>Corporate Address:</h3>
@@ -95,7 +95,7 @@ const Contacts = () => {
             <br />
             USA
           </p>
-                    <h3>Email:</h3>
+          <h3>Email:</h3>
           <p>
             www.seadragon.energy
           </p>
