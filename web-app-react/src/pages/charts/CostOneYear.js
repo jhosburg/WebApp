@@ -68,12 +68,49 @@ function CostOneYear({ selectedFileName }) {
     const monthlyTotalCostBefore = [];
     const monthlyTotalCostAfter = [];
 
+        // Calculate the total kWh consumed for each month
+        // const calculateTotalKWhForMonth = (monthData) => {
+        //     return monthData.reduce((total, entry) => {
+        //         if ('grid' in entry) {
+        //             return total + (entry.grid * 0.25); // Convert grid (kW) to kWh for each 15-minute interval
+        //         }
+        //         else {
+        //             let totalNoGrid = 0;
+    
+        //             for (const key in entry) {
+        //               if (key !== dateColumn && key !== 'grid' && key !== 'solar') {
+        //                 const value = entry[key];
+        //                 if (!isNaN(value)) {
+        //                   totalNoGrid += value;
+        //             }
+        //           }
+        //         }
+        //         return total + (totalNoGrid * 0.25);
+        //     }
+        //     }, 0);
+        // };
+    
+
     const calculateTotalCostBeforeForMonth = (monthData) => {
         return monthData.reduce((total, entry) => {
             if ('cost_before' in entry) {
                 return total + entry.cost_before;
-            } else {
-                return null;
+            } 
+            else if ('grid' in entry){
+                return total + ((entry.grid * 0.25) * 0.43); //0.43 = average kwh price
+            }
+            else {
+                let totalNoGrid = 0;
+
+                for (const key in entry) {
+                    if (key !== dateColumn && key !== 'grid' && key !== 'solar') {
+                        const value = entry[key];
+                        if (!isNaN(value)) {
+                            totalNoGrid += value;
+                        }
+                    }
+                }
+                return total + ((totalNoGrid*0.25)*0.43);  //0.43 = average kwh price
             }
         }, 0);
     };
