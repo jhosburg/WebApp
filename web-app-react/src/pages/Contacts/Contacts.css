@@ -1,72 +1,87 @@
+/* Contacts.css */
+
 .contact-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap; /* Allow flex items to wrap to the next line */
   justify-content: center;
-  min-height: 100vh;
-  background-color: #fff;
-  font-family: 'Arial', sans-serif;
+  align-items: center;
+  gap: 30px; /* Add a space between Contact and Side Note */
+  padding: 50px;
+  background-color: #f4f4f4; /* Light background color for the entire container */
 }
 
-.info-section {
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-  padding: 40px;
+.main-content {
+  max-width: 70%;
 }
 
-.company-info, .contact-form {
-  flex: 1;
-  background-color: #f7f7f7;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center; /* Center the text */
+h1 {
+  color: #27ae60;
+  font-size: 36px;
+  margin-bottom: 20px;
 }
 
-.company-info h2, .contact-form h2 {
-  color: #007bff;
-  font-size: 24px;
+h2 {
+  color: #666;
+  font-size: 20px;
 }
 
-.company-info p {
-  color: #333;
-}
-
-.image-section {
-  flex: 1;
+.side-note {
+  max-width: 40%;
+  background-color: #2ecc71;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #f7f7f7;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.image-description {
-  margin-top: 10px;
-  color: #333;
-}
-
-.ac_btn {
-  background-color: #007bff;
   color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.ac_btn:hover {
-  background-color: #0056b3;
-}
-
-/* Center the text in the contact form */
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.side-note h2 {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.company-info {
+  margin-top: 30px;
+}
+
+.form-row {
+  margin-bottom: 20px;
+}
+
+form {
+  max-width: 100%;
+}
+
+label {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.submit-button {
+  background-color:#3498db;
+  color: #fff;
+  padding: 12px 18px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #2980b9;;
 }
