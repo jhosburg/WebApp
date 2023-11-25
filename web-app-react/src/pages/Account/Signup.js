@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Signup_img from './signup_img.jpg';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +18,7 @@ const Signup = () => {
         password,
       });
 
-      // Handle successful signup (e.g., redirect to login page)
+      // Handle successful signup 
       console.log('Signup success:', response.data);
     } catch (error) {
       // Handle signup error
@@ -46,42 +48,6 @@ const Signup = () => {
 export default Signup;
 
 
-
-// import React, { useState } from 'react';
-// import { useForm, Controller } from 'react-hook-form';
-// import './Signup.css';
-// import Signup_img from './signup_img.jpg';
-// import { Link } from 'react-router-dom';
-// import axios from 'axios'; // Import Axios library
-
-// function Signup() {
-//   const { control, handleSubmit, formState: { errors } } = useForm();
-
-//   const onSubmit = async (data) => {
-//     try {
-//       // Use Axios to make a GET request to fetch user information
-//       const response = await axios.get('http://localhost:8000/sdei/register');
-      
-//       // Extract user information from the response
-//       const { username, password, email } = response.data;
-
-//       // Log the fetched user information
-//       console.log('Fetched User Information:', { username, password, email });
- 
-//       // Now you can send the data to the login endpoint
-//       const loginResponse = await axios.post('http://localhost:8000/sdei/login', {
-//         username: data.username,
-//         password: data.password,
-//         email: data.email,
-//       });
-
-//       // Handle the login response as needed
-//       console.log('Login Response:', loginResponse.data);
-//     } catch (error) {
-//       // Handle errors if any
-//       console.error('Error:', error);
-//     }
-//   };
 
 //   return (
 //     <div className="main">
