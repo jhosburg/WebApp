@@ -1,4 +1,4 @@
-# api/urls.py
+
 
 from django.urls import path
 from . import views
@@ -12,9 +12,9 @@ urlpatterns = [
     path('json_upload/', UploadJsonView.as_view(), name="json_upload"),
     path('grabJson/<str:filename>/', views.grab_json, name='grabJson'),
     path('file_list/', views.file_list, name='file_list'),
+ 	path('register', views.UserRegister.as_view(), name='register'),
+	path('login', views.UserLogin.as_view(), name='login'),
+	path('logout/', views.UserLogout.as_view(), name='logout'),
+	path('user', views.UserView.as_view(), name='user'),
 ]
-
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
