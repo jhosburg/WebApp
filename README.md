@@ -155,3 +155,36 @@ Use these commands if you clone the repo and the backend(Django) does not run:
 
 
 **New Comments Coming Soon! Stay Tuned!**
+
+
+
+register example:
+
+{
+  "email": "test@example.com",
+   "username": "tester",
+   "password": "testing123"
+}
+
+
+{
+  "email": "sandysolaqa12@yahoo.com",
+   "username": "sandy",
+   "password": "Compe@1995"
+}
+
+  {
+     
+    "email": "admin@yahoo.com",
+    "username": "sandy1212
+    "password": "Compe@1995",
+
+  }
+
+
+  login
+  
+  {
+    "email": "admin@yahoo.com",
+    "password": "Compe@1995"
+  }
