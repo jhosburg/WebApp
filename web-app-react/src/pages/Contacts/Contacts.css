@@ -12,6 +12,7 @@
 
 .main-content {
   max-width: 70%;
+  margin-right: 10px; /* Add a small right margin */
 }
 
 h1 {
@@ -27,12 +28,12 @@ h2 {
 
 .side-note {
   max-width: 40%;
-  background-color: #2ecc71;
+  background-color: #27ae60;;
   padding: 20px;
   color: #fff;
   text-align: center;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(47, 37, 37, 0.1);
 }
 
 .side-note h2 {
@@ -66,7 +67,7 @@ textarea {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box;
+  resize:vertical;
 }
 
 .submit-button {
