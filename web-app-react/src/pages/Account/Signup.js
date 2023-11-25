@@ -2,16 +2,37 @@ import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import './Signup.css';
 import Signup_img from './signup_img.jpg';
-import {Link} from "react-router-dom";
+import { Link } from 'react-router-dom';
+import axios from 'axios'; // Import Axios library
 
 function Signup() {
   const { control, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = (data) => {
-    // Handle form submission logic here
-    console.log(data);
-  };
+  const onSubmit = async (data) => {
+    try {
+      // Use Axios to make a GET request to fetch user information
+      const response = await axios.get('http://localhost:8000/sdei/register');
+      
+      // Extract user information from the response
+      const { username, password, email } = response.data;
 
+      // Log the fetched user information
+      console.log('Fetched User Information:', { username, password, email });
+ 
+      // Now you can send the data to the login endpoint
+      const loginResponse = await axios.post('http://localhost:8000/sdei/login', {
+        username: data.username,
+        password: data.password,
+        email: data.email,
+      });
+
+      // Handle the login response as needed
+      console.log('Login Response:', loginResponse.data);
+    } catch (error) {
+      // Handle errors if any
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <div className="main">
@@ -37,7 +58,7 @@ function Signup() {
           </div>
         </div>
 
-        <div className='DOB'>
+        {/* <div className='DOB'>
           <div className='input'>
             <Controller
               name="dob"
@@ -61,7 +82,7 @@ function Signup() {
             />
             {errors.phone && <p>{errors.phone.message}</p>}
           </div>
-        </div>
+        </div> */}
 
         <div className='email'>
           <div className='input'>
@@ -89,7 +110,7 @@ function Signup() {
           </div>
         </div>
 
-        <div className='password'> 
+        {/* <div className='password'> 
           <div className='input'>
             <Controller
               name="confirmPassword"
@@ -97,23 +118,20 @@ function Signup() {
               defaultValue=""
               rules={{ 
                 required: 'Confirm Password is required',
-                validate: value => value === control.getValues(" ") || 'Passwords do not match'
+                validate: value => value === control.getValues("password") || 'Passwords do not match'
               }}
               render={({ field }) => <input {...field} type="password" placeholder="Confirm Password" />}
             />
             {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
-
-
-            
           </div>
-        </div>
+        </div> */}
 
         <div> 
           <div>
             <button className='btn-link-container' onClick={handleSubmit(onSubmit)}>
-            <a className="btn-link" href="./Home">SIGN UP</a> 
+              <a className="btn-link" href="./Home">SIGN UP</a>
             </button>
-          </div>  
+          </div>
 
           <div>
             <button className='btn-existing-user-container'>

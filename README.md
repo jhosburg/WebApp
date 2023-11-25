@@ -172,3 +172,19 @@ register example:
    "username": "sandy",
    "password": "Compe@1995"
 }
+
+  {
+     
+    "email": "admin@yahoo.com",
+    "username": "sandy1212
+    "password": "Compe@1995",
+
+  }
+
+
+  login
+  
+  {
+    "email": "admin@yahoo.com",
+    "password": "Compe@1995"
+  }

@@ -1,4 +1,3 @@
-# api/views.py
 
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -18,15 +17,14 @@ from .serializers import JsonModelSerializer
 from django.http import JsonResponse
 import pandas as pd
 from django.conf import settings
-
-
 from django.contrib.auth import get_user_model, login, logout
 from rest_framework.authentication import SessionAuthentication
-
 from rest_framework.response import Response
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
 from rest_framework import permissions
 from .validations import custom_validation, validate_email, validate_password
+
+# from django.views.decorators.csrf import csrf_exempt
 
 
 class UserRegister(APIView):
@@ -40,7 +38,7 @@ class UserRegister(APIView):
 				return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
+# @csrf_exempt
 class UserLogin(APIView):
 	permission_classes = (permissions.AllowAny,)
 	authentication_classes = (SessionAuthentication,)
@@ -57,11 +55,15 @@ class UserLogin(APIView):
 
 
 class UserLogout(APIView):
-	permission_classes = (permissions.AllowAny,)
-	authentication_classes = ()
-	def post(self, request):
-		logout(request)
-		return Response(status=status.HTTP_200_OK)
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+
+    def post(self, request):
+        print("UserLogout view called")
+        logout(request)
+        print("User logged out")
+        return Response(status=status.HTTP_200_OK)
+
 
 
 class UserView(APIView):
