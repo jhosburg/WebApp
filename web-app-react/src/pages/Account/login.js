@@ -1,18 +1,41 @@
-import React from 'react';
+
+
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+// import { Link } from 'react-router-dom'; // Add this line
 import './login.css';
 import logo_pic from './graphic_seaDragon.png';
 
-function Login() {
-  const { control, handleSubmit, formState: { errors } } = useForm();
-  
-  const onSubmit = (data) => {
-    // Handle form submission logic here
-    console.log(data);
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/sdei/login', {
+        email,
+        password,
+      });
+
+      // Handle successful login (e.g., set user authentication token)
+      console.log('Login success:', response.data);
+
+      // Redirect to a new page after successful login
+      navigate('/Appliances');
+    } catch (error) {
+      // Handle login error
+      console.error('Login error:', error);
+    }
   };
 
   return (
-    <div className="main">
+    <form className="login-form" onSubmit={handleLogin}>
       <div className='logo'>
         <img src={logo_pic} alt="Logo" />
       </div>
@@ -20,50 +43,36 @@ function Login() {
       <div className="login">
         <h1>SIGN IN</h1>
 
-        <div className='username'>
+        <div className='email'>
           <div className='input'>
-            <Controller
-              name="username"
-              control={control}
-              defaultValue=""
-              rules={{ required: 'Username is required' }}
-              render={({ field }) => <input {...field} placeholder="Username" />}
-            />
-            {errors.username && <p>{errors.username.message}</p>}
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
         </div>
 
-        <div className='password'> 
+        <div className='password'>
           <div className='input'>
-            <Controller
-              name="password"
-              control={control}
-              defaultValue=""
-              rules={{ required: 'Password is required' }}
-              render={({ field }) => <input type="password" {...field} placeholder="Password" />}
-            />
-            {errors.password && <p>{errors.password.message}</p>}
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
         </div>
-
 
         <div>
           <div>
-            <button className='btn-link-container' onClick={handleSubmit(onSubmit)}>
-            <a className="btn-link">SIGN IN</a>
+            <button  className='btn-link-container' type="submit">
+              SIGN IN
             </button>
           </div>
-          
 
           <div>
             <button className='btn-link-container'>
-              <a className="btn-link" href="/Signup">SIGNUP</a>
+              <Link to="/Signup" className="btn-link">SIGNUP</Link>
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
 
 export default Login;
+
+

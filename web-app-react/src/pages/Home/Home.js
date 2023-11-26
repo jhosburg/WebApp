@@ -9,6 +9,7 @@ import OneYear from '../charts/FullYear';
 import Cost from '../charts/Cost';
 import solar from './solar.jpg';
 import CostOneMonth from '../charts/CostOneMonth';
+import CostOneYear from '../charts/CostOneYear';
 
 
 
@@ -21,6 +22,7 @@ function Home() {
    const [fileList, setFileList] = useState([]);
    const [selectedFile, setSelectedFile] = useState('');
    const [selectedFileName, setSelectedFileName] = useState(''); // Add a state variable to store the selected file name
+   const [selectedChartType, setSelectedChartType] = useState('CostOneMonth'); // Default to CostOneMonth
 
 
   useEffect(() => {
@@ -105,6 +107,10 @@ function Home() {
       const handleTabClick = (tabName) => {
         setActiveTab(tabName);
       };
+
+      const handleChartTypeChange = (event) => {
+        setSelectedChartType(event.target.value);
+    };
 
       return (
          <><div className="main">
@@ -191,7 +197,19 @@ function Home() {
             {activeTab === 'tab4' && (
               <div>
                 <h2>Cost</h2>
-                <CostOneMonth selectedFileName={selectedFileName}/>
+            <div>
+                <label htmlFor="chartType">Select Chart Type: </label>
+                <select id="chartType" value={selectedChartType} onChange={handleChartTypeChange}>
+                    <option value="CostOneMonth">Cost One Month</option>
+                    <option value="CostOneYear">Cost One Year</option>
+                </select>
+            </div>
+            {selectedChartType === 'CostOneMonth' && (
+                <CostOneMonth selectedFileName={selectedFileName} />
+            )}
+            {selectedChartType === 'CostOneYear' && (
+                <CostOneYear selectedFileName={selectedFileName} />
+            )}
               </div>
             )}
           </div>

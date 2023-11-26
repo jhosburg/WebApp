@@ -91,10 +91,23 @@ function CostOneMonth({selectedFileName}) {
               if ('cost_before' in entry) {
                 return total + entry.cost_before; // Convert grid (kW) to kWh for each 15-minute interval
               }
-              else { //if there is no grid column, compute usage by adding all columns besides time column
-                return null;
+              else if ('grid' in entry) { //if there is no grid column, compute usage by adding all columns besides time column
+                return total + ((entry.grid * 0.25) * 0.43); //0.43 = average kwh price
               }
-            }, 0);
+              else {
+                let totalNoGrid = 0;
+
+                for (const key in entry) {
+                    if (key !== dateColumn && key !== 'grid' && key !== 'solar') {
+                        const value = entry[key];
+                        if (!isNaN(value)) {
+                            totalNoGrid += value;
+                        }
+                    }
+                }
+                return total + ((totalNoGrid*0.25)*0.43);  //0.43 = average kwh price
+            }
+        }, 0);
     };
 
     const calculateTotalAfterForDay = (date) => {
@@ -191,8 +204,6 @@ function CostOneMonth({selectedFileName}) {
         <div>
 
             <h2>Total Cost One Month</h2>
-
-
             <h3>Total Cost Before : ${totalCostBefore.toFixed(2)}</h3>
             <h3>Total Cost After : ${totalCostAfter.toFixed(2)}</h3>
             <Line data={chartData} options={chartOptions}/>
