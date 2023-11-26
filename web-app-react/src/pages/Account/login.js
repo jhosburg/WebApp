@@ -44,12 +44,14 @@ const Login = () => {
         <h1>SIGN IN</h1>
 
         <div className='email'>
+          <h2>Email:</h2>
           <div className='input'>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
         </div>
 
         <div className='password'>
+          <h2>Password:</h2>
           <div className='input'>
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
