@@ -18,12 +18,10 @@ def run_npm_module(selected_dir):
 
 def run_in_virtualenv(command, selected_dir):
     try:
-
         if sys.platform.startswith('win'):  # For Windows
-            activate_cmd = 'activate && '
+            activate_cmd = 'call .venv\\Scripts\\activate && '
         else:  # For Linux and Mac
             activate_cmd = 'source .venv/bin/activate && '
-
 
         full_cmd = activate_cmd + command
         subprocess.check_call(full_cmd, shell=True, cwd=selected_dir)
@@ -37,9 +35,8 @@ print("Force quit will be required to exit: CNTRL + C")
 print("---------------------------------")
 time.sleep(1)
 
-
 print("\n \n---------------------------------")
-print("You will be nodified when the site is fully running")
+print("You will be notified when the site is fully running")
 print("---------------------------------")
 
 time.sleep(1)
@@ -55,9 +52,7 @@ if sys.platform.startswith('win'):  # For Windows
 else:  # For Linux and Mac
     run_back_end = Thread(target=run_in_virtualenv, args=('python3 manage.py runserver', back_file_path))
 
-
 run_front_end.start()
-
 run_back_end.start()
 
 time.sleep(10)
@@ -72,5 +67,3 @@ print("---------------------------------")
 
 run_front_end.join()
 run_back_end.join()
-
-
