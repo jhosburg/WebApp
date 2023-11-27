@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Appliances.css';
 import LivingRoom from '../charts/LivingRoom'
+import axios from 'axios';
+import ApplianceChart from '../charts/ApplianceChart';
 
 function Appliances() {
   const [openAppliance, setOpenAppliance] = useState(null);
@@ -16,6 +18,65 @@ function Appliances() {
   const [showPowerOffModal, setShowPowerOffModal] = useState(false);
   const [startTime, setStartTime] = useState({ hours: 0, minutes: 0 });
   const [endTime, setEndTime] = useState({ hours: 0, minutes: 0 });
+  const [selectedFile, setSelectedFile] = useState('');
+  const [selectedFileName, setSelectedFileName] = useState(''); // Add a state variable to store the selected file name
+  const [fileList, setFileList] = useState([]);
+  const [selectedApplianceName, setSelectedApplianceName] = useState('');
+
+
+  useEffect(() => {
+    // Fetch the list of files from your Django backend when the component mounts
+    axios.get('http://127.0.0.1:8000/sdei/file_list')
+      .then(response => {
+        console.log(response.data); // Check the response data
+        setFileList(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching file list:', error);
+      });
+  }, []);
+
+
+  const handleFileSelection = async (event) => {
+    const selectedFile = event.target.value;
+    setSelectedFile(selectedFile);
+    setSelectedFileName(event.target.options[event.target.selectedIndex].text);
+  
+    try {
+      // Fetch the JSON data from your Django backend based on the selected file
+      const response = await axios.get(`http://127.0.0.1:8000/sdei/grabJson/${selectedFile}`);
+      const jsonData = response.data;
+  
+      // Extract keys from the first object in the JSON
+      const firstObjectKeys = Object.keys(jsonData[0]);
+  
+      // Exclude the key associated with the timestamp
+      const applianceKeys = firstObjectKeys.filter((key) => key !== 'local_15min');
+  
+      // Map the keys to an array of objects with name and power properties
+      const appliances = applianceKeys.map((name) => ({ name, power: false }));
+  
+      // Update the state with the array of appliance objects
+      setAppliances(appliances);
+    } catch (error) {
+      console.error('Error fetching JSON data:', error);
+    }
+  };
+  
+  
+  
+  
+
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/sdei/file_list')
+      .then(response => {
+        console.log(response.data);
+        setFileList(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching file list:', error);
+      });
+  }, []);
 
   useEffect(() => {
     const savedAppliances = JSON.parse(localStorage.getItem('appliances'));
@@ -36,8 +97,10 @@ function Appliances() {
       setOpenAppliance(null);
     } else {
       setOpenAppliance(index);
+      setSelectedApplianceName(appliances[index].name); // Set the selected appliance name
     }
   };
+  
 
   const togglePower = (index) => {
     if (!masterSwitch) return;
@@ -131,16 +194,19 @@ function Appliances() {
   const toggleDropdown = (index) => {
     if (showDropdown === index) {
       setShowDropdown(null);
-    }
-    else {
+      setSelectedApplianceName(dropdownItems[index]); // Set the selected appliance name based on the index
+    } else {
       setShowDropdown(index);
     }
   };
+  
 
   const addApplianceToDropdown = (itemName) => {
-    const newDropdownItems = [...dropdownItems, itemName];
-    setDropdownItems(newDropdownItems);
+    setDropdownItems((prevItems) => [...prevItems, itemName]);
+    setSelectedApplianceName(itemName); // Set appliance name when dropdown item is selected
   }
+  
+  
 
   function ConfirmationDialog({ message, onConfirm, onCancel, index }) {
       return (
@@ -159,6 +225,8 @@ function Appliances() {
   const handleEndTimeChange = (hours, minutes) => {
     setEndTime({ hours, minutes });
   };
+
+  console.log('Selected Appliance Name:',selectedApplianceName);
 
   function PowerOffModal({ onClose, handleStartTimeChange, handleEndTimeChange }) {
     const hours = Array.from({ length: 24 }, (_, i) => i);
@@ -241,6 +309,15 @@ function Appliances() {
           <span className="slider round"></span>
         </label>
       </div>
+      <div style={{padding: '20px'}}>
+              <select value={selectedFile} onChange={handleFileSelection}>
+                <option value="">Select a file</option>
+                  {fileList.map((fileName, index) => (
+                <option key={index} value={fileName}>{fileName}</option>
+                  ))}
+              </select>
+
+            </div>
       <div className="appliances-container">
         {appliances && appliances.map((appliance, index) => (
           <div className={`appliance ${openAppliance === index ? 'open' : ''}`} key={index} onClick={() => toggleAppliance(index)}>
@@ -290,7 +367,7 @@ function Appliances() {
             </div>
             {openAppliance === index && (
               <div className="appliance-details">
-                <LivingRoom/>
+                <ApplianceChart selectedFileName={selectedFileName} applianceName={selectedApplianceName}/>
               </div>
             )}
           </div>

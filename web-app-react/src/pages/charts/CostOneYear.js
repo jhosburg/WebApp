@@ -210,15 +210,23 @@ function CostOneYear({ selectedFileName }) {
     return (
         <div>
           <h2>Total Cost One Month</h2>
-          <h3>Total Cost Before : ${totalCostBefore.toFixed(2)}</h3>
-          {totalCostAfter > 0 ? (
-            <h3>Total Cost After : ${totalCostAfter.toFixed(2)}</h3>
-          ) : (
-            <h3>Total Cost After : House is not optimized</h3>
-          )}
+          <div>
+            <h3>Total Cost Before: <span style={{color: 'red'}}>${totalCostBefore.toFixed(2)}</span></h3>
+            {totalCostAfter > 0 ? (
+              <div>
+                <h3>Total Cost After: <span style={{color: 'orange'}}>${totalCostAfter.toFixed(2)}</span></h3>
+                <h3>Total Savings: <span style={{color: '#008000'}}>${(totalCostBefore - totalCostAfter).toFixed(2)}</span></h3>
+              </div>
+            ) : (
+              <h3>Total Cost After: <span style={{color: 'orange'}}>House is not optimized</span></h3>
+            )}
+          </div>
           <Line data={chartData} options={chartOptions}/>
         </div>
       );
+      
+      
+      
 }
 
 export default CostOneYear;
