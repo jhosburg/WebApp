@@ -37,7 +37,7 @@
   right: 60px;
   height: 34px;
   line-height: 34px;
-  text-align: right;
+  text-align: center;
   padding-right: 10px;
 }
 
@@ -52,6 +52,7 @@
   -webkit-transition: 0.4s;
   transition: 0.2s;
   border-radius: 34px;
+  color: white;
 }
 
 .slider.round {
@@ -60,15 +61,30 @@
 
 .switch input:checked + .slider {
   background-color: #2b8b56;
+  color: white;
 }
 
 .switch input:checked + .slider.round {
   transform: translateX(25px);
 }
 
+/* Adjusted styling for the Master Switch text */
+.switch-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 34px;
+  right: 0;
+  padding-right: 10px;
+  padding-left: 10px; /* Added padding to keep the text inside the switch */
+  box-sizing: border-box;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
 .appliances-container {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   font-family: Arial, sans-serif;
   font-size: 20px;
@@ -76,12 +92,14 @@
 }
 
 .appliance {
-  width: 1000px;
+  width: 500px;
   cursor: pointer;
   background-color: #2b8b56;
   padding: 10px;
   border-radius: 5px;
   transition: background-color 0.5s ease-in-out;
+  box-sizing: border-box;
+  margin: 10px;
 }
 
 .appliance-header {
@@ -398,7 +416,7 @@ h2, p {
   }
 
   .appliance {
-    width: 365px;
+    width: 100%;
   }
 
   .appliances-container {
@@ -443,4 +461,8 @@ h2, p {
     padding: 8px 16px;
     margin-top: 10px;
   }
+  
+
+  
 }
+

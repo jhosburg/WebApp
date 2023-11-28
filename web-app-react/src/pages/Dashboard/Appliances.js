@@ -301,12 +301,18 @@ function Appliances() {
   }
 
   return (
+    <div className="report-container">
+    <div className="report-header">
+      <div className="text">
+        <h1 className="heading"></h1>
+      </div>
     <div className='center'>
       <div className="master-switch">
         <h1>Master Switch</h1>
         <label className="switch">
           <input type="checkbox" checked={masterSwitch} onChange={toggleMasterSwitch} />
-          <span className="slider round"></span>
+          <span className="slider round">{masterSwitch ? 'ON' : 'OFF'}</span>
+          
         </label>
       </div>
       <div style={{padding: '20px'}}>
@@ -317,6 +323,7 @@ function Appliances() {
                   ))}
               </select>
 
+            </div>
             </div>
       <div className="appliances-container">
         {appliances && appliances.map((appliance, index) => (
@@ -388,6 +395,7 @@ function Appliances() {
                 />
               )}
       <button className="add-new-appliance-btn" onClick={addNewAppliance}>Add New Room/Circuit</button>
+    </div>
     </div>
   );
 }
