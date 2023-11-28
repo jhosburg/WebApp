@@ -9,6 +9,7 @@ function Appliances() {
   const [masterSwitch, setMasterSwitch] = useState(true);
   const [appliances, setAppliances] = useState([]);
   const [editingApplianceIndex, setEditingApplianceIndex] = useState(null);
+  const [editingItemIndex, setEditingItemIndex] = useState(null);
   const [editedApplianceName, setEditedApplianceName] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [applianceToDelete, setApplianceToDelete] = useState(null);
@@ -200,13 +201,37 @@ function Appliances() {
     }
   };
   
+  const addItemToAppliance = (applianceIndex, itemName) => {
+    setAppliances((prevAppliances) => {
+      const updatedAppliances = [...prevAppliances];
 
-  const addApplianceToDropdown = (itemName) => {
-    setDropdownItems((prevItems) => [...prevItems, itemName]);
-    setSelectedApplianceName(itemName); // Set appliance name when dropdown item is selected
+      if (!updatedAppliances[applianceIndex].items) {
+        updatedAppliances[applianceIndex].items = [];
+      }
+
+      const newItem = {
+        name: itemName.substring(0, 20),
+        power: false,
+      };
+      updatedAppliances[applianceIndex].items.push(newItem);
+      return updatedAppliances;
+    });
+  };
+
+  
+  function Item({itemName, power}) {
+    return (
+      <div className={`item-tile ${power ? 'ON' : ''}`}>
+        <div className="item-header">{itemName}</div>
+        <div className="toggle-container">
+          <div className={`toggle-btn ${power ? 'ON' : ''}`}>
+            {power ? 'ON' : 'OFF'}
+          </div>
+        </div>
+      </div>
+    );
   }
-  
-  
+
 
   function ConfirmationDialog({ message, onConfirm, onCancel, index }) {
       return (
@@ -329,20 +354,7 @@ function Appliances() {
         {appliances && appliances.map((appliance, index) => (
           <div className={`appliance ${openAppliance === index ? 'open' : ''}`} key={index} onClick={() => toggleAppliance(index)}>
             <div className="appliance-header">
-            <div className="dropdown">
-                <button onClick={() => toggleDropdown(index)}>
-                  <i class='bx bxs-chevron-down' ></i>
-                </button>
-                {showDropdown === index && (
-                  <div className="dropdown-content">
-                    {dropdownItems.map((item, i) => (
-                      <button key={i} className="dropdown-item">
-                        {item}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+
               {editingApplianceIndex === index ? (
                 <input id='inputApplicationName'
                   type="text"
@@ -375,6 +387,22 @@ function Appliances() {
             {openAppliance === index && (
               <div className="appliance-details">
                 <ApplianceChart selectedFileName={selectedFileName} applianceName={selectedApplianceName}/>
+                <div className="items-grid">
+                  {appliance.items && appliance.items.map((item, itemIndex) => (
+                    <Item
+                      key={itemIndex}
+                      itemName={item.name}
+                      power={item.power}
+                      />
+                  ))}
+                  {editingItemIndex === index ? (
+                        <button id='applianceButton' onClick={() => saveEditedName(index)}>Save</button>
+                      ) : (
+                        <button id='applianceButton' onClick={() => startEditing(index)}>Edit</button>
+                      )}
+                      <button id='applianceButton' onClick={() => deleteAppliance(index)}>Delete{/* Add Delete button */}</button>
+                </div>
+                <button onClick={() => addItemToAppliance(index, 'New Item')}> Add Item </button>
               </div>
             )}
           </div>

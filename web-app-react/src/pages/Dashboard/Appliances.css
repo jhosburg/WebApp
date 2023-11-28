@@ -118,8 +118,13 @@
 }
 
 .appliance-details {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+
   align-items: center;
   padding: 10px;
 }
@@ -127,24 +132,6 @@
 .appliance-details img {
   max-width: 100%;
   max-height: 200px;
-}
-
-/* CSS for the dropdown items */
-.dropdown-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px;
-  background-color: #fff; /* Background color for the dropdown items */
-  border: 1px solid #ccc; /* Border for the dropdown items */
-  border-radius: 5px;
-  margin: 5px;
-}
-
-/* Style for the text inside the dropdown items */
-.dropdown-item {
-  font-size: 16px;
-  /* Add other styles as needed */
 }
 
 /* Toggling Style */
@@ -234,34 +221,6 @@
   background-color: #0056b3;
 }
 
-/* Style for dropdown items */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-.dropdown-content button {
-  padding: 10px;
-  text-align: left;
-  width: 100%;
-  border: none;
-  background-color: white;
-  cursor: pointer;
-}
-
-.dropdown-content button:hover {
-  background-color: #ddd;
-}
-
-/* Show dropdown on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
 #applianceButton {
   display: inline-block;
   padding: 10px 20px;
@@ -283,6 +242,35 @@
 
 #applianceButton:hover {
   background-color: #2b8b56;
+}
+
+/* Style for Items */
+.item-tile {
+  border: 1px solid #ddd;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: grid;
+  grid-template-columns: repeat(1,1fr);
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.item-tile:hover {
+  background-color: #f9f9f9;
+}
+
+.item-header {
+  font-weight: bold;
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
 }
 
 .powerOffModal {
@@ -373,8 +361,6 @@ h2, p {
   transform: translateY(-50%);
   font-size: 12px;
 }
-
-
 
 .modalButton {
   padding: 10px;
