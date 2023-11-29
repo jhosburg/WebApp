@@ -3,13 +3,11 @@
   margin: 11rem auto
 }
 
-
-
 .login {
   margin: 100px auto;
   background-color: rgb(241, 253, 247);
-  width: 30em;
-  height: 43em;
+  width: 29em;
+  height: 37em;
   position: relative;
   border-radius: 1em;
   box-shadow: 0 0.188em 1.550em rgb(156, 156, 156);
@@ -20,9 +18,9 @@
   opacity: 85%;
     
 }
-/* notice input has no dot becasue we are calling the html "input" tage from account.js */
+
 input{
-  background-color: #d2d2d2;
+  background-color: #bdb7b7;
   margin: 0 auto;
   padding: 16px;
   border-radius: 13px; 
@@ -32,21 +30,16 @@ input{
   
 }
 
-
-
 .user_img img {
   
   background-color: #b7f5cc;
   border-radius: 9em;
-  /* box-shadow: 0 0.188em 1.550em rgb(175, 243, 175); */
   width: 25%;
   margin: auto;
   position: absolute;
   
   right: 21rem;
-
 }
-
 
 .logo img{
   width: 33%;
@@ -56,12 +49,38 @@ input{
   left: 23rem;
 }
 
-.btn-link {
-  border-radius: 100px; 
+.btn-link-container {
+  border-radius: 100px;
   cursor: pointer;
   background-color: #bdb7b7;
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 0.188em 1.550em rgb(124, 245, 124);
   color: #000000;
   border: 0;
   display: block;
+  margin-top: 15px;
+}
+
+.btn-link-container:hover {
+  background-color: #2dbd39;
+}
+
+.btn-link {
+  text-decoration: none;
+  color: inherit;
+  padding: 10px 20px;
+  display: inline-block;
+}
+
+
+/* .exist-user {
+  cursor: pointer;
+  background-color: rgb(241, 253, 247);
+  color: #000000;
+  text-decoration: none;
+  font-size: 20px;
+} */
+
+.btn-existing-user-container {
+  background: none;
+  border: 0;
 }

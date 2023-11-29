@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 // import { Link } from 'react-router-dom'; // Add this line
-import './login.css';
+import './user.css';
 import logo_pic from './graphic_seaDragon.png';
 
 const Login = () => {
@@ -58,11 +58,11 @@ const Login = () => {
         </div>
 
         <div>
-          <div>
-            <button  className='btn-link-container' type="submit">
-              SIGN IN
+                <div>
+            <button className='btn-link-container'>
+              <a className="btn-link" >SIGN IN</a>  
             </button>
-          </div>
+           </div>
 
           <div>
             <button className='btn-link-container'>
