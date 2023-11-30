@@ -3,6 +3,7 @@ import './Appliances.css';
 import LivingRoom from '../charts/LivingRoom'
 import axios from 'axios';
 import ApplianceChart from '../charts/ApplianceChart';
+import SelectionChart from '../charts/SelectionChart';
 
 function Appliances() {
   const [openAppliance, setOpenAppliance] = useState(null);
@@ -23,6 +24,7 @@ function Appliances() {
   const [selectedFileName, setSelectedFileName] = useState(''); // Add a state variable to store the selected file name
   const [fileList, setFileList] = useState([]);
   const [selectedApplianceName, setSelectedApplianceName] = useState('');
+  const [activeAppliances, setActiveAppliances] = useState([]);
 
 
   useEffect(() => {
@@ -31,38 +33,60 @@ function Appliances() {
       .then(response => {
         console.log(response.data); // Check the response data
         setFileList(response.data);
+
+        // Retrieve the selected file from localStorage
+        const storedFileName = localStorage.getItem('selectedFileName');
+        if (storedFileName) {
+          setSelectedFile(storedFileName);
+          setSelectedFileName(storedFileName);
+          handleFileSelection({ target: { value: storedFileName } });
+        }
       })
       .catch(error => {
         console.error('Error fetching file list:', error);
       });
   }, []);
 
+  useEffect(() => {
+    // Filter out appliances with power set to false
+    const activeAppliancesData = appliances.filter(appliance => appliance.power);
+    setActiveAppliances(activeAppliancesData);
+  }, [appliances]);
+  
+
 
   const handleFileSelection = async (event) => {
-    const selectedFile = event.target.value;
-    setSelectedFile(selectedFile);
-    setSelectedFileName(event.target.options[event.target.selectedIndex].text);
-  
-    try {
-      // Fetch the JSON data from your Django backend based on the selected file
-      const response = await axios.get(`http://127.0.0.1:8000/sdei/grabJson/${selectedFile}`);
-      const jsonData = response.data;
-  
-      // Extract keys from the first object in the JSON
-      const firstObjectKeys = Object.keys(jsonData[0]);
-  
-      // Exclude the key associated with the timestamp
-      const applianceKeys = firstObjectKeys.filter((key) => key !== 'local_15min');
-  
-      // Map the keys to an array of objects with name and power properties
-      const appliances = applianceKeys.map((name) => ({ name, power: false }));
-  
-      // Update the state with the array of appliance objects
-      setAppliances(appliances);
-    } catch (error) {
-      console.error('Error fetching JSON data:', error);
+    if (event.target && event.target.options) {
+      const selectedFile = event.target.value;
+      setSelectedFile(selectedFile);
+      setSelectedFileName(event.target.options[event.target.selectedIndex].text);
+    
+      localStorage.setItem('selectedFileName', selectedFile);
+    
+      try {
+        // Fetch the JSON data from your Django backend based on the selected file
+        const response = await axios.get(`http://127.0.0.1:8000/sdei/grabJson/${selectedFile}`);
+        const jsonData = response.data;
+    
+        // Extract keys from the first object in the JSON
+        const firstObjectKeys = Object.keys(jsonData[0]);
+    
+        // Exclude the key associated with the timestamp
+        const applianceKeys = firstObjectKeys.filter((key) => key !== 'local_15min');
+    
+        // Map the keys to an array of objects with name and power properties
+        const appliances = applianceKeys.map((name) => ({ name, power: true }));
+    
+        // Update the state with the array of appliance objects
+        setAppliances(appliances);
+      } catch (error) {
+        console.error('Error fetching JSON data:', error);
+      }
+
     }
+    
   };
+  
   
   
   
@@ -424,6 +448,9 @@ function Appliances() {
               )}
       <button className="add-new-appliance-btn" onClick={addNewAppliance}>Add New Room/Circuit</button>
     </div>
+    <div><SelectionChart selectedFileName={selectedFileName} appliances={appliances}/></div>
+
+
     </div>
   );
 }
