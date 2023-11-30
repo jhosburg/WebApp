@@ -72,8 +72,8 @@ const Signup = () => {
         </div>
 
         <div className='exist-user'>
-          <button className='btn-existing-user-container' onClick={() => navigate('/login.js')}>
-            <Link to="/login">Already Registerd</Link>
+          <button className='btn-existing-user-container' onClick={() => navigate('/Account')}>
+            <Link to="/Account">Already Registerd</Link>
           </button>
         </div>
 
