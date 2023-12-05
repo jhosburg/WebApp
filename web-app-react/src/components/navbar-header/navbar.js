@@ -27,6 +27,7 @@ function Navbar() {
           <a className="nav-link" href="/Account">Account</a>
           <a className="nav-link" href="/About">About</a>
           <a className="nav-link" href="/Contacts">Contacts</a>
+          <a className="nav-link" href="/Profile">Profile</a>
         </div>
       </div>
     </nav>
