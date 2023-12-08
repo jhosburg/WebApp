@@ -155,9 +155,9 @@ function CostOneMonth({selectedFileName}) {
                 data: dailyTotalBefore,
                 fill: true,
                 borderColor: 'grey',
-                backgroundColor: 'rgba(255, 128, 0, 0.2)', // Set the background color for bars
+                backgroundColor: 'rgba(255, 99, 71, 0.2)', // Set the background color for bars
                 borderWidth: 1, // Set the border width for bars
-                hoverBackgroundColor: 'rgba(255, 128, 0, 0.4)', // Set the background color when hovering
+                hoverBackgroundColor: 'rgba(255, 99, 71, 0.4)', // Set the background color when hovering
                 type: 'bar',
 
             },
