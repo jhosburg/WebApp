@@ -199,7 +199,7 @@ function CostOneYear({ selectedFileName }) {
             y: {
                 title: {
                     display: true,
-                    text: 'Cost',
+                    text: 'Cost USD',
                 },
                 beginAtZero: true,
             },

@@ -31,6 +31,12 @@ function Home() {
       .then(response => {
         console.log(response.data); // Check the response data
         setFileList(response.data);
+        const storedFileName = localStorage.getItem('selectedFileName');
+        if (storedFileName) {
+          setSelectedFile(storedFileName);
+          setSelectedFileName(storedFileName);
+          handleFileSelection({ target: { value: storedFileName } });        
+        }
       })
       .catch(error => {
         console.error('Error fetching file list:', error);

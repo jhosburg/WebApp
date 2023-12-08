@@ -189,7 +189,7 @@ function CostOneMonth({selectedFileName}) {
             y: {
                 title: {
                     display: true,
-                    text: 'Cost',
+                    text: 'Cost USD',
                 },
                 beginAtZero: true, // Customize Y-axis as needed
             },
