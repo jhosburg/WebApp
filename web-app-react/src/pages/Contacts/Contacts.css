@@ -82,7 +82,7 @@ textarea {
   resize:vertical;
 }
 
-.submit-button {
+.submitButton {
   display: inline-block;
   padding: 10px 20px;
   font-size: 16px;
@@ -94,16 +94,16 @@ textarea {
   transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-.submit-button {
+.submitButton {
   background-color: #2b8b56;
   color: #fff;
 }
 
-.submit-button:hover {
+.submitButton:hover {
   background-color: rgb(32, 170, 94);
 }
 
-.submit-button:active {
+.submitButton:active {
   background-color: #1fcc6d;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
