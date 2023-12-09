@@ -158,33 +158,36 @@ Use these commands if you clone the repo and the backend(Django) does not run:
 
 
 
-register example:
+### register example:
 
 {
-  "email": "test@example.com",
-   "username": "tester",
-   "password": "testing123"
+  "email": "sdei@sdsu.edu",
+   "username": "sdeiadmin",
+   "password": "Compe492"
 }
 
 
-{
-  "email": "sandysolaqa12@yahoo.com",
-   "username": "sandy",
-   "password": "Compe@1995"
-}
-
-  {
-     
-    "email": "admin@yahoo.com",
-    "username": "sandy1212
-    "password": "Compe@1995",
-
-  }
-
-
-  login
+### login
   
-  {
-    "email": "admin@yahoo.com",
-    "password": "Compe@1995"
-  }
+ {
+   "email": "sdei@sdsu.edu",
+   "password": "Compe492"
+ }
+
+
+  ### postgreSQL Database instruction
+
+ - step 1: download https://www.postgresql.org/download/windows/
+           watch this video  https://www.youtube.com/watch?v=d--mEqEUybA
+
+ - step 2: follow this video: https://www.youtube.com/watch?v=69YkZqZgz9s
+
+ - step 3: establish connection
+        "pip install psycopg2-binary"
+        "install pip install Pillow"
+- step 5:
+        "python manage.py makemigrations"
+        "python manage.py sqlmigrate nameOFbackendFile 0001"
+        "python manage.py migrate"
+
+- step 6:  In your pgadmin, refresh the database and you should see a few new tables created along with our table
