@@ -78,12 +78,12 @@ const Contacts = () => {
             ></textarea>
           </div>
 
-          <button type="submit">Submit</button>
+          <button className='submit-button' type="submit">Submit</button>
         </form>
       </div>
       <div className="side-note">
         <h2>About Our Company</h2>
-        <p>
+        <p className='aboutText'>
           Sea Dragon Energy, Inc. is a majority-owned subsidiary of Global Air Logistics and Training, Inc., a veteran-owned small business focused on developing warfighter-centric solutions for command, control, and communications (C3) systems.
         </p>
         <div className="company-info">
@@ -94,10 +94,10 @@ const Contacts = () => {
             Florence, TX 76527
             <br />
             USA
+            <br />
           </p>
-          <h3>Email:</h3>
-          <p>
-            www.seadragon.energy
+          <p className='sdeiLink' >
+            <a href='https://www.seadragon.energy/'>www.seadragon.energy</a>
           </p>
         </div>
       </div>
