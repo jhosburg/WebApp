@@ -6,6 +6,11 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+// if(currentUser){
+
+// }
+
+
   useEffect(() => {
     // Fetch user data when the component mounts
     fetchUserData();
@@ -23,8 +28,9 @@ const Profile = () => {
   
   const handleLogout = async () => {
     try {
-      await axios.post('http://127.0.0.1:8000/sdei/logout/');
+      const response = await axios.post('http://127.0.0.1:8000/sdei/logout/');
       // Redirect or perform other actions after logout
+      console.log('logout success:', response.data);
       navigate('/Account');
     } catch (error) {
       console.error('Error logging out:', error);

@@ -5,8 +5,15 @@ from django.contrib.auth import get_user_model, authenticate
 from django.core.exceptions import ValidationError
 
 
+
 UserModel = get_user_model()
 
+
+class ProfileViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ('username',)
+		
 class UserRegisterSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
@@ -16,6 +23,30 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 		user_obj.username = clean_data['username']
 		user_obj.save()
 		return user_obj
+	
+
+
+################################
+# class UserProfileSerializer(serializers.Serializer):
+# 	username = serializers.usernameField()
+	
+# 	##
+# 	def check_user(self, clean_data):
+# 		user = authenticate(username=clean_data['username'])
+# 		if not user:
+# 			raise ValidationError('user not found')
+# 		return user
+
+class UserProfileSerializer(serializers.Serializer):
+    username = serializers.CharField()
+
+    def check_user(self, clean_data):
+        user = authenticate(username=clean_data['username'])
+        if not user:
+            raise ValidationError('User not found')
+        return user
+	
+##########################
 
 class UserLoginSerializer(serializers.Serializer):
 	email = serializers.EmailField()

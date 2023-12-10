@@ -2,20 +2,22 @@
 
 .contact-container {
   display: flex;
-  flex-wrap: wrap; /* Allow flex items to wrap to the next line */
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   gap: 30px; /* Add a space between Contact and Side Note */
   padding: 50px;
+  margin: 0 200px 0 200px;
   background-color: #f4f4f4; /* Light background color for the entire container */
 }
 
 .main-content {
+  flex: 1;
   max-width: 70%;
   margin-right: 10px; /* Add a small right margin */
 }
 
 h1 {
+  text-align: center;
   color: #27ae60;
   font-size: 36px;
   margin-bottom: 20px;
@@ -26,10 +28,19 @@ h2 {
   font-size: 20px;
 }
 
+.sdeiLink a{
+  text-decoration: none;
+  color: white;
+}
+
+.aboutText {
+  font-size: 20px;
+}
+
 .side-note {
   max-width: 40%;
-  background-color: #27ae60;;
-  padding: 20px;
+  background-color: #2b8b56;;
+  padding: 30px 20px 40px 20px;
   color: #fff;
   text-align: center;
   border-radius: 8px;
@@ -38,7 +49,7 @@ h2 {
 
 .side-note h2 {
   color: #fff;
-  font-size: 24px;
+  font-size: 30px;
   margin-bottom: 10px;
 }
 
@@ -51,6 +62,7 @@ h2 {
 }
 
 form {
+  text-align: center;
   max-width: 100%;
 }
 
@@ -70,19 +82,29 @@ textarea {
   resize:vertical;
 }
 
-.submit-button {
-  background-color:#3498db;
-  color: #fff;
-  padding: 12px 18px;
+.submitButton {
+  display: inline-block;
+  padding: 10px 20px;
   font-size: 16px;
-  border: none;
-  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
   cursor: pointer;
-  width: 100%;
-  margin-top: 20px;
-  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-.submit-button:hover {
-  background-color: #2980b9;;
+.submitButton {
+  background-color: #2b8b56;
+  color: #fff;
 }
+
+.submitButton:hover {
+  background-color: rgb(32, 170, 94);
+}
+
+.submitButton:active {
+  background-color: #1fcc6d;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+

@@ -77,6 +77,8 @@ function OneMonth({selectedFileName}) {
       const labels = [];
       const dailyTotalUsage = [];
       const dailyNetUsage = [];
+      const dailyBatteryCharge = [];
+      const dailyBatteryDischarge = [];
 
       // Calculate the total kWh consumed for each day
       const calculateTotalUsageForDay = (date) => {
@@ -132,6 +134,8 @@ function OneMonth({selectedFileName}) {
           dailyTotalUsage.push(calculateTotalUsageForDay(currentDate));
           dailyNetUsage.push(calculateTotalNetUsageForDay(currentDate));
           currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
+
+
         }
       }
 
@@ -150,6 +154,7 @@ function OneMonth({selectedFileName}) {
         backgroundColor: 'rgba(19, 146, 97, 0.2)',
         borderWidth: 1,
         hoverBackgroundColor: 'rgba(19, 146, 97, 0.4)',
+        type: 'line',
       },
       {
         label: 'With Battery',
@@ -159,7 +164,9 @@ function OneMonth({selectedFileName}) {
         backgroundColor: 'rgba(127, 140, 141, 0.2)',
         borderWidth: 1,
         hoverBackgroundColor: 'rgba(127, 140, 141, 0.4)',
+        type: 'line',
       },
+
     ],
   };
 

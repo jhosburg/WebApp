@@ -168,9 +168,9 @@ function CostOneYear({ selectedFileName }) {
                 data: monthlyTotalCostBefore,
                 fill: true,
                 borderColor: 'grey',
-                backgroundColor: 'rgba(255, 128, 0, 0.2)',
+                backgroundColor: 'rgba(255, 99, 71, 0.2)',
                 borderWidth: 1,
-                hoverBackgroundColor: 'rgba(255, 128, 0, 0.4)',
+                hoverBackgroundColor: 'rgba(255, 91, 71, 0.4)',
                 type: 'bar',
             },
             {
@@ -199,7 +199,7 @@ function CostOneYear({ selectedFileName }) {
             y: {
                 title: {
                     display: true,
-                    text: 'Cost',
+                    text: 'Cost USD',
                 },
                 beginAtZero: true,
             },

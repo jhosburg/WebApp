@@ -2,6 +2,13 @@
 
 import React, { useState } from 'react';
 import './Contacts.css';
+import emailjs  from 'emailjs-com';
+
+const publicKey = "u9iMG1UvbcLRW0x73";
+const serviceID = "service_t8fct18";
+const templateID = "template_nj6s87n";
+
+emailjs.init(publicKey);
 
 const Contacts = () => {
   const [formData, setFormData] = useState({
@@ -21,8 +28,23 @@ const Contacts = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // You can implement form submission to your backend or any other desired action
+    console.log('Form submitted!', formData);
+    const inputFields = {
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+    };
+
+    emailjs.send(serviceID, templateID, inputFields)
+      .then(() => {
+        console.log('Email sent successfully!');
+        // Add any success handling code here
+      })
+      .catch((error) => {
+        console.error('Error sending email:', error);
+        // Add error handling code here
+      });
   };
 
   return (
@@ -78,12 +100,12 @@ const Contacts = () => {
             ></textarea>
           </div>
 
-          <button type="submit">Submit</button>
+          <button className='submitButton' type="submit">Submit</button>
         </form>
       </div>
       <div className="side-note">
         <h2>About Our Company</h2>
-        <p>
+        <p className='aboutText'>
           Sea Dragon Energy, Inc. is a majority-owned subsidiary of Global Air Logistics and Training, Inc., a veteran-owned small business focused on developing warfighter-centric solutions for command, control, and communications (C3) systems.
         </p>
         <div className="company-info">
@@ -94,10 +116,10 @@ const Contacts = () => {
             Florence, TX 76527
             <br />
             USA
+            <br />
           </p>
-          <h3>Email:</h3>
-          <p>
-            www.seadragon.energy
+          <p className='sdeiLink' >
+            <a href='https://www.seadragon.energy/'>www.seadragon.energy</a>
           </p>
         </div>
       </div>
