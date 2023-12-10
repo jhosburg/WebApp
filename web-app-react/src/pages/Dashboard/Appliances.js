@@ -27,6 +27,8 @@ function Appliances() {
   const [activeAppliances, setActiveAppliances] = useState([]);
 
 
+
+
   useEffect(() => {
     // Fetch the list of files from your Django backend when the component mounts
     axios.get('http://127.0.0.1:8000/sdei/file_list')
@@ -41,6 +43,9 @@ function Appliances() {
           setSelectedFileName(storedFileName);
           handleFileSelection({ target: { value: storedFileName } });
         }
+
+        const initialOpenAppliances = Array(appliances.length).fill(false);
+        setOpenAppliances(initialOpenAppliances);
       })
       .catch(error => {
         console.error('Error fetching file list:', error);
@@ -53,8 +58,6 @@ function Appliances() {
     setActiveAppliances(activeAppliancesData);
   }, [appliances]);
   
-
-
   const handleFileSelection = async (event) => {
     if (event.target && event.target.options) {
       const selectedFile = event.target.value;
@@ -116,14 +119,10 @@ function Appliances() {
   }, [appliances]);
 
   const toggleAppliance = (index) => {
-    if (!masterSwitch) return;
-    if (showPowerOffModal || showConfirmation) return;
-    if (openAppliance === index) {
-      setOpenAppliance(null);
-    } else {
-      setOpenAppliance(index);
-      setSelectedApplianceName(appliances[index].name); // Set the selected appliance name
-    }
+    if (!masterSwitch || showPowerOffModal || showConfirmation) return;
+  
+    setOpenAppliance((prevIndex) => (prevIndex === index ? null : index));
+    setSelectedApplianceName(appliances[index].name);
   };
   
 

@@ -92,7 +92,6 @@
 }
 
 .appliance {
-  width: 500px;
   cursor: pointer;
   background-color: #2b8b56;
   padding: 10px;
@@ -109,11 +108,11 @@
   position: relative;
 }
 
-.appliance:hover {
+.appliance.open {
   background-color: #ddd;
 }
 
-.appliance.open {
+.appliance.open:hover {
   background-color: #ddd;
 }
 
