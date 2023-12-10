@@ -160,7 +160,7 @@ function Appliances() {
     // Define a new appliance
     const defaultName = 'New Room';
     const newAppliance = {
-      name: defaultName.substring(0, 20),
+      name: defaultName.substring(0, 15),
       power: false,
     };
 
@@ -177,7 +177,7 @@ function Appliances() {
   const saveEditedName = (index) => {
     if (showPowerOffModal || showConfirmation) return;
     const updatedAppliances = [...appliances];
-    const truncatedName = editedApplianceName.substring(0, 20);
+    const truncatedName = editedApplianceName.substring(0, 15);
     updatedAppliances[index].name = truncatedName;
     setAppliances(updatedAppliances);
     setEditingApplianceIndex(null);
@@ -234,7 +234,7 @@ function Appliances() {
       }
 
       const newItem = {
-        name: itemName.substring(0, 20),
+        name: itemName.substring(0, 15),
         power: false,
       };
       updatedAppliances[applianceIndex].items.push(newItem);
@@ -419,14 +419,7 @@ function Appliances() {
                       power={item.power}
                       />
                   ))}
-                  {editingItemIndex === index ? (
-                        <button id='applianceButton' onClick={() => saveEditedName(index)}>Save</button>
-                      ) : (
-                        <button id='applianceButton' onClick={() => startEditing(index)}>Edit</button>
-                      )}
-                      <button id='applianceButton' onClick={() => deleteAppliance(index)}>Delete{/* Add Delete button */}</button>
                 </div>
-                <button onClick={() => addItemToAppliance(index, 'New Item')}> Add Item </button>
               </div>
             )}
           </div>
@@ -446,7 +439,7 @@ function Appliances() {
                   onCancel={cancelDelete}
                 />
               )}
-      <button className="add-new-appliance-btn" onClick={addNewAppliance}>Add New Room/Circuit</button>
+{/*       <button className="add-new-appliance-btn" onClick={addNewAppliance}>Add New Room/Circuit</button> */}
     </div>
     <div><SelectionChart selectedFileName={selectedFileName} appliances={appliances}/></div>
 
