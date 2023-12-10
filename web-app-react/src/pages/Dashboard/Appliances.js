@@ -25,6 +25,7 @@ function Appliances() {
   const [fileList, setFileList] = useState([]);
   const [selectedApplianceName, setSelectedApplianceName] = useState('');
   const [activeAppliances, setActiveAppliances] = useState([]);
+  const [openAppliances, setOpenAppliances] = useState({});
 
 
 

@@ -23,6 +23,10 @@ from rest_framework.response import Response
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
 from rest_framework import permissions
 from .validations import custom_validation, validate_email, validate_password
+from datetime import datetime, timedelta
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 # from django.views.decorators.csrf import csrf_exempt
 
@@ -113,38 +117,81 @@ def moving_average_fill(data, window_size=5):
 
     return filled_data
 
-def grab_json(request, filename):
-    # Define the directory where your JSON files are stored.
+def grab_json(request, filename, period):
     json_dir = 'media/json_data/'
-
-    # Check if the specified file exists in the directory.
     file_path = os.path.join(json_dir, filename)
 
     if os.path.exists(file_path):
         with open(file_path, 'r') as json_file:
             data = json.load(json_file)
-            data = moving_average_fill(data)
-        return JsonResponse(data, safe=False)
+
+        new_date_column = None
+        for key in data[0]:
+            if key and not new_date_column:
+                sample_value = data[0][key]
+                if sample_value and isinstance(sample_value, str):
+                    try:
+                        datetime.strptime(sample_value, '%Y-%m-%d %H:%M:%S')
+                        new_date_column = key
+                    except ValueError:
+                        pass
+
+        if not new_date_column:
+            return JsonResponse({'error': 'No date column found in the data.'}, status=400)
+
+        date_column = new_date_column
+        start_date = datetime.strptime(data[0][date_column], '%Y-%m-%d %H:%M:%S')
+
+        if period == '24h':
+            end_date = start_date + timedelta(hours=24)
+        elif period == '1m':
+            end_date = start_date.replace(day=1, month=start_date.month + 1, hour=0, minute=0, second=0) - timedelta(seconds=1)
+        elif period == '1y':
+            end_date = start_date + timedelta(days=365)
+
+        filtered_data = [entry for entry in data if start_date <= datetime.strptime(entry[date_column], '%Y-%m-%d %H:%M:%S') <= end_date]
+        time_increment = datetime.strptime(filtered_data[1][date_column], '%Y-%m-%d %H:%M:%S') - \
+                         datetime.strptime(filtered_data[0][date_column], '%Y-%m-%d %H:%M:%S')
+        is_15_minute_increment = time_increment == timedelta(minutes=15)
+        new_hourly_data = {}
+        for entry in filtered_data:
+            entry_date = datetime.strptime(entry[date_column], '%Y-%m-%d %H:%M:%S')
+            if period == '24h':
+                time_key = f'{entry_date.hour}:00'
+            elif period == '1m':
+                time_key = entry_date.strftime('%Y-%m-%d')
+            elif period == '1y':
+                time_key = entry_date.strftime('%Y-%m')
+
+            if time_key not in new_hourly_data:
+                new_hourly_data[time_key] = {
+                    'totalUsage': 0,
+                    'BatUsage': 0,
+                    'Charge': 0,
+                    'DisCharge': 0,
+                    'count': 0,
+                }
+
+            new_hourly_data[time_key]['totalUsage'] += calculate_total_usage(entry, is_15_minute_increment, date_column)
+            new_hourly_data[time_key]['BatUsage'] += entry.get('net', 0) * 0.25
+            new_hourly_data[time_key]['Charge'] += entry.get('charge', 0) * 0.25
+            new_hourly_data[time_key]['DisCharge'] += entry.get('discharge', 0) * 0.25
+            new_hourly_data[time_key]['count'] += 1
+
+
+
+        total_usage_sum = sum(new_hourly_data[time_key]['totalUsage'] for time_key in new_hourly_data)
+
+        return JsonResponse({
+            'hourlyData': new_hourly_data,
+            'jsonData': data,
+            'totalUsageSum': total_usage_sum,
+            'is15MinuteIncrement': is_15_minute_increment,
+        })
+
     else:
-        # Handle the case where the specified file does not exist.
-        return JsonResponse({'error': 'File not found'}, status=404)
+        return JsonResponse({'error': 'File not found.'}, status=404)
 
-def calculate_energy_usage_cost(request):
-    if request.method == 'POST':
-        file_path = 'media/json_data/output.json'
-        with open(file_path, 'r') as json_file:
-            data = request.POST.get('json_file')
-        data = json.loads(json_file)
-        total_cost = 0
-
-        for entry in data:
-            timestamp = entry['timestamp']  # Convert to datetime
-            kwh = entry['kwh']
-            cost = calculate_energy_cost(timestamp, kwh)
-            total_cost += cost
-
-        return JsonResponse({'total_cost': total_cost})
-    return JsonResponse({'error': 'Invalid request'})
 
 
 def file_list(request):
@@ -155,3 +202,15 @@ def file_list(request):
     files = [file for file in os.listdir(json_data_dir) if os.path.isfile(os.path.join(json_data_dir, file))]
 
     return JsonResponse(files, safe=False)
+
+
+
+def calculate_total_usage(entry, is_15_minute_increment, date_column):
+    if 'grid' in entry:
+        return entry['grid'] * 0.25 if is_15_minute_increment else entry['grid']
+    elif 'grid' in entry and 'net' in entry:
+        return entry['grid'] * 0.25 if is_15_minute_increment else entry['grid']
+    else:
+        total = sum(value for key, value in entry.items() if key != date_column and key != 'grid' and key != 'solar' and not isinstance(value, (str, bool)))
+
+        return total * 0.25 if is_15_minute_increment else total
