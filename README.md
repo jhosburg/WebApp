@@ -175,7 +175,7 @@ Use these commands if you clone the repo and the backend(Django) does not run:
  }
 
 
-  ### postgreSQL Database instruction
+  ### postgreSQL Database Instruction
 
  - step 1: download https://www.postgresql.org/download/windows/
            watch this video  https://www.youtube.com/watch?v=d--mEqEUybA
@@ -190,4 +190,16 @@ Use these commands if you clone the repo and the backend(Django) does not run:
         "python manage.py sqlmigrate nameOFbackendFile 0001"
         "python manage.py migrate"
 
-- step 6:  In your pgadmin, refresh the database and you should see a few new tables created along with our table
+- step 6:  In your pgadmin, refresh the database and you should see a few new       tables created along with our table
+
+
+- step 7: to see the details that you entered during signup like username and password:
+
+    1) Go to PgAdmin
+    2) Go to PostgreSQL server
+    3) Inside server you will see your Database that you created 
+    4) Go to Schemas then public then Tables 
+    5) If you have migrated everything correctly(according to step 1-6 instructions) you should see tables inside the Schemas/public/Tables. Try refreshing the database if you have done everything correctly. 
+    6) Inside Tables you will see a table named sdei_appuser. The data is in this table.
+    7) Right-click on sdei_appuser and you will see something like View/Edit data. Click on it and then click all rows to see the data.
+    8) Alternatively, to see data right click on sdei_appuser and go to Scripts and click on SELECT. A new tab should open with a Select query, you can run this select script to see the data as well.

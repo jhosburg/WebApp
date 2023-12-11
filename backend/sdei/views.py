@@ -21,7 +21,25 @@ from django.contrib.auth import get_user_model, login, logout
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
+from .serializers import ProfileViewSerializer
 from rest_framework import permissions
+<<<<<<< HEAD
+from .validations import custom_validation, validate_email, validate_password, validate_username
+
+from django.shortcuts import get_object_or_404
+
+from django.http import JsonResponse
+
+
+
+class ProfileView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        user = request.user
+        serializer = ProfileViewSerializer({'username': user.username})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+=======
 from .validations import custom_validation, validate_email, validate_password
 from datetime import datetime, timedelta
 import logging
@@ -33,6 +51,7 @@ from django.views.decorators.csrf import csrf_protect
 logging.basicConfig(level=logging.DEBUG)
 
 from django.views.decorators.csrf import csrf_exempt
+>>>>>>> 117af98d6e45efd59a42329fdeb46bc5a760169f
 
 
 class UserRegister(APIView):
@@ -45,7 +64,37 @@ class UserRegister(APIView):
 			if user:
 				return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(status=status.HTTP_400_BAD_REQUEST)
+     
 
+#################################
+
+# class UserProfile(APIView):
+# 	permission_classes = (permissions.AllowAny,)
+# 	authentication_classes = (SessionAuthentication,)
+# 	##
+# 	def get(self, request):
+# 		data = request.data
+# 		assert validate_username(data)
+# 		serializer = UserProfileSerializer(data=data)
+# 		if serializer.is_valid(raise_exception=True):
+# 			user = serializer.check_user(data)
+# 			return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserProfile(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (SessionAuthentication,)
+
+    def post(self, request):
+        data = request.data
+        # assert validate_username(data)
+        serializer = UserProfileSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.check_user(data)
+            user_data = {'username': user.username}  # Add more fields as needed
+            return Response(user_data, status=status.HTTP_200_OK)
+          
+#############################
 # @csrf_exempt
 class UserLogin(APIView):
 	permission_classes = (permissions.AllowAny,)
@@ -81,6 +130,11 @@ class UserView(APIView):
 	def get(self, request):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+     
+
+
+
+
 
 ############
 

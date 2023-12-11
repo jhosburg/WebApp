@@ -22,11 +22,13 @@ function Navbar() {
           <a className="navbar-img">
             <img src={logo} alt='logo' className="rounded" width="285" height="80" />
           </a>
-          <a className="nav-link" href="/">Home</a>
+          <a className="nav-link" href="/Home">Home</a>
           <a className="nav-link" href="/Appliances">Dashboard</a>
-          <a className="nav-link" href="/Account">Account</a>
           <a className="nav-link" href="/About">About</a>
           <a className="nav-link" href="/Contacts">Contacts</a>
+          <button className="nav-link" href="/profile">LOGOUT</button>
+        
+      {/* <button onClick={handleLogout}>Logout</button> */}
         </div>
       </div>
     </nav>
