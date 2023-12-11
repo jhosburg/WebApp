@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-c3!ury0$m+&3tn)ja)8_pn3s%1zxt6u74wco2e(edf3yjfiwak
 DEBUG = True
 
 CSRF_COOKIE_NAME = 'csrftoken'  # Default CSRF cookie name
-
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Add the origin of your frontend application
@@ -59,7 +59,7 @@ CORS_ALLOW_HEADERS = [
     "dnt",
     "origin",
     "user-agent",
-    "x-csrftoken",
+    "X-csrftoken",
     "x-requested-with",
 ]
 

@@ -2,7 +2,7 @@
 
 from django.urls import path
 from . import views
-from .views import UploadJsonView
+from .views import UploadJsonView, Delete_File
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -18,5 +18,6 @@ urlpatterns = [
 	path('user', views.UserView.as_view(), name='user'),
     path('selectionchart/<str:filename>/', views.SelectionChart, name='selectionchart'),
     path('grab_cost_data/<str:filename>/<str:period>/', views.grab_cost_data, name='grab_cost_data'),
+    path('DeleteFile/<str:filename>/', views.Delete_File.as_view(), name='DeleteFile'),
 ]
 

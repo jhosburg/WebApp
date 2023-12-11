@@ -25,10 +25,14 @@ from rest_framework import permissions
 from .validations import custom_validation, validate_email, validate_password
 from datetime import datetime, timedelta
 import logging
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+
 
 logging.basicConfig(level=logging.DEBUG)
 
-# from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 
 
 class UserRegister(APIView):
@@ -342,6 +346,27 @@ def grab_cost_data(request, filename, period):
 
     else:
         return JsonResponse({'error': 'File not found.'}, status=404)
+    
+class Delete_File(APIView):
+    authentication_classes = ()
+    permission_classes = ()
+    def delete(self, request, filename):
+
+        # Define the directory where your files are stored.
+        file_dir = 'media/json_data/'
+
+        # Check if the specified file exists in the directory.
+        file_path = os.path.join(file_dir, filename)
+
+        if os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+                return JsonResponse({'status': 'File deleted successfully.'})
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=500)
+        else:
+            # Handle the case where the specified file does not exist.
+            return JsonResponse({'error': 'File not found.'}, status=404)
 
         
 

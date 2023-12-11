@@ -12,7 +12,6 @@ import CostOneMonth from '../charts/CostOneMonth';
 import CostOneYear from '../charts/CostOneYear';
 
 
-
 function Home() {
    
 
@@ -23,32 +22,31 @@ function Home() {
    const [selectedFile, setSelectedFile] = useState('');
    const [selectedFileName, setSelectedFileName] = useState(''); // Add a state variable to store the selected file name
    const [selectedChartType, setSelectedChartType] = useState('CostOneMonth'); // Default to CostOneMonth
+   const [successMessage, setSuccessMessage] = useState(''); // New state for success message
 
 
-  useEffect(() => {
+
     // Fetch the list of files from your Django backend when the component mounts
-    axios.get('http://127.0.0.1:8000/sdei/file_list')
-      .then(response => {
-        console.log(response.data); // Check the response data
-        setFileList(response.data);
-        const storedFileName = localStorage.getItem('selectedFileName');
-        if (storedFileName) {
-          setSelectedFile(storedFileName);
-          setSelectedFileName(storedFileName);
-          handleFileSelection({ target: { value: storedFileName } });        
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching file list:', error);
-      });
-  }, []);
-
-  const handleFetchData = () => {
-    // Fetch data when the button is clicked
-    if (selectedFileName) {
-       HomeChart.fetchData(selectedFileName); // Call a function in the HomeChart component
-    }
- };
+    const fetchFileList = () => {
+      axios.get('http://127.0.0.1:8000/sdei/file_list')
+        .then(response => {
+          setFileList(response.data);
+          const storedFileName = localStorage.getItem('selectedFileName');
+          if (storedFileName) {
+            setSelectedFile(storedFileName);
+            setSelectedFileName(storedFileName);
+            handleFileSelection({ target: { value: storedFileName } });        
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching file list:', error);
+        });
+    };
+    
+    useEffect(() => {
+      // Fetch the list of files from your Django backend when the component mounts
+      fetchFileList();
+    }, []);
 
   const handleFileSelection = (event) => {
     setSelectedFile(event.target.value);
@@ -100,11 +98,14 @@ function Home() {
             if (response.status === 200) {
                 console.log('Excel file uploaded successfully');
                 setFileError(''); // Clear any previous error
+                setSuccessMessage(prevMessage => 'File uploaded successfully!');
+                
             }
         } catch (error) {
             console.error('Error uploading Excel file:', error);
             setFileError('An error occurred while uploading the JSON file.');
         }
+        fetchFileList(); // Fetch the updated list of files
     };
 
 
@@ -117,6 +118,27 @@ function Home() {
       const handleChartTypeChange = (event) => {
         setSelectedChartType(event.target.value);
     };
+
+
+    const deleteFile = async (filename) => {
+      try {
+          const response = await axios.delete(`http://127.0.0.1:8000/sdei/DeleteFile/${filename}/`);
+          if (response.status === 200) {
+              console.log('File deleted successfully');
+              // Refresh the list of files
+              axios.get('http://127.0.0.1:8000/sdei/file_list')
+                  .then(response => {
+                      setFileList(response.data);
+                  })
+                  .catch(error => {
+                      console.error('Error fetching file list:', error);
+                  });
+          }
+      } catch (error) {
+          console.error('Error deleting file:', error);
+      }
+  };
+
 
       return (
          <><div className="main">
@@ -142,6 +164,9 @@ function Home() {
                 {fileError && <p className="error-message">{fileError}</p>}
               </div>
             </div>
+            <div>
+            {successMessage && <p className="success-message">{successMessage}</p>}
+            </div>
 
             <div style={{padding: '20px'}}>
               <select value={selectedFile} onChange={handleFileSelection}>
@@ -150,6 +175,11 @@ function Home() {
                 <option key={index} value={fileName}>{fileName}</option>
                   ))}
               </select>
+              {selectedFile && <button style={{marginLeft: '10px'}} onClick={() => {
+                  if(window.confirm('Are you sure you want to delete this file?')) {
+                      deleteFile(selectedFile);
+                  }
+              }}>Delete File</button>}
 
             </div>
 
