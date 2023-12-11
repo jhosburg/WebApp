@@ -425,13 +425,13 @@ function Appliances() {
           </div>
         ))}
       </div>
-      {showPowerOffModal && (
+      {/*showPowerOffModal && (
         <PowerOffModal 
         onClose={() => setShowPowerOffModal(false)} 
         handleStartTimeChange={handleStartTimeChange}
         handleEndTimeChange={handleEndTimeChange}
         />
-      )}
+      )*/}
       {showConfirmation && (
                 <ConfirmationDialog
                   message="Are you sure you want to delete this appliance?"
