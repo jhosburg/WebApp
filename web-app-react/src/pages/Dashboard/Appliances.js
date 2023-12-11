@@ -69,7 +69,7 @@ function Appliances() {
     
       try {
         // Fetch the JSON data from your Django backend based on the selected file
-        const response = await axios.get(`http://127.0.0.1:8000/sdei/grabJson/${selectedFile}`);
+        const response = await axios.get(`http://127.0.0.1:8000/sdei/selectionchart/${selectedFile}`);
         const jsonData = response.data;
     
         // Extract keys from the first object in the JSON

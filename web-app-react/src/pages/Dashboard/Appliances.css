@@ -84,6 +84,7 @@
 
 .appliances-container {
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   font-family: Arial, sans-serif;
@@ -99,6 +100,7 @@
   transition: background-color 0.5s ease-in-out;
   box-sizing: border-box;
   margin: 10px;
+  flex: 1;;
 }
 
 .appliance-header {
@@ -110,6 +112,7 @@
 
 .appliance.open {
   background-color: #ddd;
+  grid-column: span 2;
 }
 
 .appliance.open:hover {
