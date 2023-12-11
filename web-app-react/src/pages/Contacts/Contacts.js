@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Contacts.css';
 import emailjs  from 'emailjs-com';
+import logo from './sdei.png';
 
 const publicKey = "u9iMG1UvbcLRW0x73";
 const serviceID = "service_t8fct18";
@@ -137,8 +138,8 @@ const Contacts = () => {
           <span className="closeButton" onClick={() => setShowSuccessPopup(false)}>
             &times;
           </span>
-          <p>Email sent successfully!</p>
-          <button onClick={() => setShowSuccessPopup(false)}>Close</button>
+          <p>Your message was received. We will be contacting you shortly, thank you!</p>
+          <img src={logo} alt='logo' className="rounded" width="285" height="80" />
         </div>
       )}
       {showErrorPopup && (
@@ -147,7 +148,6 @@ const Contacts = () => {
             &times;
           </span>
           <p>Error sending email. Please try again later.</p>
-          <button onClick={() => setShowErrorPopup(false)}>Close</button>
         </div>
       )}
     </div>

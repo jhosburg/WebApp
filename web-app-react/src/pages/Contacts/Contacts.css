@@ -109,28 +109,30 @@ textarea {
 }
 
 .popup {
+  font-family: Arial, sans-serif;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 20px;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 3px solid rgb(19, 146, 97);
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 999;
+  z-index: 99;
   text-align: center;
 }
 
 .closeButton {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
+  top: -5px;
+  right: 5px;
+  font-size: 40px;
   cursor: pointer;
 }
 
 .closeButton:hover {
-  color: #f00; /* Change color on hover if desired */
+  color: #f00;
 }
 
 #message  {
