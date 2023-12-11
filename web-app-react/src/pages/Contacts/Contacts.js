@@ -1,5 +1,3 @@
-// ContactPage.js
-
 import React, { useState } from 'react';
 import './Contacts.css';
 import emailjs  from 'emailjs-com';
@@ -38,18 +36,21 @@ const Contacts = () => {
 
     emailjs.send(serviceID, templateID, inputFields)
       .then(() => {
-        console.log('Email sent successfully!');
         setFormData({
           name: '',
           email: '',
           subject: '',
           message: '',
         });
+        setShowSuccessPopup(true);
       })
       .catch((error) => {
-        console.error('Error sending email:', error);
+        setShowErrorPopup(true);
       });
   };
+
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   return (
     <div className="contact-container">
@@ -60,6 +61,7 @@ const Contacts = () => {
           <div className="form-row">
             <label htmlFor="name">Name:</label>
             <input
+              placeholder='Ex: Conor Mcgregor'
               type="text"
               id="name"
               name="name"
@@ -72,6 +74,7 @@ const Contacts = () => {
           <div className="form-row">
             <label htmlFor="email">Email:</label>
             <input
+              placeholder='Ex: notoriousmma@gmail.com'
               type="email"
               id="email"
               name="email"
@@ -84,6 +87,7 @@ const Contacts = () => {
           <div className="form-row">
             <label htmlFor="subject">Subject:</label>
             <input
+              placeholder='Enter subject of message:'
               type="text"
               id="subject"
               name="subject"
@@ -96,6 +100,7 @@ const Contacts = () => {
           <div className="form-row">
             <label htmlFor="message">Message:</label>
             <textarea
+              placeholder='Type your message here:'
               id="message"
               name="message"
               value={formData.message}
@@ -127,6 +132,24 @@ const Contacts = () => {
           </p>
         </div>
       </div>
+      {showSuccessPopup && (
+        <div className="popup success-popup">
+          <span className="closeButton" onClick={() => setShowSuccessPopup(false)}>
+            &times;
+          </span>
+          <p>Email sent successfully!</p>
+          <button onClick={() => setShowSuccessPopup(false)}>Close</button>
+        </div>
+      )}
+      {showErrorPopup && (
+        <div className="popup error-popup">
+          <span className="closeButton" onClick={() => setShowErrorPopup(false)}>
+            &times;
+          </span>
+          <p>Error sending email. Please try again later.</p>
+          <button onClick={() => setShowErrorPopup(false)}>Close</button>
+        </div>
+      )}
     </div>
   );
 };
