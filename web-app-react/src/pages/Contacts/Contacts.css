@@ -108,3 +108,33 @@ textarea {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+.popup {
+  font-family: Arial, sans-serif;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #fff;
+  border: 3px solid rgb(19, 146, 97);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 99;
+  text-align: center;
+}
+
+.closeButton {
+  position: absolute;
+  top: -5px;
+  right: 5px;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  color: #f00;
+}
+
+#message  {
+  text-align: center;
+}
