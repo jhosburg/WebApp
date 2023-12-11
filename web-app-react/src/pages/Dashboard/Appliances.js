@@ -129,14 +129,10 @@ function Appliances() {
 
   const togglePower = (index) => {
     if (!masterSwitch) return;
-    if (showPowerOffModal || showConfirmation) return;
+    if (showConfirmation) return;
     const isTurningOff = appliances[index].power === true;
 
-    if (isTurningOff) {
-      setShowPowerOffModal(true);
-    }else {
-      setShowPowerOffModal(false);
-    }
+
     setAppliances((prevAppliances) => {
       const updatedAppliances = [...prevAppliances];
       updatedAppliances[index].power = !updatedAppliances[index].power;
@@ -145,7 +141,7 @@ function Appliances() {
   };
 
   const toggleMasterSwitch = () => {
-    if (showPowerOffModal || showConfirmation) return;
+    if (showConfirmation) return;
     const newState = !masterSwitch;
     setMasterSwitch(newState);
     const updatedAppliances = appliances.map((appliance) => ({
@@ -156,7 +152,7 @@ function Appliances() {
   };
 
   const addNewAppliance = () => {
-    if (showPowerOffModal || showConfirmation) return;
+    if (showConfirmation) return;
     // Define a new appliance
     const defaultName = 'New Room';
     const newAppliance = {
@@ -169,13 +165,13 @@ function Appliances() {
   };
 
   const startEditing = (index) => {
-    if (showPowerOffModal || showConfirmation) return;
+    if (showConfirmation) return;
     setEditingApplianceIndex(index);
     setEditedApplianceName(appliances[index].name);
   };
 
   const saveEditedName = (index) => {
-    if (showPowerOffModal || showConfirmation) return;
+    if (showConfirmation) return;
     const updatedAppliances = [...appliances];
     const truncatedName = editedApplianceName.substring(0, 15);
     updatedAppliances[index].name = truncatedName;
@@ -185,7 +181,7 @@ function Appliances() {
 
   
   const deleteAppliance = (index) => {
-    if (showPowerOffModal || showConfirmation) return;
+    if (showConfirmation) return;
     setApplianceToDelete(index);
     setShowConfirmation(true);
   };
@@ -267,88 +263,10 @@ function Appliances() {
       ); 
   }
 
-  const handleStartTimeChange = (hours, minutes) => {
-    setStartTime({ hours, minutes });
-  };
-  
-  const handleEndTimeChange = (hours, minutes) => {
-    setEndTime({ hours, minutes });
-  };
 
   console.log('Selected Appliance Name:',selectedApplianceName);
 
-  function PowerOffModal({ onClose, handleStartTimeChange, handleEndTimeChange }) {
-    const hours = Array.from({ length: 24 }, (_, i) => i);
-    const minutes = [0, 15, 30, 45];
   
-    return (
-      <div className="powerOffModal">
-        <h2>Confirm Deactivation</h2>
-        <p>Select Time Range:</p>
-        <div className="timeSelection">
-          <div className="timeSelector">
-            <label>Start Time:</label>
-            <div className="timeDropdown">
-              <select
-                className="hourDropdown"
-                value={startTime.hours}
-                onChange={(e) => handleStartTimeChange(e.target.value, startTime.minutes)}
-              >
-                {hours.map((hour) => (
-                  <option key={hour} value={hour}>
-                    {hour}
-                  </option>
-                ))}
-              </select>
-              <select
-                className="minuteDropdown"
-                value={startTime.minutes}
-                onChange={(e) => handleStartTimeChange(startTime.hours, e.target.value)}
-              >
-                {minutes.map((minute) => (
-                  <option key={minute} value={minute}>
-                    {minute}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="timeSelector">
-            <label>End Time:</label>
-            <div className="timeDropdown">
-              <select
-                className="hourDropdown"
-                value={endTime.hours}
-                onChange={(e) => handleEndTimeChange(e.target.value, endTime.minutes)}
-              >
-                {hours.map((hour) => (
-                  <option key={hour} value={hour}>
-                    {hour}
-                  </option>
-                ))}
-              </select>
-              <select
-                className="minuteDropdown"
-                value={endTime.minutes}
-                onChange={(e) => handleEndTimeChange(endTime.hours, e.target.value)}
-              >
-                {minutes.map((minute) => (
-                  <option key={minute} value={minute}>
-                    {minute}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-        <div className="buttonContainer">
-          <button onClick={onClose} className="modalButton" id='cancelButton'>Cancel</button>
-          <button onClick={onClose} className="modalButton" id='confirmButton'>Confirm</button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="report-container">
     <div className="report-header">
@@ -425,13 +343,6 @@ function Appliances() {
           </div>
         ))}
       </div>
-      {/*showPowerOffModal && (
-        <PowerOffModal 
-        onClose={() => setShowPowerOffModal(false)} 
-        handleStartTimeChange={handleStartTimeChange}
-        handleEndTimeChange={handleEndTimeChange}
-        />
-      )*/}
       {showConfirmation && (
                 <ConfirmationDialog
                   message="Are you sure you want to delete this appliance?"

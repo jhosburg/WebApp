@@ -23,23 +23,6 @@ from rest_framework.response import Response
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
 from .serializers import ProfileViewSerializer
 from rest_framework import permissions
-<<<<<<< HEAD
-from .validations import custom_validation, validate_email, validate_password, validate_username
-
-from django.shortcuts import get_object_or_404
-
-from django.http import JsonResponse
-
-
-
-class ProfileView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request):
-        user = request.user
-        serializer = ProfileViewSerializer({'username': user.username})
-        return Response(serializer.data, status=status.HTTP_200_OK)
-=======
 from .validations import custom_validation, validate_email, validate_password
 from datetime import datetime, timedelta
 import logging
@@ -51,7 +34,6 @@ from django.views.decorators.csrf import csrf_protect
 logging.basicConfig(level=logging.DEBUG)
 
 from django.views.decorators.csrf import csrf_exempt
->>>>>>> 117af98d6e45efd59a42329fdeb46bc5a760169f
 
 
 class UserRegister(APIView):
