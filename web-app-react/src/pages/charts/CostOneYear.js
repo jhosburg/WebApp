@@ -3,230 +3,115 @@ import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 
 function CostOneYear({ selectedFileName }) {
-    const [jsonData, setJsonData] = useState([]);
-    const [dateColumn, setDateColumn] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const [startDate, setStartDate] = useState(null);
-    const [fetchingData, setFetchingData] = useState(false);
+  const [jsonData, setJsonData] = useState([]);
+  const [dailyCostData, setDailyCostData] = useState({});
+  const [monthlyCostData, setMonthlyCostData] = useState({});
+  const [totalCostBeforeSumMonth, setTotalCostBeforeSumMonth] = useState(0);
+  const [totalCostBeforeSumYear, setTotalCostBeforeSumYear] = useState(0);
+  const [isFetchingData, setIsFetchingData] = useState(false);
+  const [totalCostAfterSumYear, setTotalCostAfterSumYear] = useState(0);
+  const [totalSavingsYear, setTotalSavingsYear] = useState(0); // New state
 
-    const fetchData = async () => {
-        setFetchingData(true);
-        const filename = selectedFileName;
+  const fetchData = async () => {
+    setIsFetchingData(true);
 
-        try {
-            const response = await axios.get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`);
-            const data = response.data;
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/sdei/grab_cost_data/${selectedFileName}/1y`);
+      const data = response.data;
 
-            let newDateColumn = null;
+      setJsonData(data.jsonData);
+      setDailyCostData(data.dailyCostData);
+      setMonthlyCostData(data.monthlyCostData);
+      setTotalCostBeforeSumMonth(data.totalCostBeforeSumMonth);
+      setTotalCostBeforeSumYear(data.totalCostBeforeSumYear);
+      setTotalCostAfterSumYear(data.totalCostAfterSumYear);
 
-            for (const key in data[0]) {
-                if (data[0].hasOwnProperty(key)) {
-                    const sampleValue = data[0][key];
-                    if (sampleValue && !isNaN(new Date(sampleValue).getTime())) {
-                        newDateColumn = key;
-                        break;
-                    }
-                }
-            }
+      const totalSavingsYear = data.totalCostAfterSumYear !== 0
+      ? (data.totalCostBeforeSumYear - data.totalCostAfterSumYear).toFixed(2)
+      : 0;
+      setTotalSavingsYear(totalSavingsYear); // Update state with calculated savings
 
-            if (!newDateColumn) {
-                console.error('No date column found in the data.');
-                setFetchingData(false);
-                return;
-            }
 
-            setDateColumn(newDateColumn);
-
-            const timestamps = response.data.map((entry) => new Date(entry[dateColumn]).getTime());
-            const minTimestamp = Math.min(...timestamps);
-            setStartDate(new Date(minTimestamp));
-
-            const oneYearLater = new Date(minTimestamp);
-            oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
-            setEndDate(oneYearLater);
-
-            const filteredData = data;
-            setJsonData(filteredData);
-            setFetchingData(false);
-        } catch (error) {
-            console.error('Error grabbing JSON Data:', error);
-            setFetchingData(false);
-        }
-    };
-
-    useEffect(() => {
-        const fetchDataWrapper = async () => {
-            if (selectedFileName) {
-                await fetchData();
-            }
-        };
-
-        fetchDataWrapper();
-    }, [selectedFileName, dateColumn]);
-
-    const labels = [];
-    const monthlyTotalCostBefore = [];
-    const monthlyTotalCostAfter = [];
-
-        // Calculate the total kWh consumed for each month
-        // const calculateTotalKWhForMonth = (monthData) => {
-        //     return monthData.reduce((total, entry) => {
-        //         if ('grid' in entry) {
-        //             return total + (entry.grid * 0.25); // Convert grid (kW) to kWh for each 15-minute interval
-        //         }
-        //         else {
-        //             let totalNoGrid = 0;
-    
-        //             for (const key in entry) {
-        //               if (key !== dateColumn && key !== 'grid' && key !== 'solar') {
-        //                 const value = entry[key];
-        //                 if (!isNaN(value)) {
-        //                   totalNoGrid += value;
-        //             }
-        //           }
-        //         }
-        //         return total + (totalNoGrid * 0.25);
-        //     }
-        //     }, 0);
-        // };
-    
-
-    const calculateTotalCostBeforeForMonth = (monthData) => {
-        return monthData.reduce((total, entry) => {
-            if ('cost_before' in entry) {
-                return total + entry.cost_before;
-            } 
-            else if ('grid' in entry){
-                return total + ((entry.grid * 0.25) * 0.43); //0.43 = average kwh price
-            }
-            else {
-                let totalNoGrid = 0;
-
-                for (const key in entry) {
-                    if (key !== dateColumn && key !== 'grid' && key !== 'solar') {
-                        const value = entry[key];
-                        if (!isNaN(value)) {
-                            totalNoGrid += value;
-                        }
-                    }
-                }
-                return total + ((totalNoGrid*0.25)*0.43);  //0.43 = average kwh price
-            }
-        }, 0);
-    };
-
-    const calculateTotalCostAfterForMonth = (monthData) => {
-        return monthData.reduce((total, entry) => {
-            if ('cost_after' in entry) {
-                return total + entry.cost_after;
-            } else {
-                return null;
-            }
-        }, 0);
-    };
-
-    if (jsonData.length > 0) {
-        let currentMonth = -1;
-        let currentYear = -1;
-        let currentMonthData = [];
-
-        jsonData.forEach((entry) => {
-            const entryDate = new Date(entry[dateColumn]);
-            const entryMonth = entryDate.getMonth();
-            const entryYear = entryDate.getFullYear();
-
-            if (currentMonth === -1 && currentYear === -1) {
-                currentMonth = entryMonth;
-                currentYear = entryYear;
-            }
-
-            if (currentMonth === entryMonth && currentYear === entryYear) {
-                currentMonthData.push(entry);
-            } else {
-                labels.push(`${currentMonth + 1}/${currentYear}`);
-                monthlyTotalCostBefore.push(calculateTotalCostBeforeForMonth(currentMonthData));
-                monthlyTotalCostAfter.push(calculateTotalCostAfterForMonth(currentMonthData));
-                currentMonth = entryMonth;
-                currentYear = entryYear;
-                currentMonthData = [entry];
-            }
-        });
-
-        labels.push(`${currentMonth + 1}/${currentYear}`);
-        monthlyTotalCostBefore.push(calculateTotalCostBeforeForMonth(currentMonthData));
-        monthlyTotalCostAfter.push(calculateTotalCostAfterForMonth(currentMonthData));
+      setIsFetchingData(false);
+    } catch (error) {
+      console.error('Error grabbing cost data:', error);
+      setIsFetchingData(false);
     }
+  };
 
-    const totalCostBefore = monthlyTotalCostBefore.reduce((acc, value) => acc + value, 0);
-    const totalCostAfter = monthlyTotalCostAfter.reduce((acc, value) => acc + value, 0);
-
-    const chartData = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Total Cost Before',
-                data: monthlyTotalCostBefore,
-                fill: true,
-                borderColor: 'grey',
-                backgroundColor: 'rgba(255, 99, 71, 0.2)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(255, 91, 71, 0.4)',
-                type: 'bar',
-            },
-            {
-                label: 'Total Cost After',
-                data: monthlyTotalCostAfter,
-                fill: true,
-                borderColor: 'green',
-                backgroundColor: 'rgba(46, 204, 113, 0.2)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(46, 204, 113, 0.4)',
-                type: 'bar',
-            },
-        ],
+  useEffect(() => {
+    const fetchDataWrapper = async () => {
+      if (selectedFileName) {
+        await fetchData();
+      }
     };
 
-    const chartOptions = {
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Date/Time',
-                },
-                type: 'category',
-                position: 'bottom',
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Cost USD',
-                },
-                beginAtZero: true,
-            },
+    fetchDataWrapper();
+  }, [selectedFileName]);
+
+  const labels = Object.keys(monthlyCostData);
+  const monthlyTotalBefore = Object.values(monthlyCostData).map((monthlyData) => monthlyData.totalCostBefore);
+  const monthlyTotalAfter = Object.values(monthlyCostData).map((monthlyData) => monthlyData.totalCostAfter);
+
+  const chartData = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'Monthly Cost Before',
+        data: monthlyTotalBefore,
+        fill: true,
+        borderColor: 'grey',
+        backgroundColor: 'rgba(255, 99, 71, 0.2)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(255, 99, 71, 0.4)',
+        type: 'bar',
+      },
+      {
+        label: 'Monthly Cost After',
+        data: monthlyTotalAfter,
+        fill: false,
+        borderColor: 'green',
+        backgroundColor: 'rgba(46, 204, 113, 0.2)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(46, 204, 113, 0.4)',
+        type: 'bar',
+      },
+    ],
+  };
+
+  const chartOptions = {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Month',
         },
-    };
+        type: 'category',
+        position: 'bottom',
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Cost USD',
+        },
+        beginAtZero: true,
+      },
+    },
+  };
 
+  
 
-    return (
-        <div>
-          <h2>Total Cost One Month</h2>
-          <div>
-            <h3>Total Cost Before: <span style={{color: 'red'}}>${totalCostBefore.toFixed(2)}</span></h3>
-            {totalCostAfter > 0 ? (
-              <div>
-                <h3>Total Cost After: <span style={{color: 'orange'}}>${totalCostAfter.toFixed(2)}</span></h3>
-                <h3>Total Savings: <span style={{color: '#008000'}}>${(totalCostBefore - totalCostAfter).toFixed(2)}</span></h3>
-              </div>
-            ) : (
-              <h3>Total Cost After: <span style={{color: 'orange'}}>House is not optimized</span></h3>
-            )}
-          </div>
-          <Line data={chartData} options={chartOptions}/>
-        </div>
-      );
-      
-      
-      
+  return (
+    <div>
+      <h2>Total Cost One Year</h2>
+      <div>
+      <h3>Total Cost Before: <span style={{ color: 'red' }}>${totalCostBeforeSumYear.toFixed(2)}</span></h3>
+        <h3>Total Cost After: <span style={{ color: 'orange' }}>${totalCostAfterSumYear.toFixed(2)}</span></h3>
+        <h3>Total Savings: <span style={{ color: 'green' }}>${totalSavingsYear}</span></h3>
+      </div>
+      <Line data={chartData} options={chartOptions} />
+    </div>
+  );
 }
 
 export default CostOneYear;

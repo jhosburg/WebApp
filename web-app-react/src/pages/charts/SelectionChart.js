@@ -16,7 +16,7 @@ function SelectionChart({selectedFileName, appliances}) {
       const filename = selectedFileName;
   
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/sdei/grabJson/${filename}`);
+        const response = await axios.get(`http://127.0.0.1:8000/sdei/selectionchart/${filename}`);
         const data = response.data;
   
         let newDateColumn = null;

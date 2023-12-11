@@ -24,7 +24,8 @@ function OneMonth({ selectedFileName }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/sdei/grabJson/${selectedFileName}/1m`);        const { hourlyData, totalUsageSum } = response.data;
+        const response = await axios.get(`http://127.0.0.1:8000/sdei/grabJson/${selectedFileName}/1m`);        
+        const { hourlyData, totalUsageSum } = response.data;
 
         const hourlyLabels = Object.keys(hourlyData);
         const hourlyTotalUsage = hourlyLabels.map((hour) => hourlyData[hour]?.totalUsage);

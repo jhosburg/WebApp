@@ -214,3 +214,133 @@ def calculate_total_usage(entry, is_15_minute_increment, date_column):
         total = sum(value for key, value in entry.items() if key != date_column and key != 'grid' and key != 'solar' and not isinstance(value, (str, bool)))
 
         return total * 0.25 if is_15_minute_increment else total
+    
+def SelectionChart(request, filename):
+    # Define the directory where your JSON files are stored.
+    json_dir = 'media/json_data/'
+
+    # Check if the specified file exists in the directory.
+    file_path = os.path.join(json_dir, filename)
+
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as json_file:
+            data = json.load(json_file)
+            data = moving_average_fill(data)
+        return JsonResponse(data, safe=False)
+    else:
+        # Handle the case where the specified file does not exist.
+        return JsonResponse({'error': 'File not found'}, status=404)
+    
+def calculate_total_cost(entry, is_15_minute_increment, date_column):
+    if 'cost_before' in entry:
+        return entry['cost_before']
+    elif 'grid' in entry:
+        return (entry['grid'] * 0.25) * 0.43  # Convert grid (kW) to kWh for each 15-minute interval
+    else:
+        total_no_grid = sum(value for key, value in entry.items() if key != date_column and key not in ['grid', 'solar'] and not isinstance(value, str))
+        return (total_no_grid * 0.25) * 0.43  # Convert total (kW) to kWh for each 15-minute interval
+
+def calculate_total_after(entry, is_15_minute_increment, date_column):
+    if 'cost_after' in entry:
+        return entry['cost_after']
+
+
+def grab_cost_data(request, filename, period):
+    json_dir = 'media/json_data/'
+    file_path = os.path.join(json_dir, filename)
+
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as json_file:
+            data = json.load(json_file)
+
+        new_date_column = None
+        for key in data[0]:
+            if key and not new_date_column:
+                sample_value = data[0][key]
+                if sample_value and isinstance(sample_value, str):
+                    try:
+                        datetime.strptime(sample_value, '%Y-%m-%d %H:%M:%S')
+                        new_date_column = key
+                    except ValueError:
+                        pass
+
+        if not new_date_column:
+            return JsonResponse({'error': 'No date column found in the data.'}, status=400)
+
+        date_column = new_date_column
+        start_date = datetime.strptime(data[0][date_column], '%Y-%m-%d %H:%M:%S')
+
+        if period == '1m':
+            end_date = start_date.replace(day=1, month=start_date.month + 1, hour=0, minute=0, second=0) - timedelta(seconds=1)
+        elif period == '1y':
+            end_date = start_date + timedelta(days=365)
+
+        filtered_data = [entry for entry in data if start_date <= datetime.strptime(entry[date_column], '%Y-%m-%d %H:%M:%S') <= end_date]
+        time_increment = datetime.strptime(filtered_data[1][date_column], '%Y-%m-%d %H:%M:%S') - \
+                         datetime.strptime(filtered_data[0][date_column], '%Y-%m-%d %H:%M:%S')
+        is_15_minute_increment = time_increment == timedelta(minutes=15)
+        new_daily_data = {}
+        new_monthly_data = {}
+        total_cost_before_sum_month = 0
+        total_cost_after_sum_month = 0
+        total_cost_before_sum_year = 0
+        total_cost_after_sum_year = 0
+
+        for entry in filtered_data:
+            entry_date = datetime.strptime(entry[date_column], '%Y-%m-%d %H:%M:%S')
+            day_key = entry_date.strftime('%Y-%m-%d')  # Move this line outside of the '1m' condition
+
+            if period == '1m':
+                month_key = entry_date.strftime('%Y-%m')
+            elif period == '1y':
+                month_key = entry_date.strftime('%Y-%m')
+
+            if day_key not in new_daily_data:
+                new_daily_data[day_key] = {
+                    'totalCostBefore': 0,
+                    'totalCostAfter': 0,
+                    'count': 0,
+                }
+
+            if month_key not in new_monthly_data:
+                new_monthly_data[month_key] = {
+                    'totalCostBefore': 0,
+                    'totalCostAfter': 0,
+                    'count': 0,
+                }
+
+            total_cost_before = calculate_total_cost(entry, is_15_minute_increment, date_column)
+            
+            # Use the get method to get 'total_cost_after' with a default value of 0 if it doesn't exist
+            total_cost_after = calculate_total_after(entry, is_15_minute_increment, date_column) or 0
+
+            new_daily_data[day_key]['totalCostBefore'] += total_cost_before
+            new_daily_data[day_key]['totalCostAfter'] += total_cost_after
+            new_daily_data[day_key]['count'] += 1
+
+            new_monthly_data[month_key]['totalCostBefore'] += total_cost_before
+            new_monthly_data[month_key]['totalCostAfter'] += total_cost_after
+            new_monthly_data[month_key]['count'] += 1
+
+            total_cost_before_sum_month += total_cost_before
+            total_cost_after_sum_month += total_cost_after
+            total_cost_before_sum_year += total_cost_before
+            total_cost_after_sum_year += total_cost_after
+
+        return JsonResponse({
+            'dailyCostData': new_daily_data,
+            'monthlyCostData': new_monthly_data,
+            'totalCostBeforeSumMonth': total_cost_before_sum_month,
+            'totalCostAfterSumMonth': total_cost_after_sum_month,
+            'totalCostBeforeSumYear': total_cost_before_sum_year,
+            'totalCostAfterSumYear': total_cost_after_sum_year,
+            'is15MinuteIncrement': is_15_minute_increment,
+        })
+
+    else:
+        return JsonResponse({'error': 'File not found.'}, status=404)
+
+        
+
+
+
