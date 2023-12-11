@@ -17,10 +17,7 @@ urlpatterns = [
 	path('login', views.UserLogin.as_view(), name='login'),
 	path('logout/', views.UserLogout.as_view(), name='logout'),
 	path('user', views.UserView.as_view(), name='user'),
-    path('profile/', views.UserProfile.as_view(), name='profile'),
-    # path('profile', views.profile_view.as_view(), name='profile'),
-    #  path('profile/', ProfileView.as_view(), name='profile'),
-    # path('api/profile/', profile_view, name='profile'),
+    # path('profile/', views.UserProfile.as_view(), name='profile'),
     
 ]
 

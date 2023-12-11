@@ -39,11 +39,15 @@ const Contacts = () => {
     emailjs.send(serviceID, templateID, inputFields)
       .then(() => {
         console.log('Email sent successfully!');
-        // Add any success handling code here
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: '',
+        });
       })
       .catch((error) => {
         console.error('Error sending email:', error);
-        // Add error handling code here
       });
   };
 

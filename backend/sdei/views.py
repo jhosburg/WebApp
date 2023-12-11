@@ -20,7 +20,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model, login, logout
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer, UserProfileSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
+from .serializers import ProfileViewSerializer
 from rest_framework import permissions
 from .validations import custom_validation, validate_email, validate_password, validate_username
 
@@ -35,7 +36,7 @@ class ProfileView(APIView):
 
     def get(self, request):
         user = request.user
-        serializer = ProfileViewSerializer(user)
+        serializer = ProfileViewSerializer({'username': user.username})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -70,7 +71,7 @@ class UserProfile(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (SessionAuthentication,)
 
-    def get(self, request):
+    def post(self, request):
         data = request.data
         # assert validate_username(data)
         serializer = UserProfileSerializer(data=data)
