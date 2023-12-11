@@ -27,7 +27,7 @@ const Login = () => {
       console.log('Login success:', response.data);
 
       // Redirect to a new page after successful login
-      navigate('/Appliances');
+      navigate('/Home');
     } catch (error) {
       // Handle login error
       console.error('Login error:', error);

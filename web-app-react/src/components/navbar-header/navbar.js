@@ -2,56 +2,37 @@ import React, { useEffect } from 'react';
 import './navbar.css';
 import logo from './sdei.png';
 
-function App() {
+function Navbar() {
+  useEffect(() => {
+    const pathname = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach((link) => {
+      if (link.getAttribute('href') === pathname) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }, []);
+
   return (
-    <div className="page-row">
-      <Router>
-        <Routes>
-          <Route path="/" element={<Navigate to="/Signup" />} />
-          <Route path="/Signup" element={
-              <div>
-                <Signup />
-              </div>
-            }/>
-          <Route path="/Home" element={
-              <div>
-                <Navbar />
-                <Home />
-              </div>
-            }
-          />
-          <Route path="/Appliances" element={
-              <div>
-                <Navbar />
-                <Appliances />
-              </div>
-            }
-          />
-          <Route path="/Account" element={
-              <div>
-                <Account />
-              </div>
-            }
-          />
-          <Route path="/About" element={
-              <div>
-                <Navbar />
-                <About />
-              </div>
-            }
-          />
-          <Route path="/Contacts" element={
-              <div>
-                <Navbar />
-                <ContactInfo />
-              </div>
-            }
-          />
-        </Routes>
-      </Router>
-      <Footer />
-    </div>
+    <nav className='navbar'>
+      <div className='navbar-container'>
+        <div className="flex-container">
+          <a className="navbar-img">
+            <img src={logo} alt='logo' className="rounded" width="285" height="80" />
+          </a>
+          <a className="nav-link" href="/Home">Home</a>
+          <a className="nav-link" href="/Appliances">Dashboard</a>
+          <a className="nav-link" href="/About">About</a>
+          <a className="nav-link" href="/Contacts">Contacts</a>
+          <button className="nav-link" href="/profile">LOGOUT</button>
+        
+      {/* <button onClick={handleLogout}>Logout</button> */}
+        </div>
+      </div>
+    </nav>
   );
 }
 
-export default App;
+export default Navbar;
