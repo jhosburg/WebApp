@@ -104,14 +104,24 @@ function CostOneMonth({ selectedFileName }) {
     <div>
       <h2>Total Cost One Month</h2>
       <div>
-        <h3>Total Cost Before: <span style={{ color: 'red' }}>${totalCostOneMonthRounded}</span></h3>
-        <h3>Total Cost After: <span style={{ color: 'orange' }}>${totalCostOneMonthAfterRounded}</span></h3>
-        <h3>Total Savings: <span style={{ color: 'green' }}>${totalSavings.join(', ')}</span></h3>
-
+        
+        {totalCostOneMonthAfterRounded.every(value => value === '0.00') ? (
+          <>
+            <h3>Total Cost: <span style={{ color: 'orange' }}>${totalCostOneMonthRounded.join(', ')}</span></h3>
+            <h3>House is not optimized</h3>
+          </>
+        ) : (
+          <>
+            <h3>Total Cost Before: <span style={{ color: 'red' }}>${totalCostOneMonthRounded.join(', ')}</span></h3>
+            <h3>Total Cost After: <span style={{ color: 'orange' }}>${totalCostOneMonthAfterRounded.join(', ')}</span></h3>
+            <h3>Total Savings: <span style={{ color: 'green' }}>${totalSavings.join(', ')}</span></h3>
+          </>
+        )}
       </div>
       <Line data={chartData} options={chartOptions} />
     </div>
   );
+
 }
 
 export default CostOneMonth;
