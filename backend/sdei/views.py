@@ -86,6 +86,8 @@ def api_hello(request):
     return JsonResponse(data)
 
 class UploadJsonView(APIView):
+    authentication_classes = ()
+    permission_classes = ()
     def post(self, request, format=None):
         serializer = JsonModelSerializer(data=request.data)
 
@@ -124,6 +126,7 @@ def grab_json(request, filename, period):
     if os.path.exists(file_path):
         with open(file_path, 'r') as json_file:
             data = json.load(json_file)
+            data = moving_average_fill(data)
 
         new_date_column = None
         for key in data[0]:
@@ -206,12 +209,12 @@ def file_list(request):
 
 
 def calculate_total_usage(entry, is_15_minute_increment, date_column):
-    if 'grid' in entry:
+    if 'grid' in entry and entry['grid'] is not None:
         return entry['grid'] * 0.25 if is_15_minute_increment else entry['grid']
-    elif 'grid' in entry and 'net' in entry:
+    elif 'grid' in entry and 'net' in entry and entry['grid'] is not None:
         return entry['grid'] * 0.25 if is_15_minute_increment else entry['grid']
     else:
-        total = sum(value for key, value in entry.items() if key != date_column and key != 'grid' and key != 'solar' and not isinstance(value, (str, bool)))
+        total = sum(value for key, value in entry.items() if key != date_column and key != 'grid' and key != 'solar' and not isinstance(value, (str, bool)) and value is not None)
 
         return total * 0.25 if is_15_minute_increment else total
     
