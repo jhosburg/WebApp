@@ -25,9 +25,6 @@ function Appliances() {
   const [fileList, setFileList] = useState([]);
   const [selectedApplianceName, setSelectedApplianceName] = useState('');
   const [activeAppliances, setActiveAppliances] = useState([]);
-  const [openAppliances, setOpenAppliances] = useState({});
-
-
 
 
   useEffect(() => {
@@ -44,9 +41,6 @@ function Appliances() {
           setSelectedFileName(storedFileName);
           handleFileSelection({ target: { value: storedFileName } });
         }
-
-        const initialOpenAppliances = Array(appliances.length).fill(false);
-        setOpenAppliances(initialOpenAppliances);
       })
       .catch(error => {
         console.error('Error fetching file list:', error);
@@ -59,6 +53,8 @@ function Appliances() {
     setActiveAppliances(activeAppliancesData);
   }, [appliances]);
   
+
+
   const handleFileSelection = async (event) => {
     if (event.target && event.target.options) {
       const selectedFile = event.target.value;
@@ -69,7 +65,7 @@ function Appliances() {
     
       try {
         // Fetch the JSON data from your Django backend based on the selected file
-        const response = await axios.get(`http://127.0.0.1:8000/sdei/selectionchart/${selectedFile}`);
+        const response = await axios.get(`http://127.0.0.1:8000/sdei/grabJson/${selectedFile}`);
         const jsonData = response.data;
     
         // Extract keys from the first object in the JSON
@@ -120,19 +116,27 @@ function Appliances() {
   }, [appliances]);
 
   const toggleAppliance = (index) => {
-    if (!masterSwitch || showPowerOffModal || showConfirmation) return;
-  
-    setOpenAppliance((prevIndex) => (prevIndex === index ? null : index));
-    setSelectedApplianceName(appliances[index].name);
+    if (!masterSwitch) return;
+    if (showPowerOffModal || showConfirmation) return;
+    if (openAppliance === index) {
+      setOpenAppliance(null);
+    } else {
+      setOpenAppliance(index);
+      setSelectedApplianceName(appliances[index].name); // Set the selected appliance name
+    }
   };
   
 
   const togglePower = (index) => {
     if (!masterSwitch) return;
-    if (showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     const isTurningOff = appliances[index].power === true;
 
-
+    if (isTurningOff) {
+      setShowPowerOffModal(true);
+    }else {
+      setShowPowerOffModal(false);
+    }
     setAppliances((prevAppliances) => {
       const updatedAppliances = [...prevAppliances];
       updatedAppliances[index].power = !updatedAppliances[index].power;
@@ -141,7 +145,7 @@ function Appliances() {
   };
 
   const toggleMasterSwitch = () => {
-    if (showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     const newState = !masterSwitch;
     setMasterSwitch(newState);
     const updatedAppliances = appliances.map((appliance) => ({
@@ -152,11 +156,11 @@ function Appliances() {
   };
 
   const addNewAppliance = () => {
-    if (showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     // Define a new appliance
     const defaultName = 'New Room';
     const newAppliance = {
-      name: defaultName.substring(0, 15),
+      name: defaultName.substring(0, 20),
       power: false,
     };
 
@@ -165,15 +169,15 @@ function Appliances() {
   };
 
   const startEditing = (index) => {
-    if (showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     setEditingApplianceIndex(index);
     setEditedApplianceName(appliances[index].name);
   };
 
   const saveEditedName = (index) => {
-    if (showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     const updatedAppliances = [...appliances];
-    const truncatedName = editedApplianceName.substring(0, 15);
+    const truncatedName = editedApplianceName.substring(0, 20);
     updatedAppliances[index].name = truncatedName;
     setAppliances(updatedAppliances);
     setEditingApplianceIndex(null);
@@ -181,7 +185,7 @@ function Appliances() {
 
   
   const deleteAppliance = (index) => {
-    if (showConfirmation) return;
+    if (showPowerOffModal || showConfirmation) return;
     setApplianceToDelete(index);
     setShowConfirmation(true);
   };
@@ -230,7 +234,7 @@ function Appliances() {
       }
 
       const newItem = {
-        name: itemName.substring(0, 15),
+        name: itemName.substring(0, 20),
         power: false,
       };
       updatedAppliances[applianceIndex].items.push(newItem);
@@ -263,10 +267,88 @@ function Appliances() {
       ); 
   }
 
+  const handleStartTimeChange = (hours, minutes) => {
+    setStartTime({ hours, minutes });
+  };
+  
+  const handleEndTimeChange = (hours, minutes) => {
+    setEndTime({ hours, minutes });
+  };
 
   console.log('Selected Appliance Name:',selectedApplianceName);
 
+  function PowerOffModal({ onClose, handleStartTimeChange, handleEndTimeChange }) {
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+    const minutes = [0, 15, 30, 45];
   
+    return (
+      <div className="powerOffModal">
+        <h2>Confirm Deactivation</h2>
+        <p>Select Time Range:</p>
+        <div className="timeSelection">
+          <div className="timeSelector">
+            <label>Start Time:</label>
+            <div className="timeDropdown">
+              <select
+                className="hourDropdown"
+                value={startTime.hours}
+                onChange={(e) => handleStartTimeChange(e.target.value, startTime.minutes)}
+              >
+                {hours.map((hour) => (
+                  <option key={hour} value={hour}>
+                    {hour}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="minuteDropdown"
+                value={startTime.minutes}
+                onChange={(e) => handleStartTimeChange(startTime.hours, e.target.value)}
+              >
+                {minutes.map((minute) => (
+                  <option key={minute} value={minute}>
+                    {minute}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="timeSelector">
+            <label>End Time:</label>
+            <div className="timeDropdown">
+              <select
+                className="hourDropdown"
+                value={endTime.hours}
+                onChange={(e) => handleEndTimeChange(e.target.value, endTime.minutes)}
+              >
+                {hours.map((hour) => (
+                  <option key={hour} value={hour}>
+                    {hour}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="minuteDropdown"
+                value={endTime.minutes}
+                onChange={(e) => handleEndTimeChange(endTime.hours, e.target.value)}
+              >
+                {minutes.map((minute) => (
+                  <option key={minute} value={minute}>
+                    {minute}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="buttonContainer">
+          <button onClick={onClose} className="modalButton" id='cancelButton'>Cancel</button>
+          <button onClick={onClose} className="modalButton" id='confirmButton'>Confirm</button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="report-container">
     <div className="report-header">
@@ -343,6 +425,13 @@ function Appliances() {
           </div>
         ))}
       </div>
+      {showPowerOffModal && (
+        <PowerOffModal 
+        onClose={() => setShowPowerOffModal(false)} 
+        handleStartTimeChange={handleStartTimeChange}
+        handleEndTimeChange={handleEndTimeChange}
+        />
+      )}
       {showConfirmation && (
                 <ConfirmationDialog
                   message="Are you sure you want to delete this appliance?"
@@ -350,7 +439,7 @@ function Appliances() {
                   onCancel={cancelDelete}
                 />
               )}
-{/*       <button className="add-new-appliance-btn" onClick={addNewAppliance}>Add New Room/Circuit</button> */}
+      <button className="add-new-appliance-btn" onClick={addNewAppliance}>Add New Room/Circuit</button>
     </div>
     <div><SelectionChart selectedFileName={selectedFileName} appliances={appliances}/></div>
 
