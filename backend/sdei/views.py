@@ -21,7 +21,7 @@ from django.contrib.auth import get_user_model, login, logout
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
-from .serializers import ProfileViewSerializer
+# from .serializers import ProfileViewSerializer
 from rest_framework import permissions
 from .validations import custom_validation, validate_email, validate_password
 from datetime import datetime, timedelta
@@ -48,36 +48,22 @@ class UserRegister(APIView):
 		return Response(status=status.HTTP_400_BAD_REQUEST)
      
 
-#################################
 
 # class UserProfile(APIView):
-# 	permission_classes = (permissions.AllowAny,)
-# 	authentication_classes = (SessionAuthentication,)
-# 	##
-# 	def get(self, request):
-# 		data = request.data
-# 		assert validate_username(data)
-# 		serializer = UserProfileSerializer(data=data)
-# 		if serializer.is_valid(raise_exception=True):
-# 			user = serializer.check_user(data)
-# 			return Response(serializer.data, status=status.HTTP_200_OK)
+#     permission_classes = (permissions.AllowAny,)
+#     authentication_classes = (SessionAuthentication,)
 
-
-class UserProfile(APIView):
-    permission_classes = (permissions.AllowAny,)
-    authentication_classes = (SessionAuthentication,)
-
-    def post(self, request):
-        data = request.data
-        # assert validate_username(data)
-        serializer = UserProfileSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.check_user(data)
-            user_data = {'username': user.username}  # Add more fields as needed
-            return Response(user_data, status=status.HTTP_200_OK)
+#     def post(self, request):
+#         data = request.data
+#         # assert validate_username(data)
+#         serializer = UserProfileSerializer(data=data)
+#         if serializer.is_valid(raise_exception=True):
+#             user = serializer.check_user(data)
+#             user_data = {'username': user.username}  # Add more fields as needed
+#             return Response(user_data, status=status.HTTP_200_OK)
           
 #############################
-# @csrf_exempt
+
 class UserLogin(APIView):
 	permission_classes = (permissions.AllowAny,)
 	authentication_classes = (SessionAuthentication,)
@@ -113,12 +99,6 @@ class UserView(APIView):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
      
-
-
-
-
-
-############
 
 
 def api_hello(request):
