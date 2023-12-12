@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import './navbar.css';
 import logo from './sdei.png';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 
 function Navbar() {
   useEffect(() => {
@@ -15,6 +17,18 @@ function Navbar() {
     });
   }, []);
 
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/sdei/logout/');
+      // Redirect or perform other actions after logout
+      console.log('logout success:', response.data);
+      navigate('/Account');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+  
   return (
     <nav className='navbar'>
       <div className='navbar-container'>
@@ -26,7 +40,7 @@ function Navbar() {
           <a className="nav-link" href="/Appliances">Dashboard</a>
           <a className="nav-link" href="/About">About</a>
           <a className="nav-link" href="/Contacts">Contacts</a>
-          <button className="nav-link" href="/profile">LOGOUT</button>
+          <button className="nav-link" href="/profile" onClick={handleLogout} >LOGOUT</button>
         
       {/* <button onClick={handleLogout}>Logout</button> */}
         </div>

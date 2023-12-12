@@ -120,7 +120,7 @@ function Appliances() {
   }, [appliances]);
 
   const toggleAppliance = (index) => {
-    if (!masterSwitch || showPowerOffModal || showConfirmation) return;
+    if (!masterSwitch || showConfirmation) return;
   
     setOpenAppliance((prevIndex) => (prevIndex === index ? null : index));
     setSelectedApplianceName(appliances[index].name);
