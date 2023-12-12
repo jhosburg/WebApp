@@ -5,12 +5,8 @@ from django.contrib.auth import get_user_model, authenticate
 from django.core.exceptions import ValidationError
 
 
-
 UserModel = get_user_model()
 
-
-
-		
 class UserRegisterSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
@@ -21,29 +17,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 		user_obj.save()
 		return user_obj
 	
-
-
-################################
-# class UserProfileSerializer(serializers.Serializer):
-# 	username = serializers.usernameField()
-	
-# 	##
-# 	def check_user(self, clean_data):
-# 		user = authenticate(username=clean_data['username'])
-# 		if not user:
-# 			raise ValidationError('user not found')
-# 		return user
-
-# class UserProfileSerializer(serializers.Serializer):
-#     username = serializers.CharField()
-
-#     def check_user(self, clean_data):
-#         user = authenticate(username=clean_data['username'])
-#         if not user:
-#             raise ValidationError('User not found')
-#         return user
-	
-##########################
 
 class UserLoginSerializer(serializers.Serializer):
 	email = serializers.EmailField()
@@ -67,19 +40,5 @@ class JsonModelSerializer(serializers.Serializer):
         return JsonModel.objects.create(file=validated_data['file'])
 
 
-
 # class ProfileViewSerializer(serializers.Serializer):
 #     username = serializers.CharField()
-
-#     def check_user(self, cleaned_data):
-#         username = cleaned_data.get('username')
-#         user = authenticate(username=username)
-
-#         if not user:
-#             raise ValidationError('User not found')
-
-#         return user
-
-
-class ProfileViewSerializer(serializers.Serializer):
-    username = serializers.CharField()
