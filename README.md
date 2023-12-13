@@ -29,13 +29,13 @@ Packages neccessary to run:
 
 ## RULES
 
-### Clone Repository:
+### Clone Repository: instruction on how to obtain the source code
     
 **Step 1** - Clone the project repository from Github
 
     "git clone https://github.com/jhosburg/WebApp.git"
 
-**Step 2** - Type the command below using VS Code termial or a command prompt 
+**Step 2** - Type the command below using VS Code terminal or a command prompt 
 
     "npm i" OR "npm install node"
 
@@ -158,7 +158,7 @@ Use these commands if you clone the repo and the backend(Django) does not run:
 
 
 
-### register example:
+### backend Django REGISTER account example:
 
 {
   "email": "sdei@sdsu.edu",
@@ -167,7 +167,7 @@ Use these commands if you clone the repo and the backend(Django) does not run:
 }
 
 
-### login
+### login backend Django LOGIN example
   
  {
    "email": "sdei@sdsu.edu",
