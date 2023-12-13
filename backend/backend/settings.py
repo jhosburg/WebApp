@@ -148,7 +148,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'sdeiDB',
         'USER':'postgres',
-        'PASSWORD':'Shasta22',
+        'PASSWORD':'Testing@@1212',
         'HOST':'localhost'
     }
 }

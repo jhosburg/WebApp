@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// import { Link } from 'react-router-dom'; // Add this line
 import './user.css';
 import logo_pic from './graphic_seaDragon.png';
 
